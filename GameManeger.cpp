@@ -101,7 +101,7 @@ void GameManeger::printBoard()
 			if (j == 0)
 				printNumber(num++);
 			else {
-				typeofcell = board[i][j].returnedCellType();
+				typeofcell = board[j][i].returnedCellType();
 				if (typeofcell == empty) {
 					cout << "   ";
 				}
@@ -137,32 +137,32 @@ void GameManeger::printBoard()
 
 void GameManeger::setBoard()
 {
-	board[7][1].setCellType(fr);
-	board[8][1].setCellType(fr);
-	board[7][2].setCellType(fr);
-	board[4][3].setCellType(fr);
-	board[5][3].setCellType(fr);
-	board[6][3].setCellType(fr);
-	board[7][3].setCellType(fr);
-	board[6][4].setCellType(fr);
-	board[7][4].setCellType(fr);
-	board[8][4].setCellType(fr);
-	board[9][4].setCellType(fr);
+	board[1][7].setCellType(fr);
+	board[1][8].setCellType(fr);
+	board[2][7].setCellType(fr);
+	board[3][4].setCellType(fr);
+	board[3][5].setCellType(fr);
+	board[3][6].setCellType(fr);
+	board[3][7].setCellType(fr);
+	board[4][6].setCellType(fr);
+	board[4][7].setCellType(fr);
+	board[4][8].setCellType(fr);
+	board[4][9].setCellType(fr);
 
-	board[6][8].setCellType(sea);
-	board[5][9].setCellType(sea);
-	board[6][9].setCellType(sea);
-	board[4][10].setCellType(sea);
-	board[5][10].setCellType(sea);
-	board[6][10].setCellType(sea);
-	board[7][10].setCellType(sea);
-	board[8][10].setCellType(sea);
-	board[9][10].setCellType(sea);
+	board[8][6].setCellType(sea);
+	board[9][5].setCellType(sea);
+	board[9][6].setCellType(sea);
+	board[10][4].setCellType(sea);
+	board[10][5].setCellType(sea);
+	board[10][6].setCellType(sea);
+	board[10][7].setCellType(sea);
+	board[10][8].setCellType(sea);
+	board[10][9].setCellType(sea);
 	board[10][10].setCellType(sea);
-	board[7][11].setCellType(sea);
-	board[8][11].setCellType(sea);
-	board[9][11].setCellType(sea);
-	board[8][12].setCellType(sea);
+	board[11][7].setCellType(sea);
+	board[11][8].setCellType(sea);
+	board[11][9].setCellType(sea);
+	board[12][8].setCellType(sea);
 
 	board[1][11].setCellType(flagA);
 	board[13][2].setCellType(flagB);
