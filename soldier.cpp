@@ -7,14 +7,19 @@
 
 void soldier::move(Cell board[Size][Size])
 {
-	void earse();
-	_x = _x + _y_dir;
-	_y = _y + _x_dir;
+	int oldX = _x;
+	int oldY = _y;
+	_x = _x + _x_dir;
+	_y = _y + _y_dir;
+	
 	if (_x < MIN_X || _x > MAX_X || _y < MIN_Y || _y > MAX_Y)
-		this->stop();
+		stop(oldX, oldY);
+	
 	
 	else if ((board[_x][_y]).isCellEmpty())
 	{
+		earse(oldX, oldY);
+		(board[oldX][oldY]).clear();
 		move();
 		(board[_x][_y]).update(soldierNum);
 	}
@@ -24,38 +29,40 @@ void soldier::move(Cell board[Size][Size])
 		if (typeReturnd == sea) {
 			if (seaPass == 1)
 			{
+				earse(oldX, oldY);
+				(board[oldX][oldY]).clear();
 				move();
 				(board[_x][_y]).update(soldierNum);
 			}
-			else
-				stop();
+			else 
+				stop(oldX, oldY);
+			
 		}
 		else if (typeReturnd == fr)
 		{
 			if(frPass== 1)
 			{
+				earse(oldX, oldY);
+				(board[oldX][oldY]).clear();
 				move();
 				(board[_x][_y]).update(soldierNum);
 			}
-			else
-				stop();
+			else 
+				stop(oldX,oldY);
+			
 		}
 		else if (typeReturnd == flagA)
-			stop();
-		else if (typeReturnd == flagB)
-			stop();
+			stop(oldX, oldY);
+	
+		else if (typeReturnd == flagB) 
+			stop(oldX, oldY);
+		
 		else
 		{
 			int numOfGamer;
 			typeReturnd = (board[_x][_y]).returndGamer(numOfGamer);
-
 		}
-
-
 	}
-	
-
-
 }
 
 void soldier::setDirection(Direction d)
@@ -81,10 +88,13 @@ void soldier::setDirection(Direction d)
 	}
 }
 
-void soldier::stop()
+void soldier::stop(int oldX, int oldY)
 {
 	_x_dir = 0;
 	_y_dir = 0;
+	_x = oldX;
+	_y = oldY;
+	//draw();
 }
 
 void soldier::set(int x, int y, int ch)
@@ -96,9 +106,12 @@ void soldier::set(int x, int y, int ch)
 
 void soldier::draw(int soldierNum)
 {
-	//gotoxy(4*_x+2,2*_y);
-	gotoxy(4* _y+2, 2 * _x);
-	cout << soldierNum;
+	gotoxy(4 * _x + 2, 2 * _y);
+	if (soldierNum == 0)
+		cout << " ";
+	else
+		cout << soldierNum;
+
 	cout.flush();
 }
 
@@ -136,5 +149,5 @@ void soldier::setCondition(int soldierNum)
 void soldier::move()
 {
 	
-	void drow();
+	draw();
 }

@@ -27,6 +27,7 @@ int Cell::returnedCellType()
 
 }
 
+
 int Cell::returndGamer(int& numOfGamer)
 {
 	if (this->GamerA == 0) {
@@ -38,4 +39,10 @@ int Cell::returndGamer(int& numOfGamer)
 		return this->GamerA;
 		numOfGamer = 1;
 	}
+}
+
+void Cell::clear()
+{
+	GamerA = 0;
+	GamerB = 0;
 }

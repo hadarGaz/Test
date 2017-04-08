@@ -16,7 +16,7 @@ class Gamers {
 	int score = 0;
 	int _gamerNum;
 	static char defualtName;
-	int currSoldier =-1;
+	int currSoldier = -1;
 public:
 	Gamers() { 
 		name = defualtName++;

@@ -21,16 +21,16 @@ class soldier {
 	void draw(int ch);
 	friend class Gamers;
 public:
-	//soldier() {}
-	//soldier(int x, int y, char ch) : _x(x) , _y(y),_ch(ch) {}
 	void set(int x, int y, int ch);
-	//void setChar();
 	void draw() { draw(soldierNum); }
-	void earse() { draw(' '); }
+	void earse(int oldX, int oldY) { 
+		gotoxy(4 * oldX + 2, 2 * oldY);
+		cout << " ";
+	}
 	void move(Cell board[Size][Size]);
 	void move();
 	void setDirection(Direction d);
-	void stop();
+	void stop(int oldX, int oldY);
 	void setCondition(int soldierNum);
 
 };

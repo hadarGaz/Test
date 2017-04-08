@@ -14,6 +14,7 @@ public:
 	void setCellType(int num);
 	int returnedCellType();
 	int returndGamer(int& numOfGamer);
+	void clear();
 
 
 };

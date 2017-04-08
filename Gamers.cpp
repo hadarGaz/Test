@@ -17,11 +17,11 @@ void Gamers::setSoldiers(Cell board[Size][Size], int gamerNum)
 	{
 		while (!found)
 		{
-			y = (rand() % 13) + 1;
+			x = (rand() % 13) + 1;
 			if (gamerNum == 2)
-				x = rand() % 5 + 9;
+				y = rand() % 5 + 9;
 			else
-				x = (rand() % 5) + 1;
+				y = (rand() % 5) + 1;
 			if ((board[x][y]).isCellEmpty())
 				found = 1;
 		}
@@ -71,7 +71,10 @@ void Gamers::setName()
 
 void Gamers::setDirection(Direction d)
 {
-	soldiers[currSoldier-1].setDirection(d);
+	if (currSoldier <= 3)
+		soldiers[currSoldier-1].setDirection(d);
+	else
+		soldiers[currSoldier - 7].setDirection(d);
 }
 
 void Gamers::printGamerName()
@@ -97,6 +100,10 @@ void Gamers::putScore(int _score)
 
 void Gamers::move(Cell board[Size][Size])
 {
-	if(currSoldier != -1)
-		soldiers[currSoldier-1].move(board);
+	if (currSoldier != -1) {
+		if(currSoldier <= 3)
+			soldiers[currSoldier - 1].move(board);
+		else
+			soldiers[currSoldier - 7].move(board);
+	}
 }
