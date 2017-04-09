@@ -57,6 +57,7 @@ void GameManeger::run()
 {
 	char ch =0;
 	bool flag = 0;
+	int soliderOut = 0;
 	clearScreen();
 	printBoard();
 	gamers[0].drowSoldiers();
@@ -65,14 +66,18 @@ void GameManeger::run()
 	{
 		if (flag == 0)
 		{
-			gamers[0].move(board);
-			//בדיקה אם הגיע לדגל
+			soliderOut = gamers[0].move(board);
+			if (soliderOut != 0) {
+				gamers[1].updateOutSolider(soliderOut);
+			}
 			flag = 1;
 		}
 		else
 		{
-			gamers[1].move(board);
-			//בדיקה אם הגיע לדגל
+			soliderOut = gamers[1].move(board);
+			if (soliderOut != 0) {
+				gamers[0].updateOutSolider(soliderOut);
+			}
 			flag = 0;
 		}
 		Sleep(80);

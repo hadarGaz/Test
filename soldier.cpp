@@ -5,23 +5,28 @@
 #include <windows.h>
 #include "soldier.h"
 
-void soldier::move(Cell board[Size][Size])
+//returns 0 if there is no attack and solider num of the solider who fall if attack occured
+int soldier::move(Cell board[Size][Size])
 {
+	//need to break to small methods 
 	int oldX = _x;
 	int oldY = _y;
 	_x = _x + _x_dir;
 	_y = _y + _y_dir;
-	
-	if (_x < MIN_X || _x > MAX_X || _y < MIN_Y || _y > MAX_Y)
+	if (_x_dir == 0 && _y_dir == 0)
+		return 0;
+	if (_x < MIN_X || _x > MAX_X || _y < MIN_Y || _y > MAX_Y) {
 		stop(oldX, oldY);
-	
-	
+		return 0;
+	}
 	else if ((board[_x][_y]).isCellEmpty())
 	{
 		earse(oldX, oldY);
 		(board[oldX][oldY]).clear();
 		move();
 		(board[_x][_y]).update(soldierNum);
+		return 0;
+
 	}
 	else
 	{
@@ -36,6 +41,7 @@ void soldier::move(Cell board[Size][Size])
 			}
 			else 
 				stop(oldX, oldY);
+			return 0;
 			
 		}
 		else if (typeReturnd == fr)
@@ -47,20 +53,64 @@ void soldier::move(Cell board[Size][Size])
 				move();
 				(board[_x][_y]).update(soldierNum);
 			}
-			else 
-				stop(oldX,oldY);
+			else {
+				stop(oldX, oldY);
+			}
+			return 0;
 			
 		}
-		else if (typeReturnd == flagA)
+		else if (typeReturnd == flagA) {
 			stop(oldX, oldY);
+			return 0;
+		}
 	
-		else if (typeReturnd == flagB) 
+		else if (typeReturnd == flagB) {
 			stop(oldX, oldY);
-		
+			return 0;
+		}
 		else
 		{
 			int numOfGamer;
+			bool win = false;
 			typeReturnd = (board[_x][_y]).returndGamer(numOfGamer);
+			if (numOfGamer == 1) {
+				if (typeReturnd >= 1 && typeReturnd <= 3 && soldierNum <= 3) {
+					stop(oldX, oldY);
+				}
+				else {
+					win = attack(typeReturnd);
+				}
+			}
+			
+			else{
+				if (typeReturnd >= 7 && typeReturnd <= 9 && soldierNum >= 7) {
+					stop(oldX, oldY);
+				}
+				else {
+					win = attack(typeReturnd);
+				}
+			}
+			if (win) {
+				earse(_x, _y);
+				earse(oldX, oldY);
+				(board[oldX][oldY]).clear();
+				(board[_x][_y]).clear();
+				move();
+				(board[_x][_y]).update(soldierNum);
+				//need to update that the enemy is not part of the game 
+				return typeReturnd;
+				
+			}
+			else {
+				stop(oldX, oldY);
+				earse(oldX, oldY);
+				(board[oldX][oldY]).clear();
+				//need to update that the enemy is not part of the game 
+				isAlive = false;
+				return 0;
+			}
+
+			
 		}
 	}
 }
@@ -144,6 +194,58 @@ void soldier::setCondition(int soldierNum)
 		frPass = 0;
 		break;
 	}
+}
+
+bool soldier::attack(int enemyNum) {
+	switch (soldierNum) {
+	case 1:
+		if ((_y >= 10 && _y <= 13) || _x == 4) 
+			return false;
+		else
+			return true;
+		break;
+	case 2:
+		if (enemyNum == 9)
+			return false;
+		else if ((enemyNum == 7 || enemyNum == 8) && ((_y >= 3 && _y <= 4) || _x == 11))
+			return true;
+		else
+			return false;
+		break;
+	case 3:
+		if (_y == 8 && _x == 7)
+			return true;
+		else
+			return false;
+		break;
+	case 7:
+		if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
+			(((_y != 4 && _y != 3) && _x != 11) && enemyNum == 2) || 
+			((_y != 8 && _x != 7) && enemyNum == 3))
+			return true;
+		else 
+			return false;
+		break;
+	case 8:
+		if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
+			(((_y != 4 && _y != 3) && _x != 11) && enemyNum == 2) ||
+			((_y != 8 && _x != 7) && enemyNum == 3))
+			return true;
+		else
+			return false;
+		break;
+	case 9:
+		if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
+			(enemyNum == 2) ||
+			((_y != 8 && _x != 7) && enemyNum == 3))
+			return true;
+		else
+			return false;
+		break;
+	default:
+		return true;
+	}
+
 }
 
 void soldier::move()

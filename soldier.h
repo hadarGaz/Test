@@ -18,6 +18,7 @@ class soldier {
 	int soldierNum;
 	int seaPass = 0;
 	int frPass = 0;
+	bool isAlive = true;
 	void draw(int ch);
 	friend class Gamers;
 public:
@@ -27,10 +28,10 @@ public:
 		gotoxy(4 * oldX + 2, 2 * oldY);
 		cout << " ";
 	}
-	void move(Cell board[Size][Size]);
+	int move(Cell board[Size][Size]);
 	void move();
 	void setDirection(Direction d);
 	void stop(int oldX, int oldY);
 	void setCondition(int soldierNum);
-
+	bool attack(int enemyNum);
 };

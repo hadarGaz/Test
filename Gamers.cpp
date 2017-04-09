@@ -27,8 +27,8 @@ void Gamers::setSoldiers(Cell board[Size][Size], int gamerNum)
 		}
 		//to ask how to do here cont
 		sol.setCondition(soldierNum);
-		sol.set(x, y, soldierNum++);
-		(board[x][y]).update(soldierNum);
+		sol.set(x, y, soldierNum);
+		(board[x][y]).update(soldierNum++);
 		found = 0;
 	}
 }
@@ -98,12 +98,24 @@ void Gamers::putScore(int _score)
 	score = _score;
 }
 
-void Gamers::move(Cell board[Size][Size])
+//returns 0 if there is no attack and solider num of the solider who fall if attack occured
+int Gamers::move(Cell board[Size][Size])
 {
 	if (currSoldier != -1) {
-		if(currSoldier <= 3)
-			soldiers[currSoldier - 1].move(board);
-		else
-			soldiers[currSoldier - 7].move(board);
+		if (currSoldier <= 3) {
+			if (soldiers[currSoldier - 1].isAlive) {
+				return soldiers[currSoldier - 1].move(board);
+			}
+		}
+		else {
+			if (soldiers[currSoldier - 7].isAlive)
+				return soldiers[currSoldier - 7].move(board);
+		}
 	}
+	else
+		return 0;
+}
+
+void Gamers::updateOutSolider(int outSolider) {
+	soldiers[outSolider - 1].isAlive = false;
 }

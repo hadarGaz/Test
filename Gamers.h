@@ -31,6 +31,7 @@ public:
 	int getScore();
 	void putScore(int _score);
 	void drowSoldiers();
-	void move(Cell board[Size][Size]);
+	int move(Cell board[Size][Size]);
+	void updateOutSolider(int outSolider);
 
 };
