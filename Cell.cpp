@@ -36,8 +36,8 @@ int Cell::returndGamer(int& numOfGamer)
 	}
 	else
 	{
-		return this->GamerA;
 		numOfGamer = 1;
+		return this->GamerA;
 	}
 }
 

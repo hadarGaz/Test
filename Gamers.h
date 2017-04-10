@@ -33,5 +33,10 @@ public:
 	void drowSoldiers();
 	int move(Cell board[Size][Size]);
 	void updateOutSolider(int outSolider);
+	void win() {
+		clearScreen();
+		cout << "The gamer: " << name << " win this game" << endl;
+		score++;
+	}
 
 };

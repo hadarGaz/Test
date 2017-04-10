@@ -15,6 +15,7 @@ void Gamers::setSoldiers(Cell board[Size][Size], int gamerNum)
 	int x=0, y=0, found = 0;
 	for (soldier& sol : soldiers)
 	{
+		sol.isAlive = true;
 		while (!found)
 		{
 			x = (rand() % 13) + 1;
@@ -25,7 +26,6 @@ void Gamers::setSoldiers(Cell board[Size][Size], int gamerNum)
 			if ((board[x][y]).isCellEmpty())
 				found = 1;
 		}
-		//to ask how to do here cont
 		sol.setCondition(soldierNum);
 		sol.set(x, y, soldierNum);
 		(board[x][y]).update(soldierNum++);
@@ -117,5 +117,8 @@ int Gamers::move(Cell board[Size][Size])
 }
 
 void Gamers::updateOutSolider(int outSolider) {
-	soldiers[outSolider - 1].isAlive = false;
+	if(outSolider >=1 && outSolider <= 3)
+		soldiers[outSolider - 1].isAlive = false;
+	else
+		soldiers[outSolider - 7].isAlive = false;
 }

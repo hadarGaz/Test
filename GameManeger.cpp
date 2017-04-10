@@ -67,17 +67,33 @@ void GameManeger::run()
 		if (flag == 0)
 		{
 			soliderOut = gamers[0].move(board);
-			if (soliderOut != 0) {
+			 if (soliderOut == -1) {
+			//stop the game
+			gamers[0].win();
+		}
+			else if (soliderOut <= 3) {
+				gamers[0].updateOutSolider(soliderOut);
+			}
+			else if(soliderOut >=7) {
 				gamers[1].updateOutSolider(soliderOut);
 			}
+			
 			flag = 1;
 		}
 		else
 		{
 			soliderOut = gamers[1].move(board);
-			if (soliderOut != 0) {
+			if (soliderOut == -1) {
+				//stop the game
+				gamers[1].win();
+			}
+			else if (soliderOut <= 3) {
 				gamers[0].updateOutSolider(soliderOut);
 			}
+			else if (soliderOut >= 7) {
+				gamers[1].updateOutSolider(soliderOut);
+			}
+			
 			flag = 0;
 		}
 		Sleep(80);
