@@ -63,6 +63,13 @@ void Gamers::notifyKeyHit(char ch)
 
 
 }
+//need to think and continue...
+//int Gamers::setCurrSolider(char ch, int _gamerNum) {
+//	if ((ch >= '1' && ch <= '3') && _gamerNum == 1)
+//		 return atoi(&ch);
+//	else if ((ch >= '7' && ch <= '9') && _gamerNum == 2)
+//		 return atoi(&ch);
+//}
 
 void Gamers::setName()
 {
@@ -98,7 +105,7 @@ void Gamers::putScore(int _score)
 	score = _score;
 }
 
-//returns 0 if there is no attack and solider num of the solider who fall if attack occured
+//returns 0 if there is no attack OR solider num of the solider who fall if attack occured
 int Gamers::move(Cell board[Size][Size])
 {
 	if (currSoldier != -1) {
@@ -115,6 +122,8 @@ int Gamers::move(Cell board[Size][Size])
 	else
 		return 0;
 }
+
+
 
 void Gamers::updateOutSolider(int outSolider) {
 	if(outSolider >=1 && outSolider <= 3)

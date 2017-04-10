@@ -7,6 +7,7 @@ using namespace std;
 void GameManeger::menu()
 {
 	bool getout = false;
+	char userchoise;
 	while (!getout)
 	{
 		cout << "1. Choose names for gamers" << endl;
@@ -14,7 +15,6 @@ void GameManeger::menu()
 		cout << "3. Start opisite game" << endl;
 		cout << "4. Reset score" << endl;
 		cout << "9. Exit" << endl;
-		char userchoise;
 		cin >> userchoise;
 		switch (userchoise)
 		{
@@ -165,8 +165,8 @@ void GameManeger::setBoard()
 	board[11][9].setCellType(sea);
 	board[12][8].setCellType(sea);
 
-	board[1][11].setCellType(flagA);
-	board[13][2].setCellType(flagB);
+	board[11][1].setCellType(flagA);
+	board[2][13].setCellType(flagB);
 
 }
 

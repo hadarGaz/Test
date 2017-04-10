@@ -24,19 +24,21 @@ class soldier {
 public:
 	void set(int x, int y, int ch);
 	void draw() { draw(soldierNum); }
-	void earse(int oldX, int oldY) { 
-		gotoxy(4 * oldX + 2, 2 * oldY);
-		cout << " ";
-	}
+	void earse(int oldX, int oldY);
 	int move(Cell board[Size][Size]);
-	void move();
+	void move(int oldX, int oldY, Cell board[Size][Size]);
+	void moveAfterWin(int oldX, int oldY, Cell board[Size][Size]);//consult with Hadar
+	void moveAfterDefeat(int oldX, int oldY, Cell board[Size][Size]);//consult with Hadar
 	void setDirection(Direction d);
 	void stop(int oldX, int oldY);
 	void setCondition(int soldierNum);
 	bool attack(int enemyNum);
-	void stop()
-	{
-		_x_dir = 0;
-		_y_dir = 0;
-	}
+	void stop();
+	bool oneIsAttack();
+	bool twoIsAttack(int enemyNum);
+	bool treeIsAttack();
+	bool sevenIsAttack(int enemyNum);
+	bool eightIsAttack(int enemyNum);
+	bool nineIsAttack(int enemyNum);
+
 };

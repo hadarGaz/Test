@@ -8,54 +8,41 @@
 //returns 0 if there is no attack and solider num of the solider who fall if attack occured
 int soldier::move(Cell board[Size][Size])
 {
-	//need to break to small methods 
 	int oldX = _x;
 	int oldY = _y;
 	_x = _x + _x_dir;
 	_y = _y + _y_dir;
-	//static int spacielCells = 0;
+
+	//make sure there is a direction for movment 
 	if (_x_dir == 0 && _y_dir == 0)
 		return 0;
+	//check the board bounderies 
 	if (_x < MIN_X || _x > MAX_X || _y < MIN_Y || _y > MAX_Y) {
 		stop(oldX, oldY);
 		return 0;
 	}
-	
+	//check if the cell is empty and clear to movement
 	if ((board[_x][_y]).isCellEmpty())
 	{
-		earse(oldX, oldY);
-		(board[oldX][oldY]).clear();
-		move();
-		(board[_x][_y]).update(soldierNum);
+		move(oldX, oldY, board);
 		return 0;
 
 	}
-	else //not empty
+	else //if not empty
 	{
 		int typeReturnd = (board[_x][_y]).returnedCellType();
 		if (typeReturnd == sea) {
-			if (seaPass == 1)
-			{
-				earse(oldX, oldY);
-				(board[oldX][oldY]).clear();
-				move();
-				(board[_x][_y]).update(soldierNum);
-				//spacielCells = 1;
+			if (seaPass == 1){
+				move(oldX, oldY, board);
 			}
 			else 
 				stop(oldX, oldY);
 			return 0;
-			
 		}
-		else if (typeReturnd == fr)
-		{
+		else if (typeReturnd == fr){
 			if(frPass== 1)
 			{
-				earse(oldX, oldY);
-				(board[oldX][oldY]).clear();
-				move();
-				(board[_x][_y]).update(soldierNum);
-				//spacielCells = 1;
+				move(oldX, oldY, board);
 			}
 			else {
 				stop(oldX, oldY);
@@ -106,29 +93,18 @@ int soldier::move(Cell board[Size][Size])
 				}
 			}
 			if (win) {
-				earse(_x, _y);
-				earse(oldX, oldY);
-				(board[oldX][oldY]).clear();
-				(board[_x][_y]).clear();
-				move();
-				(board[_x][_y]).update(soldierNum);
-				//need to update that the enemy is not part of the game 
+				moveAfterWin(oldX, oldY, board);
 				return enemySoldierNumber;
 				
 			}
 			else {
-				stop(oldX, oldY);
-				earse(oldX, oldY);
-				(board[oldX][oldY]).clear();
-				//need to update that the enemy is not part of the game 
-				isAlive = false;
+				moveAfterDefeat(oldX, oldY, board);
 				return soldierNum;
-			}
-
-			
+			}	
 		}
 	}
 }
+
 
 void soldier::setDirection(Direction d)
 {
@@ -159,9 +135,13 @@ void soldier::stop(int oldX, int oldY)
 	_y_dir = 0;
 	_x = oldX;
 	_y = oldY;
-	//draw();
 }
 
+void soldier::stop()
+{
+	_x_dir = 0;
+	_y_dir = 0;
+}
 void soldier::set(int x, int y, int ch)
 {
 	_x = x;
@@ -178,6 +158,11 @@ void soldier::draw(int soldierNum)
 		cout << " " << soldierNum << " ";
 
 	cout.flush();
+}
+
+void soldier::earse(int oldX, int oldY) {
+	gotoxy(4 * oldX + 2, 2 * oldY);
+	cout << " ";
 }
 
 void soldier::setCondition(int soldierNum)
@@ -214,48 +199,22 @@ void soldier::setCondition(int soldierNum)
 bool soldier::attack(int enemyNum) {
 	switch (soldierNum) {
 	case 1:
-		if ((_y >= 10 && _y <= 13) || _x == 4) 
-			return false;
-		else
-			return true;
+		return oneIsAttack();
 		break;
 	case 2:
-		if (enemyNum == 9)
-			return false;
-		else if ((enemyNum == 7 || enemyNum == 8) && ((_y >= 3 && _y <= 4) || _x == 11))
-			return true;
-		else
-			return false;
+		return twoIsAttack(enemyNum);
 		break;
 	case 3:
-		if (_y == 8 && _x == 7)
-			return true;
-		else
-			return false;
+		return treeIsAttack();
 		break;
 	case 7:
-		if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
-			(((_y != 4 && _y != 3) && _x != 11) && enemyNum == 2) || 
-			((_y != 8 && _x != 7) && enemyNum == 3))
-			return true;
-		else 
-			return false;
+		return sevenIsAttack(enemyNum);
 		break;
 	case 8:
-		if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
-			(((_y != 4 && _y != 3) && _x != 11) && enemyNum == 2) ||
-			((_y != 8 && _x != 7) && enemyNum == 3))
-			return true;
-		else
-			return false;
+		return eightIsAttack(enemyNum);
 		break;
 	case 9:
-		if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
-			(enemyNum == 2) ||
-			((_y != 8 && _x != 7) && enemyNum == 3))
-			return true;
-		else
-			return false;
+		return nineIsAttack(enemyNum);
 		break;
 	default:
 		return true;
@@ -263,8 +222,71 @@ bool soldier::attack(int enemyNum) {
 
 }
 
-void soldier::move()
+void soldier::move(int oldX, int oldY, Cell board[Size][Size])
 {
-	
+	earse(oldX, oldY);
+	(board[oldX][oldY]).clear();
 	draw();
+	(board[_x][_y]).update(soldierNum);
+}
+
+void soldier::moveAfterWin(int oldX, int oldY, Cell board[Size][Size]) {
+	earse(_x, _y);
+	earse(oldX, oldY);
+	(board[oldX][oldY]).clear();
+	(board[_x][_y]).clear();
+	draw();
+	(board[_x][_y]).update(soldierNum);
+}
+
+void soldier::moveAfterDefeat(int oldX, int oldY, Cell board[Size][Size]) {
+	stop(oldX, oldY);
+	earse(oldX, oldY);
+	(board[oldX][oldY]).clear();
+	isAlive = false;
+}
+//Attack results per solider conditions 
+bool soldier::oneIsAttack() {
+	if ((_y >= 10 && _y <= 13) || _x == 4)
+		return false;
+	else
+		return true;
+}
+bool soldier::twoIsAttack(int enemyNum) {
+	if (enemyNum == 9)
+		return false;
+	else if ((enemyNum == 7 || enemyNum == 8) && ((_y >= 3 && _y <= 4) || _x == 11))
+		return true;
+	else
+		return false;
+}
+bool soldier::treeIsAttack() {
+	if (_y == 8 || _x == 7)
+		return true;
+	else
+		return false;
+}
+bool soldier::sevenIsAttack(int enemyNum) {
+	if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
+		(((_y != 4 && _y != 3) && _x != 11) && enemyNum == 2) ||
+		((_y != 8 && _x != 7) && enemyNum == 3))
+		return true;
+	else
+		return false;
+}
+bool soldier::eightIsAttack(int enemyNum) {
+	if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
+		(((_y != 4 && _y != 3) && _x != 11) && enemyNum == 2) ||
+		((_y != 8 && _x != 7) && enemyNum == 3))
+		return true;
+	else
+		return false;
+}
+bool soldier::nineIsAttack(int enemyNum) {
+	if ((((_y >= 10 && _y <= 13) || (_x == 4)) && enemyNum == 1) ||
+		(enemyNum == 2) ||
+		((_y != 8 && _x != 7) && enemyNum == 3))
+		return true;
+	else
+		return false;
 }
