@@ -30,6 +30,7 @@ void GameManeger::menu()
 		case '3':
 			clearScreen();
 			swapScore();
+			startGame();
 			break;
 		case '4':
 			resetScore();
@@ -201,8 +202,8 @@ void GameManeger::swapScore()
 	
 	int scoreA = gamers[0].getScore();
 	int scoreB = gamers[1].getScore();
-	gamers[0].putScore(scoreA);
-	gamers[1].putScore(scoreB);
+	gamers[0].putScore(scoreB);
+	gamers[1].putScore(scoreA);
 	
 
 }

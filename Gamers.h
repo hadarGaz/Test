@@ -25,7 +25,6 @@ public:
 	void setName();
 	void setSoldiers(Cell board[(int)Sizes::size][(int)Sizes::size],int gamerNum);
 	void setkeys(const char* keys);
-	//int setCurrSolider(char ch, int _gamerNum);
 	void notifyKeyHit(char ch);
 	void setDirection(Direction d);
 	void printGamerName();
