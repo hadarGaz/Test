@@ -29,6 +29,7 @@ public:
 	void move(int oldX, int oldY, Cell board[Size][Size]);
 	void moveAfterWin(int oldX, int oldY, Cell board[Size][Size]);//consult with Hadar
 	void moveAfterDefeat(int oldX, int oldY, Cell board[Size][Size]);//consult with Hadar
+	void printSpecialCell(int oldX, int oldY, Cell board[Size][Size]);
 	void setDirection(Direction d);
 	void stop(int oldX, int oldY);
 	void setCondition(int soldierNum);
