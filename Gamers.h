@@ -37,7 +37,7 @@ public:
 	void updateOutSolider(int outSolider);
 	void win() {
 		clearScreen();
-		cout << "The gamer: " << name << " win this game" << endl;
+		cout << "The gamer: " << name << " won this game" << endl;
 		score++;
 	}
 
