@@ -34,4 +34,9 @@ public:
 	void stop(int oldX, int oldY);
 	void setCondition(int soldierNum);
 	bool attack(int enemyNum);
+	void stop()
+	{
+		_x_dir = 0;
+		_y_dir = 0;
+	}
 };

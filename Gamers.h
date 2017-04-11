@@ -17,6 +17,8 @@ class Gamers {
 	int _gamerNum;
 	static char defualtName;
 	int currSoldier = -1;
+	int soldierDead = 0;
+	friend class GameManeger;
 public:
 	Gamers() { 
 		name = defualtName++;

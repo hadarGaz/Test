@@ -56,7 +56,7 @@ void GameManeger::startGame()
 void GameManeger::run()
 {
 	char ch =0;
-	bool flag = 0;
+	bool gamerTurn = 0;
 	int soliderOut = 0;
 	clearScreen();
 	printBoard();
@@ -64,37 +64,17 @@ void GameManeger::run()
 	gamers[1].drowSoldiers();
 	while (ch != ESC)
 	{
-		if (flag == 0)
+		if (gamerTurn == 0)
 		{
 			soliderOut = gamers[0].move(board);
-			 if (soliderOut == -1) {
-			//stop the game
-			gamers[0].win();
-		}
-			else if (soliderOut <= 3) {
-				gamers[0].updateOutSolider(soliderOut);
-			}
-			else if(soliderOut >=7) {
-				gamers[1].updateOutSolider(soliderOut);
-			}
-			
-			flag = 1;
+			updateSoldierOut(gamerTurn,soliderOut);
+			gamerTurn = 1;
 		}
 		else
 		{
 			soliderOut = gamers[1].move(board);
-			if (soliderOut == -1) {
-				//stop the game
-				gamers[1].win();
-			}
-			else if (soliderOut <= 3) {
-				gamers[0].updateOutSolider(soliderOut);
-			}
-			else if (soliderOut >= 7) {
-				gamers[1].updateOutSolider(soliderOut);
-			}
-			
-			flag = 0;
+			updateSoldierOut(gamerTurn, soliderOut);
+			gamerTurn = 0;
 		}
 		Sleep(80);
 		if (_kbhit())
@@ -105,7 +85,7 @@ void GameManeger::run()
 		}
 	}
 	clearScreen();
-	//stop the game
+	stopTheGame();
 	seconderyMenu();
 }
 
@@ -218,10 +198,13 @@ void GameManeger::printNumber(int num)
 
 void GameManeger::swapScore()
 {
+	
 	int scoreA = gamers[0].getScore();
 	int scoreB = gamers[1].getScore();
 	gamers[0].putScore(scoreA);
 	gamers[1].putScore(scoreB);
+	
+
 }
 
 void GameManeger::seconderyMenu()
@@ -259,7 +242,56 @@ void GameManeger::seconderyMenu()
 
 void GameManeger::resetScore()
 {
+	/*
 	for (Gamers& gamer : gamers)
 		gamer.putScore(0);
+		*/
+	gamers[0].score = 0;
+	gamers[1].score = 0;
+}
+
+void GameManeger::stopTheGame()
+{
+	for (int i = 0; i < SizeOfSoldier; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			gamers[i].soldiers[j].stop();
+		}
+	}
+	
+}
+
+void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
+{
+		if (soliderOut == -1) {
+			stopTheGame();
+			gamers[gamerTurn].win();
+		}
+
+		if (soliderOut <= 3 && soliderOut >= 1) {
+			gamers[0].updateOutSolider(soliderOut);
+		}
+		else if (soliderOut >= 7) {
+			gamers[1].updateOutSolider(soliderOut);
+		}
+
+		if (gamerTurn == 0)
+		{
+			if (gamers[0].soldierDead == 3) //all the soldier was dead
+			{
+				stopTheGame();
+				gamers[1].win();
+			}
+
+		}
+		else
+		{
+			if (gamers[1].soldierDead == 3) //all the soldier was dead
+			{
+				stopTheGame();
+				gamers[0].win();
+			}
+		}
 }
 

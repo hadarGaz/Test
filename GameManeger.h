@@ -35,5 +35,7 @@ public:
 	void setBoard();
 	void swapScore();
 	void resetScore();
+	void stopTheGame();
+	void updateSoldierOut(int gamerTurn,int soliderOut);
 
 };

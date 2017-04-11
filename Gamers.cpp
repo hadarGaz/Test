@@ -121,4 +121,5 @@ void Gamers::updateOutSolider(int outSolider) {
 		soldiers[outSolider - 1].isAlive = false;
 	else
 		soldiers[outSolider - 7].isAlive = false;
+	soldierDead++;
 }
