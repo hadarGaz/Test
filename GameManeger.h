@@ -14,7 +14,7 @@ class GameManeger {
 	enum{ ESC = 27 };
 	Gamers gamers[(int)Sizes::sizeOfGamers];
 	Cell board[(int)Sizes::size][(int)Sizes::size];
-
+	bool EXIT = 0;
 	void printLetters();
 	void printEndLine();
 	void printNumber(int num);
@@ -27,7 +27,7 @@ public:
 	}
 	void menu();
 	void seconderyMenu();
-	void startGame();
+	void initialization();
 	void run();
 	void printBoard();
 	void setBoard();
@@ -36,5 +36,6 @@ public:
 	void stopTheGame();
 	void clearTheGame();
 	void updateSoldierOut(int gamerTurn,int soliderOut);
+	void GameManeger::printing();
 
 };

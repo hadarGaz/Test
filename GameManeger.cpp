@@ -25,14 +25,15 @@ void GameManeger::menu()
 			gamers[1].setName();
 			break;
 		case '2':
-			clearTheGame();
-			startGame();
+			initialization();
+			run();
+			getout = true;
 			break;
 		case '3':
-			clearScreen();
 			swapScore();
-			clearTheGame();
-			startGame();
+			initialization();
+			run();
+			getout = true;
 			break;
 		case '4':
 			resetScore();
@@ -40,6 +41,7 @@ void GameManeger::menu()
 			break;
 		case '9':
 			getout = true;
+			EXIT = 1;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
@@ -49,23 +51,30 @@ void GameManeger::menu()
 
 
 }
-void GameManeger::startGame()
+void GameManeger::initialization() //אתחולים
 {
 	int gamerNum = 1;
+	clearScreen();
+	clearTheGame();
 	gamers[0].setSoldiers(board, gamerNum++);
 	gamers[1].setSoldiers(board, gamerNum);
-	run();
+	printing();
+}
+
+void GameManeger::printing()
+{
+	clearScreen();
+	printBoard();
+	gamers[0].drowSoldiers();
+	gamers[1].drowSoldiers();
 }
 void GameManeger::run()
 {
 	char ch =0;
 	bool gamerTurn = 0;
 	int soliderOut = 0;
-	clearScreen();
-	printBoard();
-	gamers[0].drowSoldiers();
-	gamers[1].drowSoldiers();
-	while (ch != ESC)
+	
+	while (!EXIT)
 	{
 		if (gamerTurn == 0)
 		{
@@ -77,19 +86,26 @@ void GameManeger::run()
 		{
 			soliderOut = gamers[1].move(board);
 			updateSoldierOut(gamerTurn, soliderOut);
-			gamerTurn = 1;
+			gamerTurn = 0;
 		}
 		Sleep(80);
 		if (_kbhit())
 		{
 			ch = getch();
-			gamers[0].notifyKeyHit(ch);
-			gamers[1].notifyKeyHit(ch);
+			if (ch == ESC)
+			{
+				clearScreen();
+				stopTheGame();
+				seconderyMenu();
+			}
+			else 
+			{
+				gamers[0].notifyKeyHit(ch);
+				gamers[1].notifyKeyHit(ch);
+			}
 		}
 	}
-	clearScreen();
-	stopTheGame();
-	seconderyMenu();
+	
 }
 
 void GameManeger::printBoard()
@@ -224,18 +240,21 @@ void GameManeger::seconderyMenu()
 		switch (userchoise)
 		{
 		case '1':
-			run();
+			printing();
+			getout = true;
 			break;
 		case '2':
-			clearTheGame();
-			startGame();
+			initialization(); 
+			getout = true;
 			break;
-		case '8':
+		case '8': //dont know what to do here
 			clearScreen();
 			menu();
+			getout = true;
 			break;
 		case '9':
 			getout = true;
+			EXIT = 1;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
