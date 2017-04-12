@@ -19,7 +19,7 @@ class soldier {
 	friend class Gamers;
 public:
 	void set(int x, int y, int ch);
-	void draw() { draw(soldierNum); }
+	void draw();
 	void earse(int oldX, int oldY);
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void move(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]);
@@ -37,5 +37,6 @@ public:
 	bool sevenIsAttack(int enemyNum);
 	bool eightIsAttack(int enemyNum);
 	bool nineIsAttack(int enemyNum);
+	
 
 };

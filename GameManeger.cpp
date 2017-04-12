@@ -25,11 +25,14 @@ void GameManeger::menu()
 			gamers[1].setName();
 			break;
 		case '2':
+			clearTheGame();
 			startGame();
 			break;
 		case '3':
 			clearScreen();
 			swapScore();
+			clearTheGame();
+			startGame();
 			break;
 		case '4':
 			resetScore();
@@ -74,7 +77,7 @@ void GameManeger::run()
 		{
 			soliderOut = gamers[1].move(board);
 			updateSoldierOut(gamerTurn, soliderOut);
-			gamerTurn = 0;
+			gamerTurn = 1;
 		}
 		Sleep(80);
 		if (_kbhit())
@@ -224,6 +227,7 @@ void GameManeger::seconderyMenu()
 			run();
 			break;
 		case '2':
+			clearTheGame();
 			startGame();
 			break;
 		case '8':
@@ -261,6 +265,19 @@ void GameManeger::stopTheGame()
 	}
 	
 }
+
+void GameManeger::clearTheGame()
+{
+	for (int i = 0; i < (int)Sizes::size; i++)
+	{
+		for (int j = 0; j < (int)Sizes::size; j++)
+		{
+			board[i][j].clear();
+		}
+	}
+
+}
+
 
 void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 {

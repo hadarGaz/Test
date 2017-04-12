@@ -31,7 +31,42 @@ int soldier::move(Cell board[(int)Sizes::size][(int)Sizes::size])
 	else //if not empty
 	{
 		int typeReturnd = (board[_x][_y]).returnedCellType();
-		if (typeReturnd == (int)Type::sea) {
+		if (typeReturnd == (int)Type::emptyType) //its soldier
+		{
+			int numOfGamer;
+			int enemySoldierNumber;
+			bool win = false;
+			enemySoldierNumber = (board[_x][_y]).returndGamer(numOfGamer);
+			if (numOfGamer == 1) {
+				if (enemySoldierNumber >= (int)GamerA::soldier1 && enemySoldierNumber <= (int)GamerA::soldier3 && soldierNum <= (int)GamerA::soldier3) {
+					stop(oldX, oldY);
+					return 0;
+				}
+				else {
+					win = attack(enemySoldierNumber);
+				}
+			}
+
+			else {
+				if (enemySoldierNumber >= (int)GamerB::soldier7 && enemySoldierNumber <= (int)GamerB::soldier9 && soldierNum >= (int)GamerB::soldier7) {
+					stop(oldX, oldY);
+					return 0;
+				}
+				else {
+					win = attack(enemySoldierNumber);
+				}
+			}
+			if (win) {
+				moveAfterWin(oldX, oldY, board);
+				return enemySoldierNumber;
+
+			}
+			else {
+				moveAfterDefeat(oldX, oldY, board);
+				return soldierNum;
+			}
+		}
+		else if (typeReturnd == (int)Type::sea) {
 			if (seaPass == 1){
 				move(oldX, oldY, board);
 			}
@@ -67,41 +102,8 @@ int soldier::move(Cell board[(int)Sizes::size][(int)Sizes::size])
 				return 0;
 			}
 		}
-		else //if its a soldier
-		{
-			int numOfGamer;
-			int enemySoldierNumber;
-			bool win = false;
-			enemySoldierNumber = (board[_x][_y]).returndGamer(numOfGamer);
-			if (numOfGamer == 1) {
-				if (enemySoldierNumber >= (int)GamerA::soldier1 && enemySoldierNumber <= (int)GamerA::soldier3 && soldierNum <= (int)GamerA::soldier3) {
-					stop(oldX, oldY);
-					return 0;
-				}
-				else {
-					win = attack(enemySoldierNumber);
-				}
-			}
-			
-			else{
-				if (enemySoldierNumber >= (int)GamerB::soldier7 && enemySoldierNumber <= (int)GamerB::soldier9 && soldierNum >= (int)GamerB::soldier7) {
-					stop(oldX, oldY);
-					return 0;
-				}
-				else {
-					win = attack(enemySoldierNumber);
-				}
-			}
-			if (win) {
-				moveAfterWin(oldX, oldY, board);
-				return enemySoldierNumber;
-				
-			}
-			else {
-				moveAfterDefeat(oldX, oldY, board);
-				return soldierNum;
-			}	
-		}
+	//	else //if its a soldier
+		
 	}
 }
 
@@ -304,4 +306,9 @@ bool soldier::nineIsAttack(int enemyNum) {
 		return true;
 	else
 		return false;
+}
+
+void soldier::draw() 
+{ 
+	draw(soldierNum);
 }
