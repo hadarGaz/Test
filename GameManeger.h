@@ -11,11 +11,9 @@
 
 
 class GameManeger {
-	enum { Size = 14,ESC = 27, SizeOfSoldier =2};
-	enum { empty, sea, fr, flagA, flagB };
-
-	Gamers gamers[SizeOfSoldier];
-	Cell board[Size][Size];
+	enum{ ESC = 27 };
+	Gamers gamers[(int)Sizes::sizeOfGamers];
+	Cell board[(int)Sizes::size][(int)Sizes::size];
 
 	void printLetters();
 	void printEndLine();
@@ -25,7 +23,7 @@ public:
 		setBoard();
 		gamers[0].setkeys("wxad");
 		gamers[1].setkeys("imjl");
-		//hideCursor();
+		hideCursor();
 	}
 	void menu();
 	void seconderyMenu();

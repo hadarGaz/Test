@@ -2,7 +2,7 @@
 
 bool Cell::isCellEmpty()
 {
-	if (this->cellType == emptyType && this->GamerA == noGamerA && this->GamerB == noGamerB)
+	if (this->cellType == (int)Type::emptyType && this->GamerA == (int)GamerA::noGamerA && this->GamerB == (int)GamerB::noGamerB)
 		return true;
 	else
 		return false;
@@ -10,7 +10,7 @@ bool Cell::isCellEmpty()
 
 void Cell::update(int soldierNum)
 {
-	if (soldierNum >= 1 && soldierNum <= 3)
+	if (soldierNum >= (int)GamerA::soldier1 && soldierNum <= (int)GamerA::soldier3)
 		GamerA = soldierNum;
 	else
 		GamerB = soldierNum;

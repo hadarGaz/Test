@@ -2,15 +2,15 @@
 
 char Gamers::defualtName = 'A';
 
-void Gamers::setSoldiers(Cell board[Size][Size], int gamerNum)
+void Gamers::setSoldiers(Cell board[(int)Sizes::size][(int)Sizes::size], int gamerNum)
 {
 	_gamerNum = gamerNum;
 	int soldierNum;
 	if (gamerNum == 1) {
-		soldierNum = 1;
+		soldierNum = (int)GamerA::soldier1;
 	}
 	else {
-		soldierNum = 7;
+		soldierNum = (int)GamerB::soldier7;
 	}
 	int x=0, y=0, found = 0;
 	for (soldier& sol : soldiers)
@@ -78,7 +78,7 @@ void Gamers::setName()
 
 void Gamers::setDirection(Direction d)
 {
-	if (currSoldier <= 3)
+	if (currSoldier <= (int)GamerA::soldier3)
 		soldiers[currSoldier-1].setDirection(d);
 	else
 		soldiers[currSoldier - 7].setDirection(d);
@@ -106,10 +106,10 @@ void Gamers::putScore(int _score)
 }
 
 //returns 0 if there is no attack OR solider num of the solider who fall if attack occured
-int Gamers::move(Cell board[Size][Size])
+int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size])
 {
 	if (currSoldier != -1) {
-		if (currSoldier <= 3) {
+		if (currSoldier <= (int)GamerA::soldier3) {
 			if (soldiers[currSoldier - 1].isAlive) {
 				return soldiers[currSoldier - 1].move(board);
 			}
@@ -126,7 +126,7 @@ int Gamers::move(Cell board[Size][Size])
 
 
 void Gamers::updateOutSolider(int outSolider) {
-	if(outSolider >=1 && outSolider <= 3)
+	if(outSolider >= (int)GamerA::soldier1 && outSolider <= (int)GamerA::soldier3)
 		soldiers[outSolider - 1].isAlive = false;
 	else
 		soldiers[outSolider - 7].isAlive = false;

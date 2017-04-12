@@ -96,23 +96,23 @@ void GameManeger::printBoard()
 	int num = 1;
 	printLetters();
 	printEndLine();
-	for (int i = 1; i < Size; i++) {
-		for (int j = 0; j < Size; j++) {
+	for (int i = 1; i < (int)Sizes::size; i++) {
+		for (int j = 0; j < (int)Sizes::size; j++) {
 			cout << "|";
 			if (j == 0)
 				printNumber(num++);
 			else {
 				typeofcell = board[j][i].returnedCellType();
-				if (typeofcell == empty) {
+				if (typeofcell == (int)Type::emptyType) {
 					cout << "   ";
 				}
-				else if (typeofcell == fr) {
+				else if (typeofcell == (int)Type::fr) {
 					cout << "FR ";
 				}
-				else if (typeofcell == sea) {
+				else if (typeofcell == (int)Type::sea) {
 					cout << "SEA";
 				}
-				else if (typeofcell == flagA) {
+				else if (typeofcell == (int)Type::flagA) {
 					cout << " " << flag << "A";
 				}
 				else {
@@ -124,7 +124,7 @@ void GameManeger::printBoard()
 		printEndLine();
 	}
 	cout << "SCORE: " << endl;
-	for (int i = 0; i < SizeOfSoldier; i++) {
+	for (int i = 0; i < (int)Sizes::sizeOfGamers; i++) {
 		cout << "Gamer: ";
 		gamers[i].printGamerName();
 		cout << " = ";
@@ -138,35 +138,35 @@ void GameManeger::printBoard()
 
 void GameManeger::setBoard()
 {
-	board[1][7].setCellType(fr);
-	board[1][8].setCellType(fr);
-	board[2][7].setCellType(fr);
-	board[3][4].setCellType(fr);
-	board[3][5].setCellType(fr);
-	board[3][6].setCellType(fr);
-	board[3][7].setCellType(fr);
-	board[4][6].setCellType(fr);
-	board[4][7].setCellType(fr);
-	board[4][8].setCellType(fr);
-	board[4][9].setCellType(fr);
+	board[1][7].setCellType((int)Type::fr);
+	board[1][8].setCellType((int)Type::fr);
+	board[2][7].setCellType((int)Type::fr);
+	board[3][4].setCellType((int)Type::fr);
+	board[3][5].setCellType((int)Type::fr);
+	board[3][6].setCellType((int)Type::fr);
+	board[3][7].setCellType((int)Type::fr);
+	board[4][6].setCellType((int)Type::fr);
+	board[4][7].setCellType((int)Type::fr);
+	board[4][8].setCellType((int)Type::fr);
+	board[4][9].setCellType((int)Type::fr);
 
-	board[8][6].setCellType(sea);
-	board[9][5].setCellType(sea);
-	board[9][6].setCellType(sea);
-	board[10][4].setCellType(sea);
-	board[10][5].setCellType(sea);
-	board[10][6].setCellType(sea);
-	board[10][7].setCellType(sea);
-	board[10][8].setCellType(sea);
-	board[10][9].setCellType(sea);
-	board[10][10].setCellType(sea);
-	board[11][7].setCellType(sea);
-	board[11][8].setCellType(sea);
-	board[11][9].setCellType(sea);
-	board[12][8].setCellType(sea);
+	board[8][6].setCellType((int)Type::sea);
+	board[9][5].setCellType((int)Type::sea);
+	board[9][6].setCellType((int)Type::sea);
+	board[10][4].setCellType((int)Type::sea);
+	board[10][5].setCellType((int)Type::sea);
+	board[10][6].setCellType((int)Type::sea);
+	board[10][7].setCellType((int)Type::sea);
+	board[10][8].setCellType((int)Type::sea);
+	board[10][9].setCellType((int)Type::sea);
+	board[10][10].setCellType((int)Type::sea);
+	board[11][7].setCellType((int)Type::sea);
+	board[11][8].setCellType((int)Type::sea);
+	board[11][9].setCellType((int)Type::sea);
+	board[12][8].setCellType((int)Type::sea);
 
-	board[11][1].setCellType(flagA);
-	board[2][13].setCellType(flagB);
+	board[11][1].setCellType((int)Type::flagA);
+	board[2][13].setCellType((int)Type::flagB);
 
 }
 
@@ -174,14 +174,14 @@ void GameManeger::printLetters()
 {
 	char ch = 'A';
 	cout << "|" << "   ";
-	for (int p = 1; p<Size; p++)
+	for (int p = 1; p<(int)Sizes::size; p++)
 		cout << "| " << ch++ << " ";
 	cout << "|" << endl;
 }
 
 void GameManeger::printEndLine()
 {
-	for (int l = 0; l < Size; l++)
+	for (int l = 0; l < (int)Sizes::size; l++)
 		cout << "====";
 	cout << endl;
 }
@@ -210,13 +210,13 @@ void GameManeger::swapScore()
 void GameManeger::seconderyMenu()
 {
 	bool getout = false;
+	char userchoise;
 	while (!getout)
 	{
 		cout << "1. Return to game " << endl;
 		cout << "2. Start new game" << endl;
 		cout << "8. Go to the main menu" << endl;
 		cout << "9. Exit" << endl;
-		char userchoise;
 		cin >> userchoise;
 		switch (userchoise)
 		{
@@ -252,9 +252,9 @@ void GameManeger::resetScore()
 
 void GameManeger::stopTheGame()
 {
-	for (int i = 0; i < SizeOfSoldier; i++)
+	for (int i = 0; i < (int)Sizes::sizeOfGamers; i++)
 	{
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < (int)Sizes::sizeOfSoldier; j++)
 		{
 			gamers[i].soldiers[j].stop();
 		}
@@ -264,21 +264,21 @@ void GameManeger::stopTheGame()
 
 void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 {
-		if (soliderOut == -1) {
+		if (soliderOut == (int)Win::win) {
 			stopTheGame();
 			gamers[gamerTurn].win();
 		}
 
-		if (soliderOut <= 3 && soliderOut >= 1) {
+		if (soliderOut <= (int)GamerA::soldier3 && soliderOut >= (int)GamerA::soldier1) {
 			gamers[0].updateOutSolider(soliderOut);
 		}
-		else if (soliderOut >= 7) {
+		else if (soliderOut >= (int)GamerB::soldier7) {
 			gamers[1].updateOutSolider(soliderOut);
 		}
 
 		if (gamerTurn == 0)
 		{
-			if (gamers[0].soldierDead == 3) //all the soldier was dead
+			if (gamers[0].soldierDead == (int)Sizes::sizeOfSoldier) //all the soldier was dead
 			{
 				stopTheGame();
 				gamers[1].win();
@@ -287,7 +287,7 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 		}
 		else
 		{
-			if (gamers[1].soldierDead == 3) //all the soldier was dead
+			if (gamers[1].soldierDead == (int)Sizes::sizeOfSoldier) //all the soldier was dead
 			{
 				stopTheGame();
 				gamers[0].win();
