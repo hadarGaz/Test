@@ -34,12 +34,19 @@ int Cell::returndGamer(int& numOfGamer)
 		return this->GamerB;
 		numOfGamer = 2;
 	}
-	else
+	else if (this->GamerB == 0)
 	{
 		numOfGamer = 1;
 		return this->GamerA;
 	}
 }
+bool Cell::isAnyGamerExist() {
+	if (this->GamerA == 0 && this->GamerB == 0)
+		return false;
+	else
+		return true;
+}
+
 
 void Cell::clear()
 {

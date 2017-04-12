@@ -222,10 +222,25 @@ bool soldier::attack(int enemyNum) {
 
 }
 
+
+void soldier::printSpecialCell(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]) {
+	if (((board[oldX][oldY]).returnedCellType() == 1) && !((board[oldX][oldY]).isAnyGamerExist())) {
+		gotoxy(4 * oldX +1  , 2 * oldY);
+		cout << "SEA";
+
+	}
+	else if (((board[oldX][oldY]).returnedCellType() == 2)
+		&& !((board[oldX][oldY]).isAnyGamerExist())) {
+		gotoxy(4 * oldX + 1 , 2 * oldY);
+		cout << "FR ";
+	}
+}
+
 void soldier::move(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size])
 {
 	earse(oldX, oldY);
 	(board[oldX][oldY]).clear();
+	printSpecialCell(oldX,oldY,board);
 	draw();
 	(board[_x][_y]).update(soldierNum);
 }

@@ -10,6 +10,7 @@ public:
 	void update(int soldierNum);
 	void setCellType(int num);
 	int returnedCellType();
+	bool isAnyGamerExist();
 	int returndGamer(int& numOfGamer);
 	void clear();
 };
