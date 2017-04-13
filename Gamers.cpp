@@ -112,7 +112,7 @@ int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size])
 				return soldiers[currSoldier - 7].move(board);
 		}
 	}
-	else
+	//else
 		return 0;
 }
 

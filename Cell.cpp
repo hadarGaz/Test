@@ -31,14 +31,15 @@ int Cell::returnedCellType()
 int Cell::returndGamer(int& numOfGamer)
 {
 	if (this->GamerA == 0) {
-		return this->GamerB;
 		numOfGamer = 2;
+		return this->GamerB;
 	}
 	else if (this->GamerB == 0)
 	{
 		numOfGamer = 1;
 		return this->GamerA;
 	}
+	return 0;
 }
 bool Cell::isAnyGamerExist() {
 	if (this->GamerA == 0 && this->GamerB == 0)
