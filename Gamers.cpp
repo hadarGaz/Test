@@ -6,6 +6,7 @@ void Gamers::setSoldiers(Cell board[(int)Sizes::size][(int)Sizes::size], int gam
 {
 	_gamerNum = gamerNum;
 	int soldierNum;
+	soldierDead = 0;
 	if (gamerNum == 1) {
 		soldierNum = (int)GamerA::soldier1;
 	}
@@ -124,4 +125,11 @@ void Gamers::updateOutSolider(int outSolider) {
 	else
 		soldiers[outSolider - 7].isAlive = false;
 	soldierDead++;
+}
+
+void  Gamers::win() 
+{
+	clearScreen();
+	cout << "The gamer: " << name << " won this game" << endl;
+	score++;
 }

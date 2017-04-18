@@ -56,6 +56,7 @@ void GameManeger::initialization() //אתחולים
 	int gamerNum = 1;
 	clearScreen();
 	clearTheGame();
+	win = false;
 	gamers[0].setSoldiers(board, gamerNum++);
 	gamers[1].setSoldiers(board, gamerNum);
 	printing();
@@ -76,41 +77,45 @@ void GameManeger::run()
 	
 	while (!EXIT)
 	{
-		if (gamerTurn == 0)
-		{
-			soliderOut = gamers[0].move(board);
-			updateSoldierOut(gamerTurn,soliderOut);
-			gamerTurn = 1;
-		}
-		else
-		{
-			soliderOut = gamers[1].move(board);
-			updateSoldierOut(gamerTurn, soliderOut);
-			gamerTurn = 0;
+		if (!win) {
+			if (gamerTurn == 0)
+			{
+				soliderOut = gamers[0].move(board);
+				updateSoldierOut(gamerTurn, soliderOut);
+				gamerTurn = 1;
+			}
+			else
+			{
+				soliderOut = gamers[1].move(board);
+				updateSoldierOut(gamerTurn, soliderOut);
+				gamerTurn = 0;
+			}
 		}
 		Sleep(80);
-		if (_kbhit())
-		{
-			ch = getch();
-			if (ch == ESC)
+		
+			if (_kbhit())
 			{
-				clearScreen();
-				stopTheGame();
-				seconderyMenu();
+				ch = getch();
+				if (ch == ESC)
+				{
+					clearScreen();
+					stopTheGame();
+					seconderyMenu();
+				}
+				else if (!win) {
+					gamers[0].notifyKeyHit(ch);
+					gamers[1].notifyKeyHit(ch);
+				
+				}
 			}
-			else 
-			{
-				gamers[0].notifyKeyHit(ch);
-				gamers[1].notifyKeyHit(ch);
-			}
-		}
+		
 	}
 	
 }
 
 void GameManeger::printBoard()
 {
-	char flag = 166;
+	char flag = 167;
 	int typeofcell;
 	int num = 1;
 	printLetters();
@@ -126,10 +131,14 @@ void GameManeger::printBoard()
 					cout << "   ";
 				}
 				else if (typeofcell == (int)Type::fr) {
+					setTextColor(BLACK, PURPLE);
 					cout << "FR ";
+					setTextColor(WHITE);
 				}
 				else if (typeofcell == (int)Type::sea) {
+					setTextColor(BLACK, YELLOW);
 					cout << "SEA";
+					setTextColor(WHITE);
 				}
 				else if (typeofcell == (int)Type::flagA) {
 					cout << " " << flag << "A";
@@ -240,8 +249,15 @@ void GameManeger::seconderyMenu()
 		switch (userchoise)
 		{
 		case '1':
-			printing();
-			getout = true;
+			if (win) {
+				cout << endl;
+				cout << "Game was over, you can start new game" << endl;
+				cout << endl;
+			}
+			else {
+				printing();
+				getout = true;
+			}
 			break;
 		case '2':
 			initialization(); 
@@ -302,6 +318,7 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 {
 		if (soliderOut == (int)Win::win) {
 			stopTheGame();
+			win = true;
 			gamers[gamerTurn].win();
 		}
 
@@ -317,6 +334,7 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			if (gamers[0].soldierDead == (int)Sizes::sizeOfSoldier) //all the soldier was dead
 			{
 				stopTheGame();
+				win = true;
 				gamers[1].win();
 			}
 
@@ -326,6 +344,7 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			if (gamers[1].soldierDead == (int)Sizes::sizeOfSoldier) //all the soldier was dead
 			{
 				stopTheGame();
+				win = true;
 				gamers[0].win();
 			}
 		}

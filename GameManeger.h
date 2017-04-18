@@ -15,6 +15,7 @@ class GameManeger {
 	Gamers gamers[(int)Sizes::sizeOfGamers];
 	Cell board[(int)Sizes::size][(int)Sizes::size];
 	bool EXIT = 0;
+	bool win = false;
 	void printLetters();
 	void printEndLine();
 	void printNumber(int num);
@@ -36,6 +37,6 @@ public:
 	void stopTheGame();
 	void clearTheGame();
 	void updateSoldierOut(int gamerTurn,int soliderOut);
-	void GameManeger::printing();
+	void printing();
 
 };

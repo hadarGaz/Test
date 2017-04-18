@@ -134,11 +134,16 @@ void soldier::set(int x, int y, int ch)
 void soldier::draw(int soldierNum)
 {
 	gotoxy(4 * _x + 1, 2 * _y);
+	if (soldierNum >= (int)GamerA::soldier1 && soldierNum <= (int)GamerA::soldier3)
+		setTextColor(GREEN);
+	else
+		setTextColor(BLUE);
 	if (soldierNum == 0)
 		cout << " ";
 	else
 		cout << " " << soldierNum << " ";
-
+	
+	setTextColor(WHITE);
 	cout.flush();
 }
 
@@ -208,13 +213,17 @@ bool soldier::attack(int enemyNum) {
 void soldier::printSpecialCell(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]) {
 	if (((board[oldX][oldY]).returnedCellType() == 1) && !((board[oldX][oldY]).isAnyGamerExist())) {
 		gotoxy(4 * oldX +1  , 2 * oldY);
+		setTextColor(BLACK, YELLOW);
 		cout << "SEA";
+		setTextColor(WHITE);
 
 	}
 	else if (((board[oldX][oldY]).returnedCellType() == 2)
 		&& !((board[oldX][oldY]).isAnyGamerExist())) {
 		gotoxy(4 * oldX + 1 , 2 * oldY);
+		setTextColor(BLACK, PURPLE);
 		cout << "FR ";
+		setTextColor(WHITE);
 	}
 }
 
