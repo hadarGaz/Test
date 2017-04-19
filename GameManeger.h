@@ -16,6 +16,7 @@ class GameManeger {
 	Cell board[(int)Sizes::size][(int)Sizes::size];
 	bool EXIT = 0;
 	bool win = false;
+	bool opositeGame = false;
 	void printLetters();
 	void printEndLine();
 	void printNumber(int num);
@@ -25,6 +26,7 @@ public:
 		gamers[0].setkeys("wxad");
 		gamers[1].setkeys("imjl");
 		hideCursor();
+		opositeGame = false;
 	}
 	void menu();
 	void seconderyMenu();
@@ -32,7 +34,7 @@ public:
 	void run();
 	void printBoard();
 	void setBoard();
-	void swapScore();
+	void swapScore(int gamerTurn);
 	void resetScore();
 	void stopTheGame();
 	void clearTheGame();

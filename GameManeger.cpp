@@ -30,7 +30,7 @@ void GameManeger::menu()
 			getout = true;
 			break;
 		case '3':
-			swapScore();
+			opositeGame = !opositeGame;
 			initialization();
 			run();
 			getout = true;
@@ -224,13 +224,13 @@ void GameManeger::printNumber(int num)
 		cout << " " << num << " ";
 }
 
-void GameManeger::swapScore()
+void GameManeger::swapScore(int gamerTurn)
 {
 	
-	int scoreA = gamers[0].getScore();
-	int scoreB = gamers[1].getScore();
-	gamers[0].putScore(scoreB);
-	gamers[1].putScore(scoreA);
+	if (gamerTurn == 0)
+		gamers[1].win();
+	else
+		gamers[0].win();
 	
 
 }
@@ -263,7 +263,7 @@ void GameManeger::seconderyMenu()
 			initialization(); 
 			getout = true;
 			break;
-		case '8': //dont know what to do here
+		case '8': 
 			clearScreen();
 			menu();
 			getout = true;
@@ -281,10 +281,6 @@ void GameManeger::seconderyMenu()
 
 void GameManeger::resetScore()
 {
-	/*
-	for (Gamers& gamer : gamers)
-		gamer.putScore(0);
-		*/
 	gamers[0].score = 0;
 	gamers[1].score = 0;
 }
@@ -319,7 +315,12 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 		if (soliderOut == (int)Win::win) {
 			stopTheGame();
 			win = true;
-			gamers[gamerTurn].win();
+			if (opositeGame) {
+				swapScore(gamerTurn);
+			}
+			else
+				gamers[gamerTurn].win();
+			
 		}
 
 		if (soliderOut <= (int)GamerA::soldier3 && soliderOut >= (int)GamerA::soldier1) {
@@ -335,9 +336,12 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			{
 				stopTheGame();
 				win = true;
-				gamers[1].win();
+				if (opositeGame) {
+					gamers[0].win();
+				}
+				else
+					gamers[1].win();
 			}
-
 		}
 		else
 		{
@@ -345,7 +349,11 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			{
 				stopTheGame();
 				win = true;
-				gamers[0].win();
+				if (opositeGame) {
+					gamers[1].win();
+				}
+				else
+					gamers[0].win();
 			}
 		}
 }
