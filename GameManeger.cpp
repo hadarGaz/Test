@@ -15,8 +15,8 @@ void GameManeger::commandLine(int argc, char* argv)
 		{
 			if (strcmp(&argv[i + 1], "f") == 0) {
 				ifMovesFile = true;
-				movesAFiles.setFile(argv,argc,"moves-a");
-				movesBFiles.setFile(argv, argc, "moves-b");
+				movesAFiles.setFile(argv,argc,&"moves-a");
+				movesBFiles.setFile(argv, argc, &"moves-b");
 			}
 		}
 }

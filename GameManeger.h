@@ -4,10 +4,11 @@
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include "FilesMap.h"
 #include "Gamers.h"
 #include "Cell.h"
 #include "Utils.h"
-#include "FilesMap.h"
+
 
 
 class GameManeger {
@@ -17,9 +18,10 @@ class GameManeger {
 	bool EXIT = 0;
 	bool win = false;
 	//new
+	FilesMap boardFile, movesAFiles, movesBFiles;
 	bool ifBoardFile = false;
 	bool ifMovesFile = false;
-	FilesMap boardFile, movesAFiles, movesBFiles;
+	
 
 	bool opositeGame = false;
 	void printLetters();
