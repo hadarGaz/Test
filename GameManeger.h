@@ -7,7 +7,7 @@
 #include "Gamers.h"
 #include "Cell.h"
 #include "Utils.h"
-
+#include "FilesMap.h"
 
 
 class GameManeger {
@@ -16,6 +16,11 @@ class GameManeger {
 	Cell board[(int)Sizes::size][(int)Sizes::size];
 	bool EXIT = 0;
 	bool win = false;
+	//new
+	bool ifBoardFile = false;
+	bool ifMovesFile = false;
+	FilesMap boardFile, movesAFiles, movesBFiles;
+
 	bool opositeGame = false;
 	void printLetters();
 	void printEndLine();
@@ -28,6 +33,7 @@ public:
 		hideCursor();
 		opositeGame = false;
 	}
+	void commandLine(int argc, char* argv);
 	void menu();
 	void seconderyMenu();
 	void initialization();

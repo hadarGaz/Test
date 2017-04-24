@@ -3,7 +3,23 @@
 
 using namespace std;
 
-
+void GameManeger::commandLine(int argc, char* argv)
+{
+	for (int i = 1; i<argc; i = i * 2)
+		if (strcmp(&argv[i], "-board") == 0)
+		{
+			if (strcmp(&argv[i + 1], "f") == 0)
+				ifBoardFile = true;
+		}
+		else if (strcmp(&argv[i], "-moves") == 0)
+		{
+			if (strcmp(&argv[i + 1], "f") == 0) {
+				ifMovesFile = true;
+				movesAFiles.setFile(argv,argc,"moves-a");
+				movesBFiles.setFile(argv, argc, "moves-b");
+			}
+		}
+}
 void GameManeger::menu()
 {
 	bool getout = false;
