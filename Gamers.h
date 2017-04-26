@@ -23,7 +23,8 @@ public:
 		name = defualtName++;
 	}
 	void setName();
-	void setSoldiers(Cell board[(int)Sizes::size][(int)Sizes::size],int gamerNum);
+	void setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size],int gamerNum);
+	void setSoldiersFromFile(Cell board[(int)Sizes::size][(int)Sizes::size], int solider, int x,int y);
 	void setkeys(const char* keys);
 	void notifyKeyHit(char ch);
 	void setDirection(Direction d);

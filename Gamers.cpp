@@ -2,7 +2,7 @@
 
 char Gamers::defualtName = 'A';
 
-void Gamers::setSoldiers(Cell board[(int)Sizes::size][(int)Sizes::size], int gamerNum)
+void Gamers::setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size], int gamerNum)
 {
 	_gamerNum = gamerNum;
 	int soldierNum;
@@ -31,6 +31,21 @@ void Gamers::setSoldiers(Cell board[(int)Sizes::size][(int)Sizes::size], int gam
 		sol.set(x, y, soldierNum);
 		(board[x][y]).update(soldierNum++);
 		found = 0;
+	}
+}
+
+void Gamers::setSoldiersFromFile(Cell board[(int)Sizes::size][(int)Sizes::size], int solider, int x, int y) {
+	if (solider >= 1 && solider <= 3) {
+		soldiers[solider - 1].isAlive = true;
+		soldiers[solider - 1].setCondition(solider);
+		soldiers[solider - 1].set(x, y, solider);
+		(board[x][y]).update(solider);
+	}
+	if (solider >= 7 && solider <= 9) {
+		soldiers[solider - 7].isAlive = true;
+		soldiers[solider - 7].setCondition(solider);
+		soldiers[solider - 7].set(x, y, solider);
+		(board[x][y]).update(solider);
 	}
 }
 

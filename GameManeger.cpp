@@ -3,23 +3,23 @@
 
 using namespace std;
 
-void GameManeger::commandLine(int argc, char* argv)
-{
-	for (int i = 1; i<argc; i = i * 2)
-		if (strcmp(&argv[i], "-board") == 0)
-		{
-			if (strcmp(&argv[i + 1], "f") == 0)
-				ifBoardFile = true;
-		}
-		else if (strcmp(&argv[i], "-moves") == 0)
-		{
-			if (strcmp(&argv[i + 1], "f") == 0) {
-				ifMovesFile = true;
-				movesAFiles.setFile(argv,argc,&"moves-a");
-				movesBFiles.setFile(argv, argc, &"moves-b");
-			}
-		}
-}
+//void GameManeger::commandLine(int argc, char* argv)
+//{
+//	for (int i = 1; i<argc; i = i * 2)
+//		if (strcmp(&argv[i], "-board") == 0)
+//		{
+//			if (strcmp(&argv[i + 1], "f") == 0)
+//				ifBoardFile = true;
+//		}
+//		else if (strcmp(&argv[i], "-moves") == 0)
+//		{
+//			if (strcmp(&argv[i + 1], "f") == 0) {
+//				ifMovesFile = true;
+//				movesAFiles.setFile(argv,argc,"moves-a");
+//				movesBFiles.setFile(argv, argc, "moves-b");
+//			}
+//		}
+//}
 void GameManeger::menu()
 {
 	bool getout = false;
@@ -73,8 +73,8 @@ void GameManeger::initialization() //אתחולים
 	clearScreen();
 	clearTheGame();
 	win = false;
-	gamers[0].setSoldiers(board, gamerNum++);
-	gamers[1].setSoldiers(board, gamerNum);
+	gamers[0].setSoldiersRandom(board, gamerNum++);
+	gamers[1].setSoldiersRandom(board, gamerNum);
 	printing();
 }
 
@@ -211,6 +211,48 @@ void GameManeger::setBoard()
 
 	board[11][1].setCellType((int)Type::flagA);
 	board[2][13].setCellType((int)Type::flagB);
+
+}
+//get one file end set the board from it - need to implement separate func to get the files 
+void GameManeger::setBoardFromFile(ifstream& inFile) { 
+	string line;
+	char currentChar;
+	int ACounter = 0, BCounter = 0, wrongCharCounter = 0;
+	for (int i = 1; i < (int)Sizes::size; i++) {
+		getline(inFile, line);
+		for (int j = 1; j < (int)Sizes::size; j++) {
+			currentChar = line.at(j - 1);
+			if (currentChar == 'T') {
+				board[i][j].setCellType((int)Type::fr);
+			}
+			if (currentChar == 'S') {
+				board[i][j].setCellType((int)Type::sea);
+			}
+			if (currentChar == 'A') {
+				if (ACounter == 0) {
+					board[i][j].setCellType((int)Type::flagA);
+				}
+				ACounter++;
+			}
+			if (currentChar == 'B') {
+				if (BCounter == 0) {
+					board[i][j].setCellType((int)Type::flagB);
+				}
+				BCounter++;
+			}
+			if (currentChar >= 1 && currentChar <= 3) {
+				gamers[0].setSoldiersFromFile(board,(int)currentChar,i,j);
+			}
+			if (currentChar >= 7 && currentChar <= 9) {
+				gamers[1].setSoldiersFromFile(board,(int)currentChar,i,j);
+			}
+			else {
+				if (currentChar != ' ') {
+					wrongCharCounter;
+				}
+			}
+		}
+	}
 
 }
 

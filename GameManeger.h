@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include <fstream>
+#include <string>
 #include "FilesMap.h"
 #include "Gamers.h"
 #include "Cell.h"
@@ -29,12 +31,13 @@ class GameManeger {
 	void printNumber(int num);
 public:
 	GameManeger() { 
-		setBoard();
+		//setBoard();
 		gamers[0].setkeys("wxad");
 		gamers[1].setkeys("imjl");
 		hideCursor();
 		opositeGame = false;
 	}
+	void setBoardFromFile(ifstream& inFile);
 	void commandLine(int argc, char* argv);
 	void menu();
 	void seconderyMenu();

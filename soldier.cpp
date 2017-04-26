@@ -129,6 +129,7 @@ void soldier::set(int x, int y, int ch)
 	_x = x;
 	_y = y;
 	soldierNum = ch;
+
 }
 
 void soldier::draw(int soldierNum)
