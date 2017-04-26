@@ -8,9 +8,11 @@ void FilesMap::setFile(char* argv, int argc, char* str)
 		if (strcmp(&argv[i], str) == 0) //זה אומר אם הקובץ עם הסיומת הנ"ל
 		{
 			this->add(&argv[i]);
+			//
 		}
 	}
 }
+
 void FilesMap::add(char* str)
 {
 	files[str]++;
