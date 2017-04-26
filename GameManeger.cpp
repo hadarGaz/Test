@@ -15,11 +15,12 @@ void GameManeger::commandLine(int argc, char* argv)
 		{
 			if (strcmp(&argv[i + 1], "f") == 0) {
 				ifMovesFile = true;
-				movesAFiles.setFile(argv,argc,&"moves-a");
-				movesBFiles.setFile(argv, argc, &"moves-b");
+				movesAFiles.setFile(argv,argc,"moves-a");
+				movesBFiles.setFile(argv, argc, "moves-b");
 			}
 		}
 }
+
 void GameManeger::menu()
 {
 	bool getout = false;
@@ -94,17 +95,26 @@ void GameManeger::run()
 	while (!EXIT)
 	{
 		if (!win) {
-			if (gamerTurn == 0)
+			if (ifMovesFile == true)
 			{
-				soliderOut = gamers[0].move(board);
-				updateSoldierOut(gamerTurn, soliderOut);
-				gamerTurn = 1;
+				//read from movaA file
+				//read from movaB file
+
 			}
 			else
 			{
-				soliderOut = gamers[1].move(board);
-				updateSoldierOut(gamerTurn, soliderOut);
-				gamerTurn = 0;
+				if (gamerTurn == 0)
+				{
+					soliderOut = gamers[0].move(board);
+					updateSoldierOut(gamerTurn, soliderOut);
+					gamerTurn = 1;
+				}
+				else
+				{
+					soliderOut = gamers[1].move(board);
+					updateSoldierOut(gamerTurn, soliderOut);
+					gamerTurn = 0;
+				}
 			}
 		}
 		Sleep(80);
