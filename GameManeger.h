@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <fstream>
 #include <string>
+#include <vector> //?
 #include "FilesMap.h"
 #include "Gamers.h"
 #include "Cell.h"
@@ -25,8 +26,9 @@ class GameManeger {
 	bool ifMovesFile = false;
 	
 	//counters for wrong setting to board that set from file 
-	int SetACounter = 0, SetBCounter = 0, wrongCharCounter = 0;
+	int SetACounter = 0, SetBCounter = 0;
 	int setSol1 = 0, setSol2 = 0, setSol3 = 0, setSol7 = 0, setSol8 = 0, setSol9 = 0;
+	string wrongCharsSet;
 
 	bool opositeGame = false;
 	void printLetters();

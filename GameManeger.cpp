@@ -4,13 +4,16 @@
 using namespace std;
 
 void GameManeger::justForTest() { //tests the board from file 
-	ifstream textfile("C:\\Users\\Nofar Kedem Zada\\Downloads\\testsfiles\\board_ok_2.gboard");
+	ifstream textfile("C:\\Users\\Nofar Kedem Zada\\Downloads\\testsfiles\\board_bad_4.gboard");
 	bool test = textfile.is_open();
 	setBoardFromFile(textfile);
 	textfile.close();
 	printBoard();
 	gamers[0].drowSoldiers();
 	gamers[1].drowSoldiers();
+	Sleep(80);
+	clearScreen();
+	printBoardFromFileErrors("board_bad_4.gboard");
 	Sleep(80);
 }
 
@@ -229,7 +232,7 @@ void GameManeger::setBoardFromFile(ifstream& inFile) {
 	string line;
 	char currentChar;
 	std::map<char, int> wrongCharMap;
-	//int ACounter = 0, BCounter = 0, wrongCharCounter = 0;
+
 	for (int i = 1; i < (int)Sizes::size; i++) {
 		getline(inFile, line);
 		for (int j = 1; j < (int)Sizes::size; j++) {
@@ -262,7 +265,13 @@ void GameManeger::setBoardFromFile(ifstream& inFile) {
 			}
 			else {//need to change here
 				if (currentChar != ' ') {
-					wrongCharCounter++;
+					if (wrongCharMap.count(currentChar) != 0) {//if the char exists
+						wrongCharMap[currentChar]++;
+					}
+					else {
+						wrongCharsSet.push_back(currentChar);
+						wrongCharMap[currentChar]++;
+					}
 				}
 			}
 		}
@@ -286,16 +295,16 @@ void GameManeger::updateSetSoliderCounter(int solider) {
 	if (solider == (int)GamerB::soldier8) {
 		setSol8++;
 	}
-	if (solider == (int)GamerB::soldier8) {
-		setSol8++;
+	if (solider == (int)GamerB::soldier9) {
+		setSol9++;
 	}
 }
 
 bool GameManeger::isBoardFromFileOK() {
-	if (SetACounter != 1 || SetBCounter != 1 || wrongCharCounter > 0) {
+	if (SetACounter != 1 || SetBCounter != 1 || wrongCharsSet.size() > 0) {
 		return false;
 	}
-	else if (setSol1 != 1 || setSol2 != 1 || setSol3 != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1 || ) {
+	else if (setSol1 != 1 || setSol2 != 1 || setSol3 != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1){
 		return false;
 	}
 	else
@@ -309,8 +318,8 @@ void GameManeger::printBoardFromFileErrors(string fileName) {
 	if (SetBCounter != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1) {
 		cout << "Wrong settings for player B tools in file " << fileName << endl;
 	}
-	if (wrongCharCounter > 0) {
-		cout << "Wrong character on board : <char> in file " << fileName << endl;
+	if (wrongCharsSet.size() > 0) {
+		cout << "Wrong character on board : "<< wrongCharsSet <<" in file " << fileName << endl;
 	}
 }
 
