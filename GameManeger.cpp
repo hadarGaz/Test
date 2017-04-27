@@ -69,6 +69,12 @@ void GameManeger::menu()
 			resetScore();
 			cout << "Score was reset";
 			break;
+		case '5':
+			recordGame = !recordGame;
+			//initialization() - need to check if needed
+			run();
+			getout = true;
+			break;
 		case '9':
 			getout = true;
 			EXIT = 1;
@@ -89,6 +95,7 @@ void GameManeger::initialization() //אתחולים
 	win = false;
 	gamers[0].setSoldiersRandom(board, gamerNum++);
 	gamers[1].setSoldiersRandom(board, gamerNum);
+	recordRandomBoard(board);
 	printing();
 }
 
@@ -481,5 +488,47 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 					gamers[0].win();
 			}
 		}
+}
+char GameManeger::findCellType(Cell board[(int)Sizes::size][(int)Sizes::size],int j,int i)const {
+	int cellType = board[j][i].returnedCellType();
+	if (cellType != (int)Type::emptyType) {
+		if (cellType == (int)Type::fr)
+			return 'T';
+		if (cellType == (int)Type::sea)
+			return 'S';
+		if (cellType == (int)Type::flagA)
+			return 'A';
+		if (cellType == (int)Type::flagB)
+			return 'B';
+	}
+	else if (board[j][i].isAnyGamerExist()) {
+		return ('0' + board[j][i].returnSoliderNumInCell());
+	}
+	else
+		return ' ';
+}
+
+string GameManeger::findFileName() {
+	string directoryPath = findDirPath();
+	//need to insert all files from the path to a map - dedicated object need to complete
+	//than find a free name and send it 
+
+}
+
+void GameManeger::recordRandomBoard(Cell board[(int)Sizes::size][(int)Sizes::size]) {
+	string fileName;
+	string line;
+	char type;
+	fileName = findFileName();
+	ofstream recordedBorad("test.txt");
+	for (int i = 1; i < (int)Sizes::size; i++) {
+		line.clear();
+		for (int j = 1; j < (int)Sizes::size; j++) {
+			type = findCellType(board,j,i);
+			line.push_back(type);
+		}
+		recordedBorad << line << '#' << i <<endl;
+	}
+	recordedBorad.close();
 }
 

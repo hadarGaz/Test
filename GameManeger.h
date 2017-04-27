@@ -6,7 +6,6 @@
 #include <windows.h>
 #include <fstream>
 #include <string>
-#include <vector> //?
 #include "FilesMap.h"
 #include "Gamers.h"
 #include "Cell.h"
@@ -31,12 +30,13 @@ class GameManeger {
 	string wrongCharsSet;
 
 	bool opositeGame = false;
+	bool recordGame = false;
 	void printLetters();
 	void printEndLine();
 	void printNumber(int num);
 public:
 	GameManeger() { 
-		//setBoard();
+		setBoard();
 		gamers[0].setkeys("wxad");
 		gamers[1].setkeys("imjl");
 		hideCursor();
@@ -60,5 +60,8 @@ public:
 	void clearTheGame();
 	void updateSoldierOut(int gamerTurn,int soliderOut);
 	void printing();
+	void recordRandomBoard(Cell board[(int)Sizes::size][(int)Sizes::size]);
+	char findCellType(Cell board[(int)Sizes::size][(int)Sizes::size], int j,int i)const;
+	string findFileName();
 
 };

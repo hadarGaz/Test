@@ -54,3 +54,13 @@ void Cell::clear()
 	GamerA = 0;
 	GamerB = 0;
 }
+
+int Cell::returnSoliderNumInCell() const
+{
+	if (this->GamerA)
+		return this->GamerA;
+	else if (this->GamerB)
+		return this->GamerB;
+	else
+		return 0;
+}
