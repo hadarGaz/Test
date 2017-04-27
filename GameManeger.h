@@ -24,6 +24,9 @@ class GameManeger {
 	bool ifBoardFile = false;
 	bool ifMovesFile = false;
 	
+	//counters for wrong setting to board that set from file 
+	int SetACounter = 0, SetBCounter = 0, wrongCharCounter = 0;
+	int setSol1 = 0, setSol2 = 0, setSol3 = 0, setSol7 = 0, setSol8 = 0, setSol9 = 0;
 
 	bool opositeGame = false;
 	void printLetters();
@@ -37,7 +40,11 @@ public:
 		hideCursor();
 		opositeGame = false;
 	}
+	void justForTest();
 	void setBoardFromFile(ifstream& inFile);
+	bool isBoardFromFileOK();
+	void updateSetSoliderCounter(int solider);
+	void printBoardFromFileErrors(string fileName);
 	void commandLine(int argc, char* argv);
 	void menu();
 	void seconderyMenu();

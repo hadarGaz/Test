@@ -3,6 +3,17 @@
 
 using namespace std;
 
+void GameManeger::justForTest() { //tests the board from file 
+	ifstream textfile("C:\\Users\\Nofar Kedem Zada\\Downloads\\testsfiles\\board_ok_2.gboard");
+	bool test = textfile.is_open();
+	setBoardFromFile(textfile);
+	textfile.close();
+	printBoard();
+	gamers[0].drowSoldiers();
+	gamers[1].drowSoldiers();
+	Sleep(80);
+}
+
 void GameManeger::commandLine(int argc, char* argv)
 {
 	for (int i = 1; i<argc; i = i * 2)
@@ -217,43 +228,90 @@ void GameManeger::setBoard()
 void GameManeger::setBoardFromFile(ifstream& inFile) { 
 	string line;
 	char currentChar;
-	int ACounter = 0, BCounter = 0, wrongCharCounter = 0;
+	std::map<char, int> wrongCharMap;
+	//int ACounter = 0, BCounter = 0, wrongCharCounter = 0;
 	for (int i = 1; i < (int)Sizes::size; i++) {
 		getline(inFile, line);
 		for (int j = 1; j < (int)Sizes::size; j++) {
 			currentChar = line.at(j - 1);
 			if (currentChar == 'T') {
-				board[i][j].setCellType((int)Type::fr);
+				board[j][i].setCellType((int)Type::fr);
 			}
-			if (currentChar == 'S') {
-				board[i][j].setCellType((int)Type::sea);
+			else if (currentChar == 'S') {
+				board[j][i].setCellType((int)Type::sea);
 			}
-			if (currentChar == 'A') {
-				if (ACounter == 0) {
-					board[i][j].setCellType((int)Type::flagA);
+			else if (currentChar == 'A') {
+				if (SetACounter == 0) {
+					board[j][i].setCellType((int)Type::flagA);
 				}
-				ACounter++;
+				SetACounter++;
 			}
-			if (currentChar == 'B') {
-				if (BCounter == 0) {
-					board[i][j].setCellType((int)Type::flagB);
+			else if (currentChar == 'B') {
+				if (SetBCounter == 0) {
+					board[j][i].setCellType((int)Type::flagB);
 				}
-				BCounter++;
+				SetBCounter++;
 			}
-			if (currentChar >= 1 && currentChar <= 3) {
-				gamers[0].setSoldiersFromFile(board,(int)currentChar,i,j);
+			else if (currentChar >= '1' && currentChar <= '3') {
+				gamers[0].setSoldiersFromFile(board,currentChar-'0',j,i);
+				updateSetSoliderCounter(currentChar - '0');
 			}
-			if (currentChar >= 7 && currentChar <= 9) {
-				gamers[1].setSoldiersFromFile(board,(int)currentChar,i,j);
+			else if (currentChar >= '7' && currentChar <= '9') {
+				gamers[1].setSoldiersFromFile(board,currentChar-'0',j,i);
+				updateSetSoliderCounter(currentChar - '0');
 			}
-			else {
+			else {//need to change here
 				if (currentChar != ' ') {
-					wrongCharCounter;
+					wrongCharCounter++;
 				}
 			}
 		}
 	}
 
+}
+
+void GameManeger::updateSetSoliderCounter(int solider) {
+	if (solider == (int)GamerA::soldier1) {
+		setSol1++;
+	}
+	if (solider == (int)GamerA::soldier2) {
+		setSol2++;
+	}
+	if (solider == (int)GamerA::soldier3) {
+		setSol3++;
+	}
+	if (solider == (int)GamerB::soldier7) {
+		setSol7++;
+	}
+	if (solider == (int)GamerB::soldier8) {
+		setSol8++;
+	}
+	if (solider == (int)GamerB::soldier8) {
+		setSol8++;
+	}
+}
+
+bool GameManeger::isBoardFromFileOK() {
+	if (SetACounter != 1 || SetBCounter != 1 || wrongCharCounter > 0) {
+		return false;
+	}
+	else if (setSol1 != 1 || setSol2 != 1 || setSol3 != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1 || ) {
+		return false;
+	}
+	else
+		return true;
+}
+
+void GameManeger::printBoardFromFileErrors(string fileName) {
+	if (SetACounter != 1 || setSol1 != 1 || setSol2 != 1 || setSol3 != 1) {
+		cout << "Wrong settings for player A tools in file " << fileName << endl;
+	}
+	if (SetBCounter != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1) {
+		cout << "Wrong settings for player B tools in file " << fileName << endl;
+	}
+	if (wrongCharCounter > 0) {
+		cout << "Wrong character on board : <char> in file " << fileName << endl;
+	}
 }
 
 void GameManeger::printLetters()
