@@ -13,4 +13,5 @@ public:
 	bool isAnyGamerExist();
 	int returndGamer(int& numOfGamer);
 	void clear();
+	int returnSoliderNumInCell()const;
 };
