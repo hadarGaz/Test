@@ -336,3 +336,10 @@ int soldier::meetSoldier(int numOfGamer, int enemySoldierNumber, int oldX, int o
 	}
 
 }
+
+void soldier::setDirectionFromFile(char x, char y)
+{
+	
+	_x_dir = atoi(&x) - _x;
+	_y_dir = atoi(&y) - _y;
+}

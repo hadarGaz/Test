@@ -1,11 +1,15 @@
 #include "GameManeger.h"
+#include <iostream>
+#include <cstdio>
+#include <string>
 
+using namespace std;
 
-
-int main(int argc, char* argv)
+int main(int argc, char* argv[])
 {
 	//GameManeger().commandLine(argc,argv);
 	//GameManeger().menu();
-	GameManeger().justForTest();
-
+	GameManeger().commandLine(argc,argv);
+	
+	
 }

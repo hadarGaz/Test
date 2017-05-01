@@ -3,6 +3,57 @@
 
 using namespace std;
 
+void GameManeger::paramMenager()
+{
+	char buffer[4096];
+	char* tempPath;
+	if (path == nullptr)
+	{
+		tempPath = "cd";
+		FILE* fp = _popen(tempPath, "r");
+		while (fgets(buffer, 4095, fp))
+		{
+			path = buffer;
+		}
+		_pclose(fp);
+	}
+
+	char str[4095] = "2>NUL dir /a-d /b ";
+	tempPath = strcat(str, path);
+	
+	FILE* fp = _popen(tempPath, "r");
+	//FILE* fp = _popen("2>NUL dir /a-d /b C:\\Users\hadar\\Documents\\Visual Studio 2017\\Projects\\Test\\Test\\lib", "r");
+	while (fgets(buffer, 4095, fp))
+	{
+		divideToFile(buffer);
+	}
+	_pclose(fp);
+
+	if (ifMovesFile == true)
+		menu();
+	else
+	{
+		//
+	}
+	
+}
+
+void GameManeger::divideToFile(char *buffer)
+{
+	int i = 0;
+	while (strncmp(buffer +i, ".",1) != 0) //פונקציה שבודקת את הסיומת
+		i++;
+
+	char* str = &buffer[i+1];
+	if (strncmp(str, "moves-a_full",12)==0)
+		movesAFiles.add(buffer);
+	else if (strncmp(str, "moves-b_full",12) == 0)
+		movesBFiles.add(buffer);
+	else if (strncmp(str, "gboard",6) == 0)
+		boardFile.add(buffer);
+
+}
+
 void GameManeger::justForTest() { //tests the board from file 
 	ifstream textfile("C:\\Users\\Nofar Kedem Zada\\Downloads\\testsfiles\\board_ok_2.gboard");
 	bool test = textfile.is_open();
@@ -14,22 +65,27 @@ void GameManeger::justForTest() { //tests the board from file
 	Sleep(80);
 }
 
-void GameManeger::commandLine(int argc, char* argv)
+void GameManeger::commandLine(int argc, char* argv[])
 {
-	for (int i = 1; i<argc; i = i * 2)
-		if (strcmp(&argv[i], "-board") == 0)
+	for (int i = 1; i<argc; i = i + 2)
+		if (strcmp(argv[i], "-board") == 0)
 		{
-			if (strcmp(&argv[i + 1], "f") == 0)
+			if (strcmp(argv[i + 1], "f") == 0)
 				ifBoardFile = true;
 		}
-		else if (strcmp(&argv[i], "-moves") == 0)
+		else if (strcmp(argv[i], "-moves") == 0)
 		{
-			if (strcmp(&argv[i + 1], "f") == 0) {
+			if (strcmp(argv[i + 1], "f") == 0) {
 				ifMovesFile = true;
-				movesAFiles.setFile(argv,argc,"moves-a");
-				movesBFiles.setFile(argv, argc, "moves-b");
 			}
 		}
+		else if (strcmp(argv[i], "-path") == 0)
+		{
+			path = argv[i + 1];
+		}
+
+	paramMenager();
+
 }
 void GameManeger::menu()
 {
@@ -101,22 +157,36 @@ void GameManeger::run()
 	char ch =0;
 	bool gamerTurn = 0;
 	int soliderOut = 0;
+	char buff[3];
 	
 	while (!EXIT)
 	{
 		if (!win) {
-			if (gamerTurn == 0)
+			if (ifMovesFile == true)
 			{
-				soliderOut = gamers[0].move(board);
-				updateSoldierOut(gamerTurn, soliderOut);
-				gamerTurn = 1;
+				/*
+				ifstream movesFile("movesA");
+				movesFile.getline(buff, sizeof(buff));
+				gamers[0].readFromMovesFile(buff);
+
+				ifstream movesFile("movesB");
+				movesFile.getline(buff, sizeof(buff));
+				gamers[1].readFromMovesFile(buff);
+				*/
 			}
-			else
-			{
-				soliderOut = gamers[1].move(board);
-				updateSoldierOut(gamerTurn, soliderOut);
-				gamerTurn = 0;
-			}
+			
+				if (gamerTurn == 0)
+				{
+					soliderOut = gamers[0].move(board);
+					updateSoldierOut(gamerTurn, soliderOut);
+					gamerTurn = 1;
+				}
+				else
+				{
+					soliderOut = gamers[1].move(board);
+					updateSoldierOut(gamerTurn, soliderOut);
+					gamerTurn = 0;
+				}
 		}
 		Sleep(80);
 		
@@ -129,7 +199,7 @@ void GameManeger::run()
 					stopTheGame();
 					seconderyMenu();
 				}
-				else if (!win) {
+				else if (!win && ifMovesFile == false) {
 					gamers[0].notifyKeyHit(ch);
 					gamers[1].notifyKeyHit(ch);
 				
@@ -295,7 +365,7 @@ bool GameManeger::isBoardFromFileOK() {
 	if (SetACounter != 1 || SetBCounter != 1 || wrongCharCounter > 0) {
 		return false;
 	}
-	else if (setSol1 != 1 || setSol2 != 1 || setSol3 != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1 || ) {
+	else if (setSol1 != 1 || setSol2 != 1 || setSol3 != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1) {
 		return false;
 	}
 	else

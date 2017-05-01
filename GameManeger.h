@@ -11,7 +11,7 @@
 #include "Cell.h"
 #include "Utils.h"
 
-
+using namespace std;
 
 class GameManeger {
 	enum{ ESC = 27 };
@@ -23,6 +23,7 @@ class GameManeger {
 	FilesMap boardFile, movesAFiles, movesBFiles;
 	bool ifBoardFile = false;
 	bool ifMovesFile = false;
+	char* path = nullptr;
 	
 	//counters for wrong setting to board that set from file 
 	int SetACounter = 0, SetBCounter = 0, wrongCharCounter = 0;
@@ -40,12 +41,13 @@ public:
 		hideCursor();
 		opositeGame = false;
 	}
+	void paramMenager();
 	void justForTest();
 	void setBoardFromFile(ifstream& inFile);
 	bool isBoardFromFileOK();
 	void updateSetSoliderCounter(int solider);
 	void printBoardFromFileErrors(string fileName);
-	void commandLine(int argc, char* argv);
+	void commandLine(int argc, char* argv[]);
 	void menu();
 	void seconderyMenu();
 	void initialization();
@@ -58,5 +60,5 @@ public:
 	void clearTheGame();
 	void updateSoldierOut(int gamerTurn,int soliderOut);
 	void printing();
-
+	void divideToFile(char *buffer);
 };

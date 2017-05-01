@@ -36,5 +36,6 @@ public:
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void updateOutSolider(int outSolider);
 	void win();
+	void readFromMovesFile(char buff[]);
 
 };

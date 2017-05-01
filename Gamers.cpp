@@ -142,9 +142,15 @@ void Gamers::updateOutSolider(int outSolider) {
 	soldierDead++;
 }
 
-void  Gamers::win() 
+void Gamers::win() 
 {
 	clearScreen();
 	cout << "The gamer: " << name << " won this game" << endl;
 	score++;
+}
+
+void Gamers::readFromMovesFile(char buff[])
+{
+	currSoldier = buff[0];
+	soldiers[currSoldier].setDirectionFromFile(buff[1], buff[2]);
 }
