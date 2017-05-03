@@ -151,7 +151,7 @@ void GameManeger::initialization() //אתחולים
 	win = false;
 	gamers[0].setSoldiersRandom(board, gamerNum++);
 	gamers[1].setSoldiersRandom(board, gamerNum);
-	recordRandomBoard(board);
+	//recordRandomBoard(board); - to test record board
 	printing();
 }
 

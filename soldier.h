@@ -3,6 +3,7 @@
 #include "Direction.h"
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include "Utils.h"
 #include "Cell.h"
 using namespace std;
@@ -39,5 +40,4 @@ public:
 	bool nineIsAttack(int enemyNum);
 	int meetSoldier(int numOfGamer,int enemySoldierNumber,int oldX,int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void setDirectionFromFile(char x, char y);
-
 };
