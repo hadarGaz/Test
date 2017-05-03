@@ -1,7 +1,7 @@
 #include "FilesMap.h"
 
 
-void FilesMap::add(char* str)
+void FilesMap::add(const string& str)
 {
 	files[str]++;
 }
