@@ -151,6 +151,7 @@ void Gamers::win()
 
 void Gamers::readFromMovesFile(char buff[])
 {
-	currSoldier = buff[0];
-	soldiers[currSoldier].setDirectionFromFile(buff[1], buff[2]);
+	currSoldier = atoi (&buff[0]);
+	//need to support spaces
+	soldiers[currSoldier].setDirectionFromFile(buff[2], buff[4]);
 }

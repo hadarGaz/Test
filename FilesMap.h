@@ -9,6 +9,6 @@ class FilesMap {
 	std::map<string, int> files;
 	int size;
 public:
-	//void setFile(string data_str , char* str);
-	void add(char* str);
+	void add(const string& str);
+	friend class GameManeger;
 };

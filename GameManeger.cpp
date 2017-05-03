@@ -29,6 +29,14 @@ void GameManeger::paramMenager()
 	}
 	_pclose(fp);
 
+	
+
+	currFileBoard = boardFile.files.begin();
+	currFileMovesA = movesAFiles.files.begin();
+	currFileMovesB = movesBFiles.files.begin();
+
+	int res = cmpBetweenString(currFileMovesA, currFileMovesB);
+
 	if (ifMovesFile == true)
 		menu();
 	else
@@ -40,9 +48,13 @@ void GameManeger::paramMenager()
 
 void GameManeger::divideToFile(char *buffer)
 {
+	string fileName;
 	int i = 0;
 	while (strncmp(buffer +i, ".",1) != 0) //פונקציה שבודקת את הסיומת
 		i++;
+
+	//for(int j=0;j < i ; j++)
+	//	fileName.push_back(buffer[j]);
 
 	char* str = &buffer[i+1];
 	if (strncmp(str, "moves-a_full",12)==0)
@@ -51,7 +63,6 @@ void GameManeger::divideToFile(char *buffer)
 		movesBFiles.add(buffer);
 	else if (strncmp(str, "gboard",6) == 0)
 		boardFile.add(buffer);
-
 }
 
 void GameManeger::justForTest() { //tests the board from file 
@@ -149,6 +160,8 @@ void GameManeger::initialization() //אתחולים
 	clearScreen();
 	clearTheGame();
 	win = false;
+	if(ifBoardFile==true)
+		updateFilePerGame();
 	gamers[0].setSoldiersRandom(board, gamerNum++);
 	gamers[1].setSoldiersRandom(board, gamerNum);
 	//recordRandomBoard(board); - to test record board
@@ -167,22 +180,31 @@ void GameManeger::run()
 	char ch =0;
 	bool gamerTurn = 0;
 	int soliderOut = 0;
-	char buff[3];
-	
+	char buff[1024];
+	string fileName;
+	ifstream fileNameforGamerA = openfile(currFileMovesA, 1);
+	ifstream fileNameforGamerB = openfile(currFileMovesB, 2);
 	while (!EXIT)
 	{
 		if (!win) {
 			if (ifMovesFile == true)
 			{
-				/*
-				ifstream movesFile("movesA");
-				movesFile.getline(buff, sizeof(buff));
-				gamers[0].readFromMovesFile(buff);
-
-				ifstream movesFile("movesB");
-				movesFile.getline(buff, sizeof(buff));
-				gamers[1].readFromMovesFile(buff);
-				*/
+				if (gamer1Active == true)
+				{
+					fileNameforGamerA.getline(buff, sizeof(buff) - 1);
+					gamers[0].readFromMovesFile(buff); //and set direction
+					
+				}
+				if (gamer2Active == true)
+				{
+					fileNameforGamerB.getline(buff, sizeof(buff) - 1);
+					gamers[1].readFromMovesFile(buff); //and set direction
+				}
+				else if (gamer1Active == false && gamer2Active == false)
+				{
+					//משחק נגמר
+				}
+				
 			}
 			
 				if (gamerTurn == 0)
@@ -217,7 +239,8 @@ void GameManeger::run()
 			}
 		
 	}
-	
+	fileNameforGamerA.close();
+	fileNameforGamerB.close();
 }
 
 void GameManeger::printBoard()
@@ -580,10 +603,11 @@ char GameManeger::findCellType(Cell board[(int)Sizes::size][(int)Sizes::size],in
 }
 
 string GameManeger::findFileName() {
-	string directoryPath = findDirPath();
+	//string directoryPath = findDirPath();
+	string directoryPath;
 	//need to insert all files from the path to a map - dedicated object need to complete
 	//than find a free name and send it 
-
+	return directoryPath; // רק בשביל קמפול
 }
 
 void GameManeger::recordRandomBoard(Cell board[(int)Sizes::size][(int)Sizes::size]) {
@@ -603,3 +627,54 @@ void GameManeger::recordRandomBoard(Cell board[(int)Sizes::size][(int)Sizes::siz
 	recordedBorad.close();
 }
 
+ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer)
+{
+	ifstream movesFile;
+	bool contin = false;
+	if (numOfGamer == 1 && gamer1Active == true)
+		contin = true;
+	else if(numOfGamer == 2 && gamer2Active == true)
+		contin = true;
+
+	if (contin == true)
+	{
+		string fileName = file->first;
+		//need to support \n and \r
+		fileName[fileName.size() - 1] = '\0';
+		ifstream movesFile(fileName);
+		bool ok = movesFile.is_open();
+		cout << "open file was " << ok << endl;
+		return movesFile;
+	}
+	return movesFile;
+}
+
+int GameManeger::cmpBetweenString(map<string, int>::iterator str1, map<string, int>::iterator str2)
+{
+	int res;
+	size_t indexstr1 = str1->first.find_last_of(".");
+	size_t indexstr2 = str2->first.find_last_of(".");
+	res = str1->first.substr(0, indexstr1).compare(str2->first.substr(0, indexstr2));
+	return res;
+}
+void GameManeger::updateFilePerGame()
+{
+	int res;
+	currFileBoard++;
+	if (ifMovesFile == true)
+	{
+		while ((res = cmpBetweenString(currFileBoard, currFileMovesA)) <= 0)
+		{
+			if (res == 0)
+				gamer1Active = true;
+			currFileMovesA++;
+		}
+		while ((res = cmpBetweenString(currFileBoard, currFileMovesB)) <= 0)
+		{
+			if (res == 0)
+				gamer2Active = true;
+			currFileMovesB++;
+		}
+	}
+
+}
