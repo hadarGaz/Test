@@ -343,3 +343,5 @@ void soldier::setDirectionFromFile(char x, char y)
 	_x_dir = atoi(&x) - _x;
 	_y_dir = atoi(&y) - _y;
 }
+
+

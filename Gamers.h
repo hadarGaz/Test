@@ -17,6 +17,7 @@ class Gamers {
 	static char defualtName;
 	int currSoldier = -1;
 	int soldierDead = 0;
+	bool isRecordOn = false;
 	friend class GameManeger;
 public:
 	Gamers() { 
@@ -33,9 +34,9 @@ public:
 	int getScore();
 	void putScore(int _score);
 	void drowSoldiers();
-	int move(Cell board[(int)Sizes::size][(int)Sizes::size]);
+	int move(Cell board[(int)Sizes::size][(int)Sizes::size],ofstream& file);
 	void updateOutSolider(int outSolider);
 	void win();
 	void readFromMovesFile(char buff[]);
-
+	void recordMoveToFile(int tool, int col, int row,ofstream& file);
 };
