@@ -1,5 +1,5 @@
 #include "Gamers.h"
-
+#define _CRT_SECURE_NO_WARNINGS
 char Gamers::defualtName = 'A';
 
 void Gamers::setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size], int gamerNum)
@@ -149,9 +149,14 @@ void Gamers::win()
 	score++;
 }
 
-void Gamers::readFromMovesFile(char buff[])
+void Gamers::readFromMovesFile(char* buff)
 {
-	currSoldier = atoi (&buff[0]);
-	//need to support spaces
-	soldiers[currSoldier].setDirectionFromFile(buff[2], buff[4]);
+	char *col,*row;
+	currSoldier = *strtok(buff, " ,") - '0';
+	col = strtok(NULL, " ,");
+	row = strtok(NULL, " ,");
+	
+	soldiers[currSoldier -1].setDirectionFromFile(col, row);
+
 }
+

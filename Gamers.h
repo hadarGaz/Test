@@ -3,7 +3,11 @@
 #include "Cell.h"
 #include <conio.h>
 #include <string>
+#include <stdio.h>
+#include <string.h>
 #include "Utils.h"
+#include <fstream>
+#include <map>
 using namespace std;
 class GameManeger;
 
@@ -36,6 +40,5 @@ public:
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void updateOutSolider(int outSolider);
 	void win();
-	void readFromMovesFile(char buff[]);
-
+	void readFromMovesFile(char* buff);
 };

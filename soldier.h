@@ -2,6 +2,7 @@
 //#include "Gamers.h"
 #include "Direction.h"
 #include <cstdlib>
+#include <stdlib.h> 
 #include <iostream>
 #include "Utils.h"
 #include "Cell.h"
@@ -38,6 +39,6 @@ public:
 	bool eightIsAttack(int enemyNum);
 	bool nineIsAttack(int enemyNum);
 	int meetSoldier(int numOfGamer,int enemySoldierNumber,int oldX,int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]);
-	void setDirectionFromFile(char x, char y);
+	void setDirectionFromFile(const char* x, char* y);
 
 };
