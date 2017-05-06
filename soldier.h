@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <stdlib.h> 
 #include <iostream>
+#include <fstream>
 #include "Utils.h"
 #include "Cell.h"
 using namespace std;
@@ -40,5 +41,4 @@ public:
 	bool nineIsAttack(int enemyNum);
 	int meetSoldier(int numOfGamer,int enemySoldierNumber,int oldX,int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void setDirectionFromFile(const char* x, char* y);
-
 };

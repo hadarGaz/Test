@@ -115,17 +115,24 @@ void Gamers::putScore(int _score)
 }
 
 //returns 0 if there is no attack OR solider num of the solider who fall if attack occured
-int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size])
+int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size],ofstream& file)
 {
+	int movementResult;
 	if (currSoldier != -1) {
 		if (currSoldier <= (int)GamerA::soldier3) {
 			if (soldiers[currSoldier - 1].isAlive) {
-				return soldiers[currSoldier - 1].move(board);
+				movementResult = soldiers[currSoldier - 1].move(board);
+				if (isRecordOn)
+					recordMoveToFile(currSoldier, soldiers[currSoldier - 1]._x, soldiers[currSoldier - 1]._y,file);
+				return movementResult;
 			}
 		}
 		else {
 			if (soldiers[currSoldier - 7].isAlive)
-				return soldiers[currSoldier - 7].move(board);
+				movementResult = soldiers[currSoldier - 7].move(board);
+			if (isRecordOn)
+				recordMoveToFile(currSoldier, soldiers[currSoldier - 7]._x, soldiers[currSoldier - 7]._y,file);
+			return movementResult;
 		}
 	}
 	//else
@@ -157,6 +164,10 @@ void Gamers::readFromMovesFile(char* buff)
 	row = strtok(NULL, " ,");
 	
 	soldiers[currSoldier -1].setDirectionFromFile(col, row);
+}
 
+void Gamers::recordMoveToFile(int tool, int col, int row, ofstream& files)
+{
+	files << tool << "," << char(col + (int)convertToChar::capitalCol) << "," << row << endl;
 }
 

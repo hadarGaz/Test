@@ -107,6 +107,7 @@ void GameManeger::menu()
 		cout << "2. Start game" << endl;
 		cout << "3. Start opisite game" << endl;
 		cout << "4. Reset score" << endl;
+		cout << "5. Record/UnRecord game" << endl;
 		cout << "9. Exit" << endl;
 		cin >> userchoise;
 		switch (userchoise)
@@ -134,9 +135,7 @@ void GameManeger::menu()
 			break;
 		case '5':
 			recordGame = !recordGame;
-			//initialization() - need to check if needed
-			run();
-			getout = true;
+
 			break;
 		case '9':
 			getout = true;
@@ -159,7 +158,11 @@ void GameManeger::initialization() //אתחולים
 	updateFilePerGame();
 	gamers[0].setSoldiersRandom(board, gamerNum++);
 	gamers[1].setSoldiersRandom(board, gamerNum);
-	recordRandomBoard(board);
+	//recordRandomBoard(board); - to test record board
+	if (recordGame) {
+		gamers[0].isRecordOn = true;
+		gamers[1].isRecordOn = true;
+	}
 	printing();
 }
 
@@ -180,6 +183,12 @@ void GameManeger::run()
 	string fileName;
 	ifstream fileNameforGamerA = openfile(currFileMovesA, 1);
 	ifstream fileNameforGamerB = openfile(currFileMovesB, 2);
+	//string movesAfile = findMovesAName();//need to impliment
+	//string movesBfile = findMovesBName();//need to impliment
+	ofstream movesA("recordMovesA.txt");
+	ofstream movesB("recordMovesB.txt");
+	
+
 	while (!EXIT)
 	{
 		if (!win) {
@@ -222,13 +231,13 @@ void GameManeger::run()
 			{
 				if (gamerTurn == 0)
 				{
-					soliderOut = gamers[0].move(board);
+					soliderOut = gamers[0].move(board, movesA);
 					updateSoldierOut(gamerTurn, soliderOut);
 					gamerTurn = 1;
 				}
 				else
 				{
-					soliderOut = gamers[1].move(board);
+					soliderOut = gamers[1].move(board,movesB);
 					updateSoldierOut(gamerTurn, soliderOut);
 					gamerTurn = 0;
 				}
@@ -258,6 +267,9 @@ void GameManeger::run()
 		ifBoardFile = false;
 	fileNameforGamerA.close();
 	fileNameforGamerB.close();
+	movesA.close();
+	movesB.close();
+	
 }
 
 void GameManeger::printBoard()
@@ -380,7 +392,7 @@ void GameManeger::setBoardFromFile(ifstream& inFile) {
 				gamers[1].setSoldiersFromFile(board,currentChar-'0',j,i);
 				updateSetSoliderCounter(currentChar - '0');
 			}
-			else {//need to change here
+			else {
 				if (currentChar != ' ') {
 					if (wrongCharMap.count(currentChar) != 0) {//if the char exists
 						wrongCharMap[currentChar]++;

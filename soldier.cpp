@@ -339,9 +339,8 @@ int soldier::meetSoldier(int numOfGamer, int enemySoldierNumber, int oldX, int o
 
 void soldier::setDirectionFromFile(const char* x, char* y)
 {
-	//int i = *x - 'A';
-	//int j = atoi (x);
-
 	_x_dir = (*x - 'A' +1) - _x;
 	_y_dir = (*y - '0') - _y;
 }
+
+
