@@ -51,9 +51,8 @@ public:
 	void paramMenager();
 	void justForTest();
 	void setBoardFromFile(ifstream& inFile);
-	bool isBoardFromFileOK();
 	void updateSetSoliderCounter(int solider);
-	void printBoardFromFileErrors(string fileName);
+	bool printAndCheckBoardFromFileErrors(string fileName);
 	void commandLine(int argc, char* argv[]);
 	void menu();
 	void seconderyMenu();

@@ -7,7 +7,7 @@ void GameManeger::paramMenager()
 {
 	char buffer[4096];
 	char* tempPath;
-	if (path == nullptr)
+	if (path == nullptr) //it mean current directory
 	{
 		tempPath = "cd";
 		FILE* fp = _popen(tempPath, "r");
@@ -22,14 +22,11 @@ void GameManeger::paramMenager()
 	tempPath = strcat(str, path);
 	
 	FILE* fp = _popen(tempPath, "r");
-	//FILE* fp = _popen("2>NUL dir /a-d /b C:\\Users\hadar\\Documents\\Visual Studio 2017\\Projects\\Test\\Test\\lib", "r");
 	while (fgets(buffer, 4095, fp))
 	{
 		divideToFile(buffer);
 	}
 	_pclose(fp);
-
-	
 
 	currFileBoard = boardFile.files.begin();
 	currFileMovesA = movesAFiles.files.begin();
@@ -70,7 +67,7 @@ void GameManeger::justForTest() { //tests the board from file
 	gamers[1].drowSoldiers();
 	Sleep(80);
 	clearScreen();
-	printBoardFromFileErrors("board_bad_4.gboard");
+	//printBoardFromFileErrors("board_bad_4.gboard");
 	Sleep(80);
 }
 
@@ -152,12 +149,36 @@ void GameManeger::menu()
 void GameManeger::initialization() //אתחולים
 {
 	int gamerNum = 1;
+	bool isBoardOk = false;
 	clearScreen();
 	clearTheGame();
 	win = false;
-	updateFilePerGame();
-	gamers[0].setSoldiersRandom(board, gamerNum++);
-	gamers[1].setSoldiersRandom(board, gamerNum);
+	gamer1Active = false;
+	gamer2Active = false;
+	if (ifBoardFile == true)
+	{
+		while (isBoardOk == false && currFileBoard != boardFile.files.end())
+		{
+			ifstream fileNameforBoard = openfile(currFileBoard, 0);
+			setBoardFromFile(fileNameforBoard);
+			isBoardOk = printAndCheckBoardFromFileErrors(currFileBoard->first);
+			if (isBoardOk == false)
+			{
+				currFileBoard++;
+				clearTheGame();
+			}
+		}
+		if (currFileBoard == boardFile.files.end())
+			int i = 0;//game over
+
+		updateFilePerGame();
+	}
+	else
+	{
+		setBoard();
+		gamers[0].setSoldiersRandom(board, gamerNum++);
+		gamers[1].setSoldiersRandom(board, gamerNum);
+	}
 	//recordRandomBoard(board); - to test record board
 	if (recordGame) {
 		gamers[0].isRecordOn = true;
@@ -198,10 +219,9 @@ void GameManeger::run()
 				{
 					if (fileNameforGamerA.eof() == false)
 					{
-						
 						fileNameforGamerA.getline(buff, sizeof(buff) - 1);
 						gamers[0].readFromMovesFile(buff); //and set direction
-						soliderOut = gamers[0].move(board);
+						soliderOut = gamers[0].move(board, movesA);
 						updateSoldierOut(gamerTurn, soliderOut);
 						
 					}
@@ -215,7 +235,7 @@ void GameManeger::run()
 					{
 						fileNameforGamerB.getline(buff, sizeof(buff) - 1);
 						gamers[1].readFromMovesFile(buff); //and set direction
-						soliderOut = gamers[1].move(board);
+						soliderOut = gamers[1].move(board, movesB);
 						updateSoldierOut(gamerTurn, soliderOut);
 					}
 					else
@@ -223,7 +243,7 @@ void GameManeger::run()
 				}
 				else if (gamer1Active == false && gamer2Active == false)
 				{
-					//משחק נגמר
+					EXIT = true;
 				}
 				
 			}
@@ -262,7 +282,7 @@ void GameManeger::run()
 			}
 		
 	}
-	currFileBoard++;
+	//currFileBoard++;
 	if (currFileBoard++ == boardFile.files.end())
 		ifBoardFile = false;
 	fileNameforGamerA.close();
@@ -429,28 +449,22 @@ void GameManeger::updateSetSoliderCounter(int solider) {
 	}
 }
 
-bool GameManeger::isBoardFromFileOK() {
-	if (SetACounter != 1 || SetBCounter != 1 || wrongCharsSet.size() > 0) {
-		return false;
-	}
 
-	else if (setSol1 != 1 || setSol2 != 1 || setSol3 != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1){
-		return false;
-	}
-	else
-		return true;
-}
-
-void GameManeger::printBoardFromFileErrors(string fileName) {
+bool GameManeger::printAndCheckBoardFromFileErrors(string fileName) {
+	bool isBoardOk = true;
 	if (SetACounter != 1 || setSol1 != 1 || setSol2 != 1 || setSol3 != 1) {
 		cout << "Wrong settings for player A tools in file " << fileName << endl;
+		isBoardOk = false;
 	}
 	if (SetBCounter != 1 || setSol7 != 1 || setSol8 != 1 || setSol9 != 1) {
 		cout << "Wrong settings for player B tools in file " << fileName << endl;
+		isBoardOk = false;
 	}
 	if (wrongCharsSet.size() > 0) {
 		cout << "Wrong character on board : "<< wrongCharsSet <<" in file " << fileName << endl;
+		isBoardOk = false;
 	}
+	return isBoardOk;
 }
 
 void GameManeger::printLetters()
@@ -699,11 +713,7 @@ void GameManeger::updateFilePerGame()
 			}
 		}
 	}
-	else
-	{
-		ifBoardFile = false; //need to update in case file of board were finish
-		//לברר עם אמיר האם גם הקבצי צעדים צריכים להיות עם אותו שם
-	}
+	
 
 }
 
@@ -711,6 +721,8 @@ ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer)
 {
 	ifstream movesFile;
 	bool contin = false;
+	if(numOfGamer == 0)
+		contin = true;
 	if (numOfGamer == 1 && gamer1Active == true)
 		contin = true;
 	else if (numOfGamer == 2 && gamer2Active == true)
