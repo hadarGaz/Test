@@ -53,6 +53,7 @@ void Cell::clear()
 {
 	GamerA = 0;
 	GamerB = 0;
+	cellType = 0;
 }
 
 int Cell::returnSoliderNumInCell()const

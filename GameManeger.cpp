@@ -404,13 +404,17 @@ void GameManeger::setBoardFromFile(ifstream& inFile) {
 				}
 				SetBCounter++;
 			}
-			else if (currentChar >= '1' && currentChar <= '3') {
-				gamers[0].setSoldiersFromFile(board,currentChar-'0',j,i);
+			else if (currentChar >= (char)GamerA::soldier1 && currentChar <= (char)GamerA::soldier3) {
 				updateSetSoliderCounter(currentChar - '0');
+				if (setSol1 <= 1 || setSol2 <= 1 || setSol3 <= 1)
+					gamers[0].setSoldiersFromFile(board,currentChar-'0',j,i);
+					
+
 			}
-			else if (currentChar >= '7' && currentChar <= '9') {
-				gamers[1].setSoldiersFromFile(board,currentChar-'0',j,i);
+			else if (currentChar >= (char)GamerB::soldier7 && currentChar <= (char)GamerB::soldier9) {
 				updateSetSoliderCounter(currentChar - '0');
+				if (setSol7 <= 1 || setSol8 <= 1 || setSol9 <= 1)
+					gamers[1].setSoldiersFromFile(board, currentChar - '0', j, i);	
 			}
 			else {
 				if (currentChar != ' ') {
