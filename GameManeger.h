@@ -26,6 +26,9 @@ class GameManeger {
 	map<string, int>::iterator currFileMovesA , currFileMovesB, currFileBoard;
 	bool ifBoardFile = false;
 	bool ifMovesFile = false;
+	bool ifMovesFileTempPerGame = true; //case there is board but no moves file fit to board file
+	bool quietMode = false;
+	int delay = 20;
 	char* path = nullptr;
 	bool gamer1Active = false;
 	bool gamer2Active = false;
@@ -49,6 +52,7 @@ public:
 		opositeGame = false;
 	}
 	void paramMenager();
+	void openFolder(char* tempPath);
 	void justForTest();
 	void setBoardFromFile(ifstream& inFile);
 	void updateSetSoliderCounter(int solider);
@@ -57,6 +61,7 @@ public:
 	void menu();
 	void seconderyMenu();
 	void initialization();
+	void uploadBoardFromFile();
 	void run();
 	void printBoard();
 	void setBoard();

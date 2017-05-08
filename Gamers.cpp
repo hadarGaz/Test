@@ -156,14 +156,15 @@ void Gamers::win()
 	score++;
 }
 
-void Gamers::readFromMovesFile(char* buff)
+bool Gamers::readFromMovesFile(char* buff)
 {
 	char *col,*row;
 	currSoldier = *strtok(buff, " ,") - '0';
 	col = strtok(NULL, " ,");
 	row = strtok(NULL, " ,");
 	
-	soldiers[currSoldier -1].setDirectionFromFile(col, row);
+	bool valid = soldiers[currSoldier -1].setDirectionFromFile(col, row);
+	return valid;
 }
 
 void Gamers::recordMoveToFile(int tool, int col, int row, ofstream& files)

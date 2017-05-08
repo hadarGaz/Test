@@ -337,10 +337,27 @@ int soldier::meetSoldier(int numOfGamer, int enemySoldierNumber, int oldX, int o
 
 }
 
-void soldier::setDirectionFromFile(const char* x, char* y)
+bool soldier::setDirectionFromFile(const char* x, char* y)
 {
-	_x_dir = (*x - 'A' +1) - _x;
-	_y_dir = (*y - '0') - _y;
+	int newX = *x - 'A' + 1;
+	int newY = *y - '0';
+	int tempXDir, tempYDir;
+	if (newX < MIN_X || newX > MAX_X || newY < MIN_Y || newY > MAX_Y)
+		return false; 
+	else
+	{
+		tempXDir = newX - _x;
+		tempYDir = newY - _y;
+		if (tempXDir < -1 || tempXDir > 1 || tempYDir < -1 || tempYDir > 1)
+			return false;
+		else
+		{
+			_x_dir = tempXDir;
+			_y_dir = tempYDir;
+			return true;
+		}
+	}
+	return true;
 }
 
 
