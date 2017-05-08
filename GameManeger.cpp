@@ -24,12 +24,25 @@ void GameManeger::paramMenager()
 
 	if (ifMovesFile == true)
 	{
-		initialization();
-		run();
+		while (GameOver == false)
+		{
+			initialization();
+			run();
+			Sleep(50 * delay);
+		}
+		endMessage();
 	}
 	else
 	{
 		menu();
+		while (GameOver == false)
+		{
+			initialization();
+			run();
+			Sleep(50 * delay);
+		}
+		if (ifBoardFile == true)
+			endMessage();
 	}
 	
 }
@@ -156,6 +169,7 @@ void GameManeger::menu()
 		case '9':
 			getout = true;
 			EXIT = 1;
+			GameOver = true;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
@@ -177,10 +191,8 @@ void GameManeger::initialization() //אתחולים
 		setBoard();
 
 	if (ifMovesFile == true)
-	{
-		ifMovesFileTempPerGame = true;
-		updateFilePerGame(); //רק אם יש צעדים
-	}
+		updateFilePerGame(); 
+	
 	else
 	{
 		gamers[0].setSoldiersRandom(board, gamerNum++);
@@ -233,7 +245,7 @@ void GameManeger::run()
 	while (!EXIT)
 	{
 		if (!win) {
-			if (ifMovesFile == true && ifMovesFileTempPerGame == true)
+			if (ifMovesFile == true)
 			{
 				if (gamer1Active == true)
 				{
@@ -306,17 +318,16 @@ void GameManeger::run()
 		}
 		if(quietMode == false)
 			Sleep(delay);
-		
-			
-		
 	}
 	if (currFileBoard++ == boardFile.files.end())
-		ifBoardFile = false;
+		GameOver = true;
 	fileNameforGamerA.close();
 	fileNameforGamerB.close();
 	movesA.close();
 	movesB.close();
-	
+	if (quietMode == true)
+		int i = 0; //להפעיל פונקצייה שמדפיסה פרטים על המשחקון הנוכחי
+		
 }
 
 void GameManeger::printBoard()
@@ -568,6 +579,7 @@ void GameManeger::seconderyMenu()
 		case '9':
 			getout = true;
 			EXIT = 1;
+			GameOver = true;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
@@ -742,7 +754,7 @@ void GameManeger::updateFilePerGame()
 			}
 			if (gamer1Active == false && gamer2Active == false)
 			{
-				ifMovesFileTempPerGame = false;
+				GameOver = true;
 			}
 		}
 	}
@@ -773,4 +785,11 @@ ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer)
 		return movesFile;
 	}
 	return movesFile;
+}
+
+void GameManeger::endMessage()
+{
+	cout << "Game Summary" << endl;
+	cout << "A points - " << gamers[0].score << endl;
+	cout << "B points - " << gamers[1].score << endl;
 }

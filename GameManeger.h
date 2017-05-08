@@ -26,12 +26,12 @@ class GameManeger {
 	map<string, int>::iterator currFileMovesA , currFileMovesB, currFileBoard;
 	bool ifBoardFile = false;
 	bool ifMovesFile = false;
-	bool ifMovesFileTempPerGame = true; //case there is board but no moves file fit to board file
 	bool quietMode = false;
 	int delay = 20;
 	char* path = nullptr;
 	bool gamer1Active = false;
 	bool gamer2Active = false;
+	bool GameOver = false;
 
 	//counters for wrong setting to board that set from file 
 	int SetACounter = 0, SetBCounter = 0;
@@ -78,5 +78,6 @@ public:
 	int cmpBetweenString(map<string, int>::iterator str1, map<string, int>::iterator str2);
 	void updateFilePerGame();
 	ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer);
+	void GameManeger::endMessage();
 	
 };
