@@ -26,9 +26,12 @@ class GameManeger {
 	map<string, int>::iterator currFileMovesA , currFileMovesB, currFileBoard;
 	bool ifBoardFile = false;
 	bool ifMovesFile = false;
+	bool quietMode = false;
+	int delay = 20;
 	char* path = nullptr;
 	bool gamer1Active = false;
 	bool gamer2Active = false;
+	bool GameOver = false;
 
 	//counters for wrong setting to board that set from file 
 	int SetACounter = 0, SetBCounter = 0;
@@ -49,6 +52,7 @@ public:
 		opositeGame = false;
 	}
 	void paramMenager();
+	void openFolder(char* tempPath);
 	void justForTest();
 	void setBoardFromFile(ifstream& inFile);
 	void updateSetSoliderCounter(int solider);
@@ -57,6 +61,7 @@ public:
 	void menu();
 	void seconderyMenu();
 	void initialization();
+	void uploadBoardFromFile();
 	void run();
 	void printBoard();
 	void setBoard();
@@ -73,5 +78,6 @@ public:
 	int cmpBetweenString(map<string, int>::iterator str1, map<string, int>::iterator str2);
 	void updateFilePerGame();
 	ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer);
+	void GameManeger::endMessage();
 	
 };

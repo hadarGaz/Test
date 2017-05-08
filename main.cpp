@@ -12,6 +12,8 @@ int main(int argc, char* argv[])
 	//GameManeger().menu();
 	GameManeger().commandLine(argc,argv);
 	
+
+
 	//ifstream movesFile("C:\\Users\\hadar\\Documents\\Targil1\\hadarTest2.moves-b_full"); //ok
 	//ifstream movesFile("C:\\Users\\hadar\\Documents\\Visual Studio 2017\\Projects\\Test\\Test\\lib\\hadarTest.moves-b_full"); //ok
 	//ifstream movesFile("hadarTest.moves-b_full"); //ok

@@ -5,41 +5,62 @@ using namespace std;
 
 void GameManeger::paramMenager()
 {
-	char buffer[4096];
+	
 	char* tempPath;
 	if (path == nullptr) //it mean current directory
 	{
-		tempPath = "cd";
-		FILE* fp = _popen(tempPath, "r");
-		while (fgets(buffer, 4095, fp))
-		{
-			path = buffer;
-		}
-		_pclose(fp);
+		openFolder("cd");
+		int size = char_traits<char>::length(path);
+		path[size - 1] = '\0';
 	}
 
 	char str[4095] = "2>NUL dir /a-d /b ";
 	tempPath = strcat(str, path);
+	openFolder(tempPath);
 	
-	FILE* fp = _popen(tempPath, "r");
-	while (fgets(buffer, 4095, fp))
-	{
-		divideToFile(buffer);
-	}
-	_pclose(fp);
-
 	currFileBoard = boardFile.files.begin();
 	currFileMovesA = movesAFiles.files.begin();
 	currFileMovesB = movesBFiles.files.begin();
 
 	if (ifMovesFile == true)
-		menu();
+	{
+		while (GameOver == false)
+		{
+			initialization();
+			run();
+			Sleep(50 * delay);
+		}
+		endMessage();
+	}
 	else
 	{
-		//
+		menu();
+		while (GameOver == false)
+		{
+			initialization();
+			run();
+			Sleep(50 * delay);
+		}
+		if (ifBoardFile == true)
+			endMessage();
 	}
 	
 }
+
+void GameManeger::openFolder(char* tempPath)
+{
+	char buffer[4096];
+	FILE* fp = _popen(tempPath, "r");
+	while (fgets(buffer, 4095, fp))
+	{
+		if(path == nullptr)
+			path = buffer;
+		else
+			divideToFile(buffer);
+	}
+	_pclose(fp);
+}
+
 
 void GameManeger::divideToFile(char *buffer)
 {
@@ -90,6 +111,17 @@ void GameManeger::commandLine(int argc, char* argv[])
 		{
 			path = argv[i + 1];
 		}
+		else if (strcmp(argv[i], "-quiet") == 0)
+		{
+			if (ifBoardFile == true && ifMovesFile == true)
+				quietMode = true;
+			i--; // beacuse there is no parameter after quite
+		}
+		else if (strcmp(argv[i], "-delay") == 0)
+		{
+			if(quietMode == false)
+				delay = *argv[i + 1];
+		}
 	}
 	paramMenager();
 
@@ -128,7 +160,7 @@ void GameManeger::menu()
 			break;
 		case '4':
 			resetScore();
-			cout << "Score was reset";
+			//cout << "Score was reset";
 			break;
 		case '5':
 			recordGame = !recordGame;
@@ -137,6 +169,7 @@ void GameManeger::menu()
 		case '9':
 			getout = true;
 			EXIT = 1;
+			GameOver = true;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
@@ -149,33 +182,19 @@ void GameManeger::menu()
 void GameManeger::initialization() //אתחולים
 {
 	int gamerNum = 1;
-	bool isBoardOk = false;
 	clearScreen();
 	clearTheGame();
 	win = false;
-	gamer1Active = false;
-	gamer2Active = false;
 	if (ifBoardFile == true)
-	{
-		while (isBoardOk == false && currFileBoard != boardFile.files.end())
-		{
-			ifstream fileNameforBoard = openfile(currFileBoard, 0);
-			setBoardFromFile(fileNameforBoard);
-			isBoardOk = printAndCheckBoardFromFileErrors(currFileBoard->first);
-			if (isBoardOk == false)
-			{
-				currFileBoard++;
-				clearTheGame();
-			}
-		}
-		if (currFileBoard == boardFile.files.end())
-			int i = 0;//game over
+		uploadBoardFromFile();
+	else
+		setBoard();
 
-		updateFilePerGame();
-	}
+	if (ifMovesFile == true)
+		updateFilePerGame(); 
+	
 	else
 	{
-		setBoard();
 		gamers[0].setSoldiersRandom(board, gamerNum++);
 		gamers[1].setSoldiersRandom(board, gamerNum);
 	}
@@ -184,7 +203,20 @@ void GameManeger::initialization() //אתחולים
 		gamers[0].isRecordOn = true;
 		gamers[1].isRecordOn = true;
 	}
-	printing();
+	if(quietMode == false)
+		printing();
+}
+
+void GameManeger::uploadBoardFromFile() //אתחולים
+{
+	bool isBoardOk = false;
+	ifstream fileNameforBoard = openfile(currFileBoard, 0);
+	setBoardFromFile(fileNameforBoard);
+	isBoardOk = printAndCheckBoardFromFileErrors(currFileBoard->first);
+	if (isBoardOk == false)
+	{
+		//לצאת מהמשחק
+	}
 }
 
 void GameManeger::printing()
@@ -198,7 +230,7 @@ void GameManeger::run()
 {
 	char ch =0;
 	bool gamerTurn = 0;
-	bool endOfFile = false;
+	bool validRowFromLine= false;
 	int soliderOut = 0;
 	char buff[1024];
 	string fileName;
@@ -220,10 +252,12 @@ void GameManeger::run()
 					if (fileNameforGamerA.eof() == false)
 					{
 						fileNameforGamerA.getline(buff, sizeof(buff) - 1);
-						gamers[0].readFromMovesFile(buff); //and set direction
-						soliderOut = gamers[0].move(board, movesA);
-						updateSoldierOut(gamerTurn, soliderOut);
-						
+						validRowFromLine = gamers[0].readFromMovesFile(buff); //and set direction
+						if (validRowFromLine == true)
+						{
+							soliderOut = gamers[0].move(board, movesA);
+							updateSoldierOut(gamerTurn, soliderOut);
+						}
 					}
 					else
 						gamer1Active = false;
@@ -234,9 +268,12 @@ void GameManeger::run()
 					if (fileNameforGamerB.eof() == false)
 					{
 						fileNameforGamerB.getline(buff, sizeof(buff) - 1);
-						gamers[1].readFromMovesFile(buff); //and set direction
-						soliderOut = gamers[1].move(board, movesB);
-						updateSoldierOut(gamerTurn, soliderOut);
+						validRowFromLine = gamers[1].readFromMovesFile(buff); //and set direction
+						if (validRowFromLine == true)
+						{
+							soliderOut = gamers[1].move(board, movesB);
+							updateSoldierOut(gamerTurn, soliderOut);
+						}
 					}
 					else
 						gamer2Active = false;
@@ -261,35 +298,36 @@ void GameManeger::run()
 					updateSoldierOut(gamerTurn, soliderOut);
 					gamerTurn = 0;
 				}
+
+				if (_kbhit())
+				{
+					ch = getch();
+					if (ch == ESC)
+					{
+						clearScreen();
+						stopTheGame();
+						seconderyMenu();
+					}
+					else if (!win) {
+						gamers[0].notifyKeyHit(ch);
+						gamers[1].notifyKeyHit(ch);
+
+					}
+				}
 			}
 		}
-		Sleep(500);
-		
-			if (_kbhit())
-			{
-				ch = getch();
-				if (ch == ESC)
-				{
-					clearScreen();
-					stopTheGame();
-					seconderyMenu();
-				}
-				else if (!win && ifMovesFile == false) {
-					gamers[0].notifyKeyHit(ch);
-					gamers[1].notifyKeyHit(ch);
-				
-				}
-			}
-		
+		if(quietMode == false)
+			Sleep(delay);
 	}
-	//currFileBoard++;
 	if (currFileBoard++ == boardFile.files.end())
-		ifBoardFile = false;
+		GameOver = true;
 	fileNameforGamerA.close();
 	fileNameforGamerB.close();
 	movesA.close();
 	movesB.close();
-	
+	if (quietMode == true)
+		int i = 0; //להפעיל פונקצייה שמדפיסה פרטים על המשחקון הנוכחי
+		
 }
 
 void GameManeger::printBoard()
@@ -545,6 +583,7 @@ void GameManeger::seconderyMenu()
 		case '9':
 			getout = true;
 			EXIT = 1;
+			GameOver = true;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
@@ -689,6 +728,8 @@ void GameManeger::updateFilePerGame()
 {
 	int res;
 	bool found = false;
+	gamer1Active = false;
+	gamer2Active = false;
 	if (ifBoardFile == true)
 	{
 		if (ifMovesFile == true)
@@ -714,6 +755,10 @@ void GameManeger::updateFilePerGame()
 				}
 				else
 					currFileMovesB++;
+			}
+			if (gamer1Active == false && gamer2Active == false)
+			{
+				GameOver = true;
 			}
 		}
 	}
@@ -744,4 +789,11 @@ ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer)
 		return movesFile;
 	}
 	return movesFile;
+}
+
+void GameManeger::endMessage()
+{
+	cout << "Game Summary" << endl;
+	cout << "A points - " << gamers[0].score << endl;
+	cout << "B points - " << gamers[1].score << endl;
 }

@@ -41,6 +41,6 @@ public:
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size],ofstream& file);
 	void updateOutSolider(int outSolider);
 	void win();
-	void readFromMovesFile(char* buff);
+	bool readFromMovesFile(char* buff);
 	void recordMoveToFile(int tool, int col, int row,ofstream& file);
 };
