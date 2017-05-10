@@ -259,9 +259,9 @@ void GameManeger::run()
 			{
 				if (gamer1Active == true)
 				{
+					fileNameforGamerA.getline(buff, sizeof(buff) - 1);
 					if (fileNameforGamerA.eof() == false)
 					{
-						fileNameforGamerA.getline(buff, sizeof(buff) - 1);
 						validRowFromLine = gamers[0].readFromMovesFile(buff); //and set direction
 						if (validRowFromLine == true)
 						{
@@ -275,9 +275,9 @@ void GameManeger::run()
 				}
 				if (gamer2Active == true)
 				{ 
+					fileNameforGamerB.getline(buff, sizeof(buff) - 1);
 					if (fileNameforGamerB.eof() == false)
 					{
-						fileNameforGamerB.getline(buff, sizeof(buff) - 1);
 						validRowFromLine = gamers[1].readFromMovesFile(buff); //and set direction
 						if (validRowFromLine == true)
 						{
@@ -286,7 +286,10 @@ void GameManeger::run()
 						}
 					}
 					else
+					{
 						gamer2Active = false;
+					}
+						
 				}
 				else if (gamer1Active == false && gamer2Active == false)
 				{
