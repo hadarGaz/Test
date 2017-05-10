@@ -40,6 +40,7 @@ class GameManeger {
 
 	bool opositeGame = false;
 	bool recordGame = false;
+	int GameNumber = 0;
 	void printLetters();
 	void printEndLine();
 	void printNumber(int num);
@@ -72,12 +73,14 @@ public:
 	void updateSoldierOut(int gamerTurn,int soliderOut);
 	void printing();
 	void divideToFile(char *buffer);
-	void recordRandomBoard(Cell board[(int)Sizes::size][(int)Sizes::size]);
+	void recordRandomBoard(string fileName);
 	char findCellType(Cell board[(int)Sizes::size][(int)Sizes::size], int j,int i)const;
 	string findFileName();
 	int cmpBetweenString(map<string, int>::iterator str1, map<string, int>::iterator str2);
 	void updateFilePerGame();
-	ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer);
-	void GameManeger::endMessage();
+	ifstream openfile(map<string, int>::iterator file, int numOfGamer);
+	void endMessage();
+	ofstream openfileForRecord(map<string, int>::iterator file, int numOfGamer);
+	ofstream openfileForRecord(int numOfGamer, string randomName);
 	
 };

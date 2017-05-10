@@ -197,12 +197,12 @@ void GameManeger::initialization() //אתחולים
 	{
 		gamers[0].setSoldiersRandom(board, gamerNum++);
 		gamers[1].setSoldiersRandom(board, gamerNum);
+		if (recordGame) {
+			gamers[0].isRecordOn = true;
+			gamers[1].isRecordOn = true;
+		}
 	}
-	//recordRandomBoard(board); - to test record board
-	if (recordGame) {
-		gamers[0].isRecordOn = true;
-		gamers[1].isRecordOn = true;
-	}
+
 	if(quietMode == false)
 		printing();
 }
@@ -236,10 +236,20 @@ void GameManeger::run()
 	string fileName;
 	ifstream fileNameforGamerA = openfile(currFileMovesA, 1);
 	ifstream fileNameforGamerB = openfile(currFileMovesB, 2);
-	//string movesAfile = findMovesAName();//need to impliment
-	//string movesBfile = findMovesBName();//need to impliment
-	ofstream movesA("recordMovesA.txt");
-	ofstream movesB("recordMovesB.txt");
+	ofstream movesArecord;
+	ofstream movesBrecord;
+	if (ifBoardFile && recordGame) {
+		//get the names from the board and open the moves files
+		ofstream movesArecord = openfileForRecord(currFileBoard,1);
+		ofstream movesBrecord = openfileForRecord(currFileBoard, 2);
+	}
+	if (!ifBoardFile && recordGame) {
+		//generate name and open 3 file - board + moves
+		//also call to record board function 
+		ofstream movesArecord = openfileForRecord(1,"needToDo");
+		ofstream movesBrecord = openfileForRecord(2, "needToDo");
+	}
+	
 	
 
 	while (!EXIT)
@@ -255,7 +265,7 @@ void GameManeger::run()
 						validRowFromLine = gamers[0].readFromMovesFile(buff); //and set direction
 						if (validRowFromLine == true)
 						{
-							soliderOut = gamers[0].move(board, movesA);
+							soliderOut = gamers[0].move(board, movesArecord);
 							updateSoldierOut(gamerTurn, soliderOut);
 						}
 					}
@@ -271,7 +281,7 @@ void GameManeger::run()
 						validRowFromLine = gamers[1].readFromMovesFile(buff); //and set direction
 						if (validRowFromLine == true)
 						{
-							soliderOut = gamers[1].move(board, movesB);
+							soliderOut = gamers[1].move(board, movesBrecord);
 							updateSoldierOut(gamerTurn, soliderOut);
 						}
 					}
@@ -288,13 +298,13 @@ void GameManeger::run()
 			{
 				if (gamerTurn == 0)
 				{
-					soliderOut = gamers[0].move(board, movesA);
+					soliderOut = gamers[0].move(board, movesArecord);
 					updateSoldierOut(gamerTurn, soliderOut);
 					gamerTurn = 1;
 				}
 				else
 				{
-					soliderOut = gamers[1].move(board,movesB);
+					soliderOut = gamers[1].move(board,movesBrecord);
 					updateSoldierOut(gamerTurn, soliderOut);
 					gamerTurn = 0;
 				}
@@ -319,12 +329,13 @@ void GameManeger::run()
 		if(quietMode == false)
 			Sleep(delay);
 	}
-	if (currFileBoard++ == boardFile.files.end())
+	currFileBoard++;
+	if (currFileBoard == boardFile.files.end())
 		GameOver = true;
 	fileNameforGamerA.close();
 	fileNameforGamerB.close();
-	movesA.close();
-	movesB.close();
+	movesArecord.close();
+	movesBrecord.close();
 	if (quietMode == true)
 		int i = 0; //להפעיל פונקצייה שמדפיסה פרטים על המשחקון הנוכחי
 		
@@ -442,14 +453,14 @@ void GameManeger::setBoardFromFile(ifstream& inFile) {
 				}
 				SetBCounter++;
 			}
-			else if (currentChar >= (char)GamerA::soldier1 && currentChar <= (char)GamerA::soldier3) {
+			else if ((currentChar- '0' >= (int)GamerA::soldier1) && (currentChar-'0' <= (int)GamerA::soldier3)) {
 				updateSetSoliderCounter(currentChar - '0');
 				if (setSol1 <= 1 || setSol2 <= 1 || setSol3 <= 1)
 					gamers[0].setSoldiersFromFile(board,currentChar-'0',j,i);
 					
 
 			}
-			else if (currentChar >= (char)GamerB::soldier7 && currentChar <= (char)GamerB::soldier9) {
+			else if (currentChar - '0' >= (int)GamerB::soldier7 && currentChar - '0' <= (int)GamerB::soldier9) {
 				updateSetSoliderCounter(currentChar - '0');
 				if (setSol7 <= 1 || setSol8 <= 1 || setSol9 <= 1)
 					gamers[1].setSoldiersFromFile(board, currentChar - '0', j, i);	
@@ -697,12 +708,10 @@ string GameManeger::findFileName() {
 	return directoryPath; // רק בשביל קמפול
 }
 
-void GameManeger::recordRandomBoard(Cell board[(int)Sizes::size][(int)Sizes::size]) {
-	string fileName;
+void GameManeger::recordRandomBoard(string fileName) {
 	string line;
 	char type;
-	fileName = findFileName();
-	ofstream recordedBorad("test.txt");
+	ofstream recordedBorad(fileName);
 	for (int i = 1; i < (int)Sizes::size; i++) {
 		line.clear();
 		for (int j = 1; j < (int)Sizes::size; j++) {
@@ -791,9 +800,59 @@ ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer)
 	return movesFile;
 }
 
+ofstream GameManeger::openfileForRecord(map<string, int>::iterator file, int numOfGamer) {
+	ofstream movesFile;
+	string boardFileName;
+	boardFileName = file->first;
+	size_t sufix = boardFileName.find(".gboard");
+	boardFileName.erase(sufix,7);
+
+	string fullPath = path;
+	fullPath.append("\\");
+	fullPath.append(boardFileName);
+	if (numOfGamer == 1) {
+		fullPath.append(".moves-a_full");
+	}
+	if (numOfGamer == 2) {
+		fullPath.append(".moves-b_full");
+	}
+	size_t indexstr1 = fullPath.find_last_of("\n"); //support \n and \r
+	fullPath[indexstr1] = '\0';
+	ofstream movesFile1(fullPath);
+	bool ok = movesFile1.is_open();
+	return movesFile1;
+}
+
+ofstream GameManeger::openfileForRecord(int numOfGamer, string randomName)
+{	//generate name for the files
+	string randomName1 = "random_";
+	string fullPath = path;
+	GameNumber++;
+	char numToAdd = GameNumber + '0';
+	randomName.append(1,numToAdd);
+	fullPath.append("\\");
+	fullPath.append(randomName);
+	//need to to outside this function 
+	recordRandomBoard(fullPath.append(".gboard"));
+	if (numOfGamer == 1) {
+		fullPath.append(".moves-a_full");
+	}
+	if (numOfGamer == 2) {
+		fullPath.append(".moves-b_full");
+	}
+	size_t indexstr1 = fullPath.find_last_of("\n"); //support \n and \r
+	fullPath[indexstr1] = '\0';
+	ofstream movesFile(fullPath);
+	bool ok = movesFile.is_open();
+	return movesFile;
+	return ofstream();
+}
+
 void GameManeger::endMessage()
 {
 	cout << "Game Summary" << endl;
 	cout << "A points - " << gamers[0].score << endl;
 	cout << "B points - " << gamers[1].score << endl;
 }
+
+

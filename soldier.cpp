@@ -341,7 +341,7 @@ bool soldier::setDirectionFromFile(const char* x, char* y)
 {
 	int newX = *x - 'A' + 1;
 	int newY = *y - '0';
-	int tempXDir, tempYDir;
+	int tempXDir=0, tempYDir=0;
 	if (newX < MIN_X || newX > MAX_X || newY < MIN_Y || newY > MAX_Y)
 		return false; 
 	else

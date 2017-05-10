@@ -11,7 +11,7 @@ using namespace std;
 
 class soldier {
 	enum { MIN_X = 1, MAX_X = 13, MIN_Y = 1, MAX_Y = 13 };
-	int _x, _y;
+	int _x = 0, _y = 0;
 	int _x_dir =0, _y_dir=0;
 	int soldierNum;
 	int seaPass = 0;
