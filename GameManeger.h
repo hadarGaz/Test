@@ -39,6 +39,8 @@ class GameManeger {
 
 	bool opositeGame = false;
 	bool recordGame = false;
+	string recordBufferA;
+	string recordBufferB;
 	int GameNumber = 0;
 	void printLetters();
 	void printEndLine();
@@ -83,4 +85,8 @@ public:
 	ofstream openfileForRecord(map<string, int>::iterator file, int numOfGamer);
 	ofstream openfileForRecord(int numOfGamer, string randomName);
 	void GameManeger::uploadFiles();
+	string RandomNameGenerator();
+	void recordToFiles(ofstream& movesA, ofstream& movesB);
+	void writeToMoveFiles(ofstream& movesA, ofstream& movesB);
+
 };

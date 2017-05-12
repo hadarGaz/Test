@@ -115,7 +115,7 @@ void Gamers::putScore(int _score)
 }
 
 //returns 0 if there is no attack OR solider num of the solider who fall if attack occured
-int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size],ofstream& file)
+int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size],string recordBufferA,string recordBufferB)
 {
 	int movementResult;
 	if (currSoldier != -1) {
@@ -123,7 +123,7 @@ int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size],ofstream& file)
 			if (soldiers[currSoldier - 1].isAlive) {
 				movementResult = soldiers[currSoldier - 1].move(board);
 				if (isRecordOn)
-					recordMoveToFile(currSoldier, soldiers[currSoldier - 1]._x, soldiers[currSoldier - 1]._y,file);
+					recordMoveToBuffer(currSoldier, soldiers[currSoldier - 1]._x, soldiers[currSoldier - 1]._y, recordBufferA);
 				return movementResult;
 			}
 		}
@@ -131,7 +131,7 @@ int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size],ofstream& file)
 			if (soldiers[currSoldier - 7].isAlive)
 				movementResult = soldiers[currSoldier - 7].move(board);
 			if (isRecordOn)
-				recordMoveToFile(currSoldier, soldiers[currSoldier - 7]._x, soldiers[currSoldier - 7]._y,file);
+				recordMoveToBuffer(currSoldier, soldiers[currSoldier - 7]._x, soldiers[currSoldier - 7]._y,recordBufferB);
 			return movementResult;
 		}
 	}
@@ -172,8 +172,13 @@ bool Gamers::readFromMovesFile(char* buff)
 	return valid;
 }
 
-void Gamers::recordMoveToFile(int tool, int col, int row, ofstream& files)
+void Gamers::recordMoveToBuffer(int tool, int col, int row,string& recordBuffer)
 {
-	files << tool << "," << char(col + (int)convertToChar::capitalCol) << "," << row << endl;
+	char c_tool, c_row;
+	c_tool = tool + '0';
+	c_row = tool + '0';
+	recordBuffer.append(1, c_tool);
+	recordBuffer.append(1,char(col + (int)convertToChar::capitalCol));
+	recordBuffer.append(1, c_row);
 }
 

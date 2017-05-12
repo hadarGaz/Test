@@ -40,9 +40,9 @@ public:
 	int getScore();
 	void putScore(int _score);
 	void drowSoldiers();
-	int move(Cell board[(int)Sizes::size][(int)Sizes::size],ofstream& file);
+	int move(Cell board[(int)Sizes::size][(int)Sizes::size],string recordBufferA, string recordBufferB);
 	void updateOutSolider(int outSolider);
 	void win();
 	bool readFromMovesFile(char* buff);
-	void recordMoveToFile(int tool, int col, int row,ofstream& file);
+	void recordMoveToBuffer(int tool, int col, int row,string& buffer);
 };
