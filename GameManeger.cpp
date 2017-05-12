@@ -713,6 +713,7 @@ void GameManeger::recordRandomBoard(string fileName) {
 	string line;
 	char type;
 	ofstream recordedBorad(fileName);
+	bool ok = recordedBorad.is_open();
 	for (int i = 1; i < (int)Sizes::size; i++) {
 		line.clear();
 		for (int j = 1; j < (int)Sizes::size; j++) {
@@ -825,16 +826,12 @@ ofstream GameManeger::openfileForRecord(map<string, int>::iterator file, int num
 
 ofstream GameManeger::openfileForRecord(int numOfGamer, string randomName)
 {	
-	//need to to outside this function 
-	
 	if (numOfGamer == 1) {
 		randomName.append(".moves-a_full");
 	}
 	if (numOfGamer == 2) {
 		randomName.append(".moves-b_full");
 	}
-	size_t indexstr1 = randomName.find_last_of("\n"); //support \n and \r
-	randomName[indexstr1] = '\0';
 	ofstream movesFile(randomName);
 	bool ok = movesFile.is_open();
 	return movesFile;
@@ -864,7 +861,9 @@ void GameManeger::recordToFiles(ofstream& movesA, ofstream& movesB)
 	if (!ifBoardFile && recordGame) {
 		//generate name and open 3 file - board + moves
 		string fileName = RandomNameGenerator();
-		recordRandomBoard(fileName.append(".gboard"));
+		fileName.append(".gboard");
+		recordRandomBoard(fileName);
+		fileName = fileName.substr(0,fileName.find(".gboard"));
 		movesA = openfileForRecord(1, fileName);
 		movesB = openfileForRecord(2, fileName);
 	}
