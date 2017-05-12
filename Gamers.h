@@ -17,6 +17,7 @@ class Gamers {
 	char _keys[keyOptionSize];
 	string name;
 	int score = 0;
+	static int gamerNum;
 	int _gamerNum;
 	static char defualtName;
 	int currSoldier = -1;
@@ -26,9 +27,10 @@ class Gamers {
 public:
 	Gamers() { 
 		name = defualtName++;
+		_gamerNum = gamerNum++;
 	}
 	void setName();
-	void setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size],int gamerNum);
+	void setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void setSoldiersFromFile(Cell board[(int)Sizes::size][(int)Sizes::size], int solider, int x,int y);
 	void setkeys(const char* keys);
 	void notifyKeyHit(char ch);

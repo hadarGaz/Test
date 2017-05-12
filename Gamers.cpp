@@ -1,13 +1,13 @@
 #include "Gamers.h"
 #define _CRT_SECURE_NO_WARNINGS
 char Gamers::defualtName = 'A';
+int Gamers::gamerNum = 1;
 
-void Gamers::setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size], int gamerNum)
+void Gamers::setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size])
 {
-	_gamerNum = gamerNum;
 	int soldierNum;
 	soldierDead = 0;
-	if (gamerNum == 1) {
+	if (_gamerNum == 1) {
 		soldierNum = (int)GamerA::soldier1;
 	}
 	else {
@@ -20,7 +20,7 @@ void Gamers::setSoldiersRandom(Cell board[(int)Sizes::size][(int)Sizes::size], i
 		while (!found)
 		{
 			x = (rand() % 13) + 1;
-			if (gamerNum == 2)
+			if (_gamerNum == 2)
 				y = rand() % 5 + 9;
 			else
 				y = (rand() % 5) + 1;
