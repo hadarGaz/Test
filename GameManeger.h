@@ -14,7 +14,6 @@
 
 
 using namespace std;
-
 class GameManeger {
 	enum{ ESC = 27 };
 	Gamers gamers[(int)Sizes::sizeOfGamers];
@@ -83,5 +82,5 @@ public:
 	void endMessage();
 	ofstream openfileForRecord(map<string, int>::iterator file, int numOfGamer);
 	ofstream openfileForRecord(int numOfGamer, string randomName);
-	
+	void GameManeger::uploadFiles();
 };

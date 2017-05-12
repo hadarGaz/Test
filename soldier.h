@@ -40,5 +40,6 @@ public:
 	bool eightIsAttack(int enemyNum);
 	bool nineIsAttack(int enemyNum);
 	int meetSoldier(int numOfGamer,int enemySoldierNumber,int oldX,int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]);
-	bool setDirectionFromFile(const char* x, char* y);
+	bool setDirectionFromFile(char* x, char* y);
+	int soldier::convertCharToInt(char* x);
 };
