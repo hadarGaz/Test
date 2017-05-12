@@ -53,6 +53,7 @@ public:
 		gamers[1].setkeys("imjl");
 		hideCursor();
 		opositeGame = false;
+		GameOver = false;
 	}
 	void paramMenager();
 	void openFolder(char* tempPath);

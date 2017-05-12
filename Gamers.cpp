@@ -158,12 +158,17 @@ void Gamers::win()
 
 bool Gamers::readFromMovesFile(char* buff)
 {
-	char *col,*row;
+	char *col, *row;
+	bool valid;
 	currSoldier = *strtok(buff, " ,") - '0';
 	col = strtok(NULL, " ,");
 	row = strtok(NULL, " ,");
-	
-	bool valid = soldiers[currSoldier -1].setDirectionFromFile(col, row);
+	if (currSoldier >= (int)GamerA::soldier1 && currSoldier <= (int)GamerA::soldier3)
+		valid = soldiers[currSoldier - 1].setDirectionFromFile(col, row);
+	else if (currSoldier >= (int)GamerB::soldier7 && currSoldier <= (int)GamerB::soldier9)
+		valid = soldiers[currSoldier - 7].setDirectionFromFile(col, row);
+	else
+		valid = false;
 	return valid;
 }
 
