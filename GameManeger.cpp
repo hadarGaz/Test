@@ -757,13 +757,6 @@ char GameManeger::findCellType(Cell board[(int)Sizes::size][(int)Sizes::size],in
 		return ' ';
 }
 
-string GameManeger::findFileName() {
-	//string directoryPath = findDirPath();
-	string directoryPath;
-	//need to insert all files from the path to a map - dedicated object need to complete
-	//than find a free name and send it 
-	return directoryPath; // רק בשביל קמפול
-}
 
 void GameManeger::recordRandomBoard(string fileName) {
 	string line;
@@ -928,12 +921,28 @@ void GameManeger::recordToFiles(ofstream& movesA, ofstream& movesB)
 
 void GameManeger::writeToMoveFiles(ofstream & movesA, ofstream & movesB)
 {
-	for (int i = 0; i < recordBufferA.length() / 3;i = i + 3) {
-		movesA << recordBufferA[i] << "," << recordBufferA[i + 1] << "," << recordBufferA[i + 2] << endl;
+	char* token = strtok(&recordBufferA[0],",");
+	while(token != NULL) {
+		int i = 0;
+		movesA << token[i] << "," << token[i + 1] << "," << token[i + 2];
+		if (token[i + 3] != '\0') {
+			movesA << token[i + 3] << endl;
+		}
+		else
+			movesA << endl;
+		token = strtok(NULL,",");
 	}
-	for (int i = 0; i < recordBufferB.length() / 3;i = i + 3) {
-		movesA << recordBufferB[i] << "," << recordBufferB[i + 1] << "," << recordBufferB[i + 2] << endl;
+	char* token1 = strtok(&recordBufferB[0], ",");
+	while (token1 != NULL) {
+		int i = 0;
+		movesA << token1[i] << "," << token1[i + 1] << "," << token1[i + 2];
+		if (token1[i + 3] != '\0') {
+			movesA << token1[i + 3] << endl;
+		}
+		else
+			movesA << endl;
 	}
+	token1 = strtok(NULL, ",");
 }
 
 void GameManeger::endMessage()

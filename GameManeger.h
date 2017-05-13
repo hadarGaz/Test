@@ -79,7 +79,6 @@ public:
 	void divideToFile(char *buffer);
 	void recordRandomBoard(string fileName);
 	char findCellType(Cell board[(int)Sizes::size][(int)Sizes::size], int j,int i)const;
-	string findFileName();
 	int cmpBetweenString(map<string, int>::iterator str1, map<string, int>::iterator str2);
 	void updateFilePerGame();
 	ifstream openfile(map<string, int>::iterator file, int numOfGamer);
