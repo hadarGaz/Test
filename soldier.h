@@ -1,13 +1,17 @@
 #pragma once
-//#include "Gamers.h"
 #include "Direction.h"
 #include <cstdlib>
 #include <stdlib.h> 
+#include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <conio.h>
+#include <windows.h>
 #include "Utils.h"
 #include "Cell.h"
 using namespace std;
+
+extern bool quietMode;
 
 class soldier {
 	enum { MIN_X = 1, MAX_X = 13, MIN_Y = 1, MAX_Y = 13 };
@@ -17,11 +21,11 @@ class soldier {
 	int seaPass = 0;
 	int frPass = 0;
 	bool isAlive = true;
-	void draw(int ch);
+	void draw(int ch) const;
 	friend class Gamers;
 public:
 	void set(int x, int y, int ch);
-	void draw();
+	void draw() const;
 	void earse(int oldX, int oldY);
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void move(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]);

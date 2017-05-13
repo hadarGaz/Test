@@ -1,9 +1,8 @@
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
+
 #include "soldier.h"
+
+extern bool quietMode = false;
+
 
 //returns 0 if there is no attack and solider num of the solider who fall if attack occured
 int soldier::move(Cell board[(int)Sizes::size][(int)Sizes::size])
@@ -132,7 +131,7 @@ void soldier::set(int x, int y, int ch)
 
 }
 
-void soldier::draw(int soldierNum)
+void soldier::draw(int soldierNum) const
 {
 	gotoxy(4 * _x + 1, 2 * _y);
 	if (soldierNum >= (int)GamerA::soldier1 && soldierNum <= (int)GamerA::soldier3)
@@ -231,9 +230,11 @@ void soldier::printSpecialCell(int oldX, int oldY, Cell board[(int)Sizes::size][
 void soldier::move(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size])
 {
 	earse(oldX, oldY);
-	(board[oldX][oldY]).clear();
-	printSpecialCell(oldX,oldY,board);
-	draw();
+	(board[oldX][oldY]).clearGamer();
+	if (quietMode == false) {
+		printSpecialCell(oldX, oldY, board);
+		draw();
+	}
 	(board[_x][_y]).update(soldierNum);
 }
 
@@ -298,7 +299,7 @@ bool soldier::nineIsAttack(int enemyNum) {
 		return false;
 }
 
-void soldier::draw() 
+void soldier::draw() const
 { 
 	draw(soldierNum);
 }

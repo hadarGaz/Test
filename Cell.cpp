@@ -21,7 +21,7 @@ void Cell::setCellType(int num)
 	this->cellType = num;
 }
 
-int Cell::returnedCellType()
+int Cell::returnedCellType() const
 {
 	return this->cellType;
 
@@ -54,6 +54,12 @@ void Cell::clear()
 	GamerA = 0;
 	GamerB = 0;
 	cellType = 0;
+}
+
+void Cell::clearGamer()
+{
+	GamerA = 0;
+	GamerB = 0;
 }
 
 int Cell::returnSoliderNumInCell()const

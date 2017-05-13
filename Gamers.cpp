@@ -49,9 +49,9 @@ void Gamers::setSoldiersFromFile(Cell board[(int)Sizes::size][(int)Sizes::size],
 	}
 }
 
-void Gamers::drowSoldiers()
+void Gamers::drowSoldiers() const
 {
-	for (soldier& sol : soldiers)
+	for (soldier sol : soldiers)
 		sol.draw();
 }
 void Gamers::setkeys(const char* keys)
@@ -76,8 +76,6 @@ void Gamers::notifyKeyHit(char ch)
 		setDirection(Direction::LEFT);
 	else if (tolower(ch) == _keys[RIGHT])
 		setDirection(Direction::RIGHT);
-
-
 }
 
 void Gamers::setName()
@@ -93,21 +91,6 @@ void Gamers::setDirection(Direction d)
 		soldiers[currSoldier - 7].setDirection(d);
 }
 
-void Gamers::printGamerName()
-{
-		cout << name;
-}
-
-void Gamers::printGamerScore()
-{
-	cout << score;
-}
-
-
-int Gamers::getScore()
-{
-	return score;
-}
 
 void Gamers::putScore(int _score)
 {
@@ -152,7 +135,8 @@ void Gamers::updateOutSolider(int outSolider) {
 int Gamers::win() 
 {
 	clearScreen();
-	cout << "The gamer: " << name << " won this game" << endl;
+	if(quietMode == false)
+		cout << "The gamer: " << name << " won this game" << endl;
 	score++;
 	return _gamerNum;
 }
