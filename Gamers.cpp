@@ -176,7 +176,7 @@ void Gamers::recordMoveToBuffer(int tool, int col, int row,string& recordBuffer)
 {
 	char c_tool, c_row;
 	c_tool = tool + '0';
-	c_row = tool + '0';
+	c_row = row + '0';
 	recordBuffer.append(1, c_tool);
 	recordBuffer.append(1,char(col + (int)convertToChar::capitalCol));
 	recordBuffer.append(1, c_row);
