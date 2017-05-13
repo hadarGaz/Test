@@ -1,9 +1,8 @@
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
+
 #include "soldier.h"
+
+extern bool quietMode = false;
+
 
 //returns 0 if there is no attack and solider num of the solider who fall if attack occured
 int soldier::move(Cell board[(int)Sizes::size][(int)Sizes::size])
@@ -231,9 +230,11 @@ void soldier::printSpecialCell(int oldX, int oldY, Cell board[(int)Sizes::size][
 void soldier::move(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size])
 {
 	earse(oldX, oldY);
-	(board[oldX][oldY]).clear();
-	printSpecialCell(oldX,oldY,board);
-	draw();
+	(board[oldX][oldY]).clearGamer();
+	if (quietMode == false) {
+		printSpecialCell(oldX, oldY, board);
+		draw();
+	}
 	(board[_x][_y]).update(soldierNum);
 }
 

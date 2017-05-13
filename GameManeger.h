@@ -9,8 +9,8 @@
 #include <map>
 #include "FilesMap.h"
 #include "Gamers.h"
-#include "Cell.h"
-#include "Utils.h"
+//#include "Cell.h"
+//#include "Utils.h"
 
 
 using namespace std;
@@ -25,7 +25,7 @@ class GameManeger {
 	map<string, int>::iterator currFileMovesA , currFileMovesB, currFileBoard;
 	bool ifBoardFile = false;
 	bool ifMovesFile = false;
-	bool quietMode = false;
+	//bool quietMode = false;
 	int delay = 20;
 	string path = "NULL";
 	bool gamer1Active = false;

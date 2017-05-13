@@ -76,8 +76,6 @@ void Gamers::notifyKeyHit(char ch)
 		setDirection(Direction::LEFT);
 	else if (tolower(ch) == _keys[RIGHT])
 		setDirection(Direction::RIGHT);
-
-
 }
 
 void Gamers::setName()
@@ -137,7 +135,8 @@ void Gamers::updateOutSolider(int outSolider) {
 int Gamers::win() 
 {
 	clearScreen();
-	cout << "The gamer: " << name << " won this game" << endl;
+	if(quietMode == false)
+		cout << "The gamer: " << name << " won this game" << endl;
 	score++;
 	return _gamerNum;
 }

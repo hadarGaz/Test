@@ -5,7 +5,6 @@ using namespace std;
 
 void GameManeger::paramMenager()
 {
-	
 	char* tempPath;
 	if (path == "NULL") //it mean current directory
 	{
@@ -21,8 +20,6 @@ void GameManeger::paramMenager()
 	currFileBoard = boardFile.files.begin();
 	currFileMovesA = movesAFiles.files.begin();
 	currFileMovesB = movesBFiles.files.begin();
-
-	
 
 	if (ifMovesFile == true)
 	{
@@ -208,6 +205,9 @@ void GameManeger::initialization() //אתחולים
 	SetACounter = 0, SetBCounter = 0;
 	setSol1 = 0, setSol2 = 0, setSol3 = 0, setSol7 = 0, setSol8 = 0, setSol9 = 0;
 	wrongCharsSet.clear();
+	gamers[0].soldierDead = 0;
+	gamers[1].soldierDead = 0;
+
 	
 
 	
@@ -688,8 +688,6 @@ char GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			gamers[1].updateOutSolider(soliderOut);
 		}
 
-		if (gamerTurn == 0)
-		{
 			if (gamers[0].soldierDead == (int)Sizes::sizeOfSoldier) //all the soldier was dead
 			{
 				stopTheGame();
@@ -700,9 +698,7 @@ char GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 				else
 					gamerNum = gamers[1].win();
 			}
-		}
-		else
-		{
+	
 			if (gamers[1].soldierDead == (int)Sizes::sizeOfSoldier) //all the soldier was dead
 			{
 				stopTheGame();
@@ -713,7 +709,7 @@ char GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 				else
 					gamerNum = gamers[0].win();
 			}
-		}
+
 		if (gamerNum == 1)
 			return 'A';
 		else if (gamerNum == 2)

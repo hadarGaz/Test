@@ -1,13 +1,17 @@
 #pragma once
-//#include "Gamers.h"
 #include "Direction.h"
 #include <cstdlib>
 #include <stdlib.h> 
+#include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <conio.h>
+#include <windows.h>
 #include "Utils.h"
 #include "Cell.h"
 using namespace std;
+
+extern bool quietMode;
 
 class soldier {
 	enum { MIN_X = 1, MAX_X = 13, MIN_Y = 1, MAX_Y = 13 };
