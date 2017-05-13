@@ -74,7 +74,7 @@ public:
 	void resetScore();
 	void stopTheGame();
 	void clearTheGame();
-	void updateSoldierOut(int gamerTurn,int soliderOut);
+	char updateSoldierOut(int gamerTurn,int soliderOut);
 	void printing();
 	void divideToFile(char *buffer);
 	void recordRandomBoard(string fileName);
@@ -90,5 +90,7 @@ public:
 	string RandomNameGenerator();
 	void recordToFiles(ofstream& movesA, ofstream& movesB);
 	void writeToMoveFiles(ofstream& movesA, ofstream& movesB);
+	void endMessagePerGame(int GameCycle, int numOfMoves, char winner);
+
 
 };

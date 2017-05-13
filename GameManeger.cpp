@@ -317,10 +317,15 @@ void GameManeger::runFromMovesFile()
 	bool validRowFromLine = false;
 	int soliderOut = 0;
 	char buff[1024];
+	static int GameCycle = 0;
+	int numOfMoves = 0;
+	char winner = '0';
 	ifstream fileNameforGamerA = openfile(currFileMovesA, 1);
 	ifstream fileNameforGamerB = openfile(currFileMovesB, 2);
+	GameCycle++;
 	while (!win)
 	{
+		numOfMoves++;
 		if (gamer1Active == true)
 		{
 			if (fileNameforGamerA.good() == true)
@@ -330,7 +335,7 @@ void GameManeger::runFromMovesFile()
 				if (validRowFromLine == true)
 				{
 					soliderOut = gamers[0].move(board, recordBufferA, recordBufferB);
-					updateSoldierOut(0, soliderOut);
+					winner = updateSoldierOut(0, soliderOut);
 				}
 			}
 			else
@@ -350,7 +355,7 @@ void GameManeger::runFromMovesFile()
 				if (validRowFromLine == true)
 				{
 					soliderOut = gamers[1].move(board, recordBufferA, recordBufferB);
-					updateSoldierOut(1, soliderOut);
+					winner = updateSoldierOut(1, soliderOut);
 				}
 
 			}
@@ -365,7 +370,24 @@ void GameManeger::runFromMovesFile()
 	fileNameforGamerA.close();
 	fileNameforGamerB.close();
 	if (quietMode == true)
-		int i = 0; //להפעיל פונקצייה שמדפיסה פרטים על המשחקון הנוכחי
+	{
+		if(winner == 'A')
+			endMessagePerGame(GameCycle, 2 * numOfMoves-1, winner);
+		else
+			endMessagePerGame(GameCycle, 2 * numOfMoves, winner);
+
+	}
+}
+
+void GameManeger::endMessagePerGame(int GameCycle, int numOfMoves, char winner)
+{
+	clearScreen();
+	cout << "Game cycle: " << GameCycle << endl;
+	cout << "Num moves: " << numOfMoves << endl;
+	if(winner == '0')
+		cout << "Wineer: NONE" << endl;
+	else
+		cout << "Wineer: " << winner << endl;
 }
 
 void GameManeger::printBoard()
@@ -662,8 +684,9 @@ void GameManeger::clearTheGame()
 }
 
 
-void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
+char GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 {
+	int gamerNum = -1;
 		if (soliderOut == (int)Win::win) {
 			stopTheGame();
 			win = true;
@@ -671,7 +694,7 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 				swapScore(gamerTurn);
 			}
 			else
-				gamers[gamerTurn].win();
+				gamerNum = gamers[gamerTurn].win();
 			
 		}
 
@@ -689,10 +712,10 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 				stopTheGame();
 				win = true;
 				if (opositeGame) {
-					gamers[0].win();
+					gamerNum = gamers[0].win();
 				}
 				else
-					gamers[1].win();
+					gamerNum = gamers[1].win();
 			}
 		}
 		else
@@ -701,14 +724,19 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			{
 				stopTheGame();
 				win = true;
-				//EXIT = true;
 				if (opositeGame) {
-					gamers[1].win();
+					gamerNum = gamers[1].win();
 				}
 				else
-					gamers[0].win();
+					gamerNum = gamers[0].win();
 			}
 		}
+		if (gamerNum == 1)
+			return 'A';
+		else if (gamerNum == 2)
+			return 'B';
+		else
+			return '0';
 }
 char GameManeger::findCellType(Cell board[(int)Sizes::size][(int)Sizes::size],int j,int i)const {
 	int cellType = board[j][i].returnedCellType();

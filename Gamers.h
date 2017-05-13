@@ -42,7 +42,7 @@ public:
 	void drowSoldiers();
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size],string recordBufferA, string recordBufferB);
 	void updateOutSolider(int outSolider);
-	void win();
+	int win();
 	bool readFromMovesFile(char* buff);
 	void recordMoveToBuffer(int tool, int col, int row,string& buffer);
 };

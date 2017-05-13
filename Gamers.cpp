@@ -149,11 +149,12 @@ void Gamers::updateOutSolider(int outSolider) {
 	soldierDead++;
 }
 
-void Gamers::win() 
+int Gamers::win() 
 {
 	clearScreen();
 	cout << "The gamer: " << name << " won this game" << endl;
 	score++;
+	return _gamerNum;
 }
 
 bool Gamers::readFromMovesFile(char* buff)
