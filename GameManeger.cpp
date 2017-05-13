@@ -41,7 +41,6 @@ void GameManeger::paramMenager()
 	}
 	else
 	{
-	//	uploadFiles(); //check and set the file
 		menu();
 		while (GameOver == false)
 		{
@@ -250,117 +249,123 @@ void GameManeger::printing()
 }
 void GameManeger::run()
 {
-	char ch =0;
-	bool gamerTurn = 0;
-	bool validRowFromLine= false;
-	int soliderOut = 0;
-	char buff[1024];
-	string fileName;
-	ifstream fileNameforGamerA = openfile(currFileMovesA, 1);
-	ifstream fileNameforGamerB = openfile(currFileMovesB, 2);
-	ofstream movesArecord;
-	ofstream movesBrecord;
-	if (recordGame) {
-		recordToFiles(movesArecord, movesBrecord);
-	}
+	if (ifMovesFile == true)
+		runFromMovesFile();
+	else
+		runFromKeyBordMoves();
 
-	while (!EXIT)
-	{
-		if (!win) 
-		{
-			if (ifMovesFile == true)
-			{
-				if (gamer1Active == true)
-				{
-					if (fileNameforGamerA.good() == true)
-					{ 
-						fileNameforGamerA.getline(buff, sizeof(buff) - 1);
-						validRowFromLine = gamers[0].readFromMovesFile(buff); //and set direction
-						if (validRowFromLine == true)
-						{
-							soliderOut = gamers[0].move(board, recordBufferA, recordBufferB);
-							updateSoldierOut(gamerTurn, soliderOut);
-						}
-					}
-					else
-						gamer1Active = false;
-					
-				}
-				if (gamer2Active == true)
-				{ 
-					if (fileNameforGamerB.good() == true)
-					{
-						fileNameforGamerB.getline(buff, sizeof(buff) - 1);
-						validRowFromLine = gamers[1].readFromMovesFile(buff); //and set direction
-						if (validRowFromLine == true)
-						{
-							soliderOut = gamers[1].move(board, recordBufferA, recordBufferB);
-							updateSoldierOut(gamerTurn, soliderOut);
-						}
-						
-					}
-					else
-					{
-						gamer2Active = false;
-					}
-						
-				}
-				else if (gamer1Active == false && gamer2Active == false)
-				{
-					EXIT = true;
-				}
-				
-			}
-			else
-			{
-				if (gamerTurn == 0)
-				{
-					soliderOut = gamers[0].move(board, recordBufferA, recordBufferB);
-					updateSoldierOut(gamerTurn, soliderOut);
-					gamerTurn = 1;
-				}
-				else
-				{
-					soliderOut = gamers[1].move(board, recordBufferA,recordBufferB);
-					updateSoldierOut(gamerTurn, soliderOut);
-					gamerTurn = 0;
-				}
-
-				if (_kbhit())
-				{
-					ch = getch();
-					if (ch == ESC)
-					{
-						clearScreen();
-						stopTheGame();
-						seconderyMenu();
-					}
-					else if (!win) {
-						gamers[0].notifyKeyHit(ch);
-						gamers[1].notifyKeyHit(ch);
-
-					}
-				}
-			}
-		}
-		if(quietMode == false)
-			Sleep(delay);
-	}
-
-	writeToMoveFiles(movesArecord, movesBrecord);
-	movesArecord.close();
-	movesBrecord.close();
 	if (ifBoardFile)
 	{
 		currFileBoard++;
 		if (currFileBoard == boardFile.files.end())
 			GameOver = true;
 	}
+}
+void GameManeger::runFromKeyBordMoves()
+{
+	char ch = 0;
+	bool gamerTurn = 0;
+	int soliderOut = 0;
+	ofstream movesArecord;
+	ofstream movesBrecord;
+	if (recordGame) {
+		recordToFiles(movesArecord, movesBrecord);
+	}
+	while (!EXIT)
+	{
+		if (!win)
+		{
+			if (gamerTurn == 0)
+			{
+				soliderOut = gamers[0].move(board, recordBufferA, recordBufferB);
+				updateSoldierOut(gamerTurn, soliderOut);
+				gamerTurn = 1;
+			}
+			else
+			{
+				soliderOut = gamers[1].move(board, recordBufferA, recordBufferB);
+				updateSoldierOut(gamerTurn, soliderOut);
+				gamerTurn = 0;
+			}
+
+			Sleep(delay);
+		}
+			if (_kbhit())
+			{
+				ch = getch();
+				if (ch == ESC)
+				{
+					clearScreen();
+					stopTheGame();
+					seconderyMenu();
+				}
+				else if (!win) {
+					gamers[0].notifyKeyHit(ch);
+					gamers[1].notifyKeyHit(ch);
+
+				}
+			}
+		
+	}
+	writeToMoveFiles(movesArecord, movesBrecord);
+	movesArecord.close();
+	movesBrecord.close();
+
+}
+void GameManeger::runFromMovesFile()
+{
+	bool validRowFromLine = false;
+	int soliderOut = 0;
+	char buff[1024];
+	ifstream fileNameforGamerA = openfile(currFileMovesA, 1);
+	ifstream fileNameforGamerB = openfile(currFileMovesB, 2);
+	while (!win)
+	{
+		if (gamer1Active == true)
+		{
+			if (fileNameforGamerA.good() == true)
+			{
+				fileNameforGamerA.getline(buff, sizeof(buff) - 1);
+				validRowFromLine = gamers[0].readFromMovesFile(buff); //and set direction
+				if (validRowFromLine == true)
+				{
+					soliderOut = gamers[0].move(board, recordBufferA, recordBufferB);
+					updateSoldierOut(0, soliderOut);
+				}
+			}
+			else
+				gamer1Active = false;
+
+		}
+
+		if (quietMode == false)
+			Sleep(delay);
+
+		if (gamer2Active == true)
+		{
+			if (fileNameforGamerB.good() == true)
+			{
+				fileNameforGamerB.getline(buff, sizeof(buff) - 1);
+				validRowFromLine = gamers[1].readFromMovesFile(buff); //and set direction
+				if (validRowFromLine == true)
+				{
+					soliderOut = gamers[1].move(board, recordBufferA, recordBufferB);
+					updateSoldierOut(1, soliderOut);
+				}
+
+			}
+			else
+				gamer2Active = false;
+		}
+		else if (gamer1Active == false && gamer2Active == false)
+		{
+			win = true;
+		}
+	}
 	fileNameforGamerA.close();
 	fileNameforGamerB.close();
 	if (quietMode == true)
 		int i = 0; //להפעיל פונקצייה שמדפיסה פרטים על המשחקון הנוכחי
-		
 }
 
 void GameManeger::printBoard()
@@ -662,7 +667,6 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 		if (soliderOut == (int)Win::win) {
 			stopTheGame();
 			win = true;
-			EXIT = true;
 			if (opositeGame) {
 				swapScore(gamerTurn);
 			}
@@ -684,7 +688,6 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			{
 				stopTheGame();
 				win = true;
-				EXIT = true;
 				if (opositeGame) {
 					gamers[0].win();
 				}
@@ -698,7 +701,7 @@ void GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			{
 				stopTheGame();
 				win = true;
-				EXIT = true;
+				//EXIT = true;
 				if (opositeGame) {
 					gamers[1].win();
 				}

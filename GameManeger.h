@@ -66,6 +66,8 @@ public:
 	void initialization();
 	void uploadBoardFromFile();
 	void run();
+	void GameManeger::runFromMovesFile();
+	void GameManeger::runFromKeyBordMoves();
 	void printBoard();
 	void setBoard();
 	void swapScore(int gamerTurn);
