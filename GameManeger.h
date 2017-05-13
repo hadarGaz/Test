@@ -27,7 +27,7 @@ class GameManeger {
 	bool ifMovesFile = false;
 	bool quietMode = false;
 	int delay = 20;
-	char* path = nullptr;
+	string path = "NULL";
 	bool gamer1Active = false;
 	bool gamer2Active = false;
 	bool GameOver = false;
@@ -42,9 +42,9 @@ class GameManeger {
 	string recordBufferA;
 	string recordBufferB;
 	int GameNumber = 0;
-	void printLetters();
-	void printEndLine();
-	void printNumber(int num);
+	void printLetters() const;
+	void printEndLine() const;
+	void printNumber(int num)const;
 public:
 	GameManeger() { 
 		setBoard();
@@ -56,26 +56,25 @@ public:
 	}
 	void paramMenager();
 	void openFolder(char* tempPath);
-	void justForTest();
 	void setBoardFromFile(ifstream& inFile);
 	void updateSetSoliderCounter(int solider);
-	bool printAndCheckBoardFromFileErrors(string fileName);
+	bool printAndCheckBoardFromFileErrors(string fileName) const;
 	void commandLine(int argc, char* argv[]);
 	void menu();
 	void seconderyMenu();
 	void initialization();
 	void uploadBoardFromFile();
 	void run();
-	void GameManeger::runFromMovesFile();
-	void GameManeger::runFromKeyBordMoves();
-	void printBoard();
+	void runFromMovesFile();
+	void runFromKeyBordMoves();
+	void printBoard()const;
 	void setBoard();
 	void swapScore(int gamerTurn);
 	void resetScore();
 	void stopTheGame();
 	void clearTheGame();
 	char updateSoldierOut(int gamerTurn,int soliderOut);
-	void printing();
+	void printing() const;
 	void divideToFile(char *buffer);
 	void recordRandomBoard(string fileName);
 	char findCellType(Cell board[(int)Sizes::size][(int)Sizes::size], int j,int i)const;
@@ -83,14 +82,14 @@ public:
 	int cmpBetweenString(map<string, int>::iterator str1, map<string, int>::iterator str2);
 	void updateFilePerGame();
 	ifstream openfile(map<string, int>::iterator file, int numOfGamer);
-	void endMessage();
+	void endMessage() const;
 	ofstream openfileForRecord(map<string, int>::iterator file, int numOfGamer);
 	ofstream openfileForRecord(int numOfGamer, string randomName);
 	void GameManeger::uploadFiles();
 	string RandomNameGenerator();
 	void recordToFiles(ofstream& movesA, ofstream& movesB);
 	void writeToMoveFiles(ofstream& movesA, ofstream& movesB);
-	void endMessagePerGame(int GameCycle, int numOfMoves, char winner);
+	void endMessagePerGame(int GameCycle, int numOfMoves, char winner) const;
 
 
 };

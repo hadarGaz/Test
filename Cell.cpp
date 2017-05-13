@@ -21,7 +21,7 @@ void Cell::setCellType(int num)
 	this->cellType = num;
 }
 
-int Cell::returnedCellType()
+int Cell::returnedCellType() const
 {
 	return this->cellType;
 

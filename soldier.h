@@ -17,11 +17,11 @@ class soldier {
 	int seaPass = 0;
 	int frPass = 0;
 	bool isAlive = true;
-	void draw(int ch);
+	void draw(int ch) const;
 	friend class Gamers;
 public:
 	void set(int x, int y, int ch);
-	void draw();
+	void draw() const;
 	void earse(int oldX, int oldY);
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size]);
 	void move(int oldX, int oldY, Cell board[(int)Sizes::size][(int)Sizes::size]);

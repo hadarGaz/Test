@@ -7,15 +7,15 @@ void GameManeger::paramMenager()
 {
 	
 	char* tempPath;
-	if (path == nullptr) //it mean current directory
+	if (path == "NULL") //it mean current directory
 	{
 		openFolder("cd");
-		int size = char_traits<char>::length(path);
-		path[size - 1] = '\0';
+		size_t size = path.find_last_of("\n");
+		path[size] = '\0';
 	}
 
 	char str[4095] = "2>NUL dir /a-d /b ";
-	tempPath = strcat(str, path);
+	tempPath = strcat(str, path.c_str());
 	openFolder(tempPath);
 	
 	currFileBoard = boardFile.files.begin();
@@ -61,8 +61,8 @@ void GameManeger::openFolder(char* tempPath)
 	FILE* fp = _popen(tempPath, "r");
 	while (fgets(buffer, 4095, fp))
 	{
-		if(path == nullptr)
-			path = buffer;
+		if(path == "NULL")
+			path = buffer; //new 13.5
 		else
 			divideToFile(buffer);
 	}
@@ -84,20 +84,6 @@ void GameManeger::divideToFile(char *buffer)
 		movesBFiles.add(buffer);
 	else if (strncmp(str, "gboard",6) == 0)
 		boardFile.add(buffer);
-}
-
-void GameManeger::justForTest() { //tests the board from file 
-	ifstream textfile("C:\\Users\\Nofar Kedem Zada\\Downloads\\testsfiles\\board_bad_4.gboard");
-	bool test = textfile.is_open();
-	setBoardFromFile(textfile);
-	textfile.close();
-	printBoard();
-	gamers[0].drowSoldiers();
-	gamers[1].drowSoldiers();
-	Sleep(80);
-	clearScreen();
-	//printBoardFromFileErrors("board_bad_4.gboard");
-	Sleep(80);
 }
 
 void GameManeger::commandLine(int argc, char* argv[])
@@ -240,7 +226,7 @@ void GameManeger::uploadBoardFromFile() //אתחולים
 		GameOver = true;
 }
 
-void GameManeger::printing()
+void GameManeger::printing() const
 {
 	clearScreen();
 	printBoard();
@@ -379,7 +365,7 @@ void GameManeger::runFromMovesFile()
 	}
 }
 
-void GameManeger::endMessagePerGame(int GameCycle, int numOfMoves, char winner)
+void GameManeger::endMessagePerGame(int GameCycle, int numOfMoves, char winner) const
 {
 	clearScreen();
 	cout << "Game cycle: " << GameCycle << endl;
@@ -390,7 +376,7 @@ void GameManeger::endMessagePerGame(int GameCycle, int numOfMoves, char winner)
 		cout << "Wineer: " << winner << endl;
 }
 
-void GameManeger::printBoard()
+void GameManeger::printBoard() const
 {
 	char flag = 167;
 	int typeofcell;
@@ -430,11 +416,8 @@ void GameManeger::printBoard()
 	}
 	cout << "SCORE: " << endl;
 	for (int i = 0; i < (int)Sizes::sizeOfGamers; i++) {
-		cout << "Gamer: ";
-		gamers[i].printGamerName();
-		cout << " = ";
-		gamers[i].printGamerScore();
-		cout << endl;
+		cout << "Gamer: "<< gamers[i].name;
+		cout << " = " << gamers[i].score << endl;
 	}
 
 }
@@ -552,7 +535,7 @@ void GameManeger::updateSetSoliderCounter(int solider) {
 }
 
 
-bool GameManeger::printAndCheckBoardFromFileErrors(string fileName) {
+bool GameManeger::printAndCheckBoardFromFileErrors(string fileName) const {
 	bool isBoardOk = true;
 	if (SetACounter != 1 || setSol1 != 1 || setSol2 != 1 || setSol3 != 1) {
 		cout << "Wrong settings for player A tools in file " << fileName << endl;
@@ -569,7 +552,7 @@ bool GameManeger::printAndCheckBoardFromFileErrors(string fileName) {
 	return isBoardOk;
 }
 
-void GameManeger::printLetters()
+void GameManeger::printLetters() const
 {
 	char ch = 'A';
 	cout << "|" << "   ";
@@ -578,7 +561,7 @@ void GameManeger::printLetters()
 	cout << "|" << endl;
 }
 
-void GameManeger::printEndLine()
+void GameManeger::printEndLine()const
 {
 	for (int l = 0; l < (int)Sizes::size; l++)
 		cout << "====";
@@ -586,7 +569,7 @@ void GameManeger::printEndLine()
 }
 
 
-void GameManeger::printNumber(int num)
+void GameManeger::printNumber(int num) const
 {
 	
 	if (num >= 10)
@@ -846,7 +829,8 @@ ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer)
 
 	if (contin == true)
 	{
-		string fullPath = path;
+		const char* tempPath = path.c_str();
+		string fullPath = tempPath;
 		fullPath.append("\\");
 		fullPath.append(file->first);
 		size_t indexstr1 = fullPath.find_last_of("\n"); //support \n and \r
@@ -936,7 +920,7 @@ void GameManeger::writeToMoveFiles(ofstream & movesA, ofstream & movesB)
 	}
 }
 
-void GameManeger::endMessage()
+void GameManeger::endMessage() const
 {
 	clearScreen();
 	cout << "Game Summary" << endl;

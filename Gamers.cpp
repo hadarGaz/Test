@@ -49,9 +49,9 @@ void Gamers::setSoldiersFromFile(Cell board[(int)Sizes::size][(int)Sizes::size],
 	}
 }
 
-void Gamers::drowSoldiers()
+void Gamers::drowSoldiers() const
 {
-	for (soldier& sol : soldiers)
+	for (soldier sol : soldiers)
 		sol.draw();
 }
 void Gamers::setkeys(const char* keys)
@@ -93,21 +93,6 @@ void Gamers::setDirection(Direction d)
 		soldiers[currSoldier - 7].setDirection(d);
 }
 
-void Gamers::printGamerName()
-{
-		cout << name;
-}
-
-void Gamers::printGamerScore()
-{
-	cout << score;
-}
-
-
-int Gamers::getScore()
-{
-	return score;
-}
 
 void Gamers::putScore(int _score)
 {

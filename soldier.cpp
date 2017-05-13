@@ -132,7 +132,7 @@ void soldier::set(int x, int y, int ch)
 
 }
 
-void soldier::draw(int soldierNum)
+void soldier::draw(int soldierNum) const
 {
 	gotoxy(4 * _x + 1, 2 * _y);
 	if (soldierNum >= (int)GamerA::soldier1 && soldierNum <= (int)GamerA::soldier3)
@@ -298,7 +298,7 @@ bool soldier::nineIsAttack(int enemyNum) {
 		return false;
 }
 
-void soldier::draw() 
+void soldier::draw() const
 { 
 	draw(soldierNum);
 }

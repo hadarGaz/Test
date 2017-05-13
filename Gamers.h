@@ -35,11 +35,8 @@ public:
 	void setkeys(const char* keys);
 	void notifyKeyHit(char ch);
 	void setDirection(Direction d);
-	void printGamerName();
-	void printGamerScore();
-	int getScore();
 	void putScore(int _score);
-	void drowSoldiers();
+	void drowSoldiers() const;
 	int move(Cell board[(int)Sizes::size][(int)Sizes::size],string recordBufferA, string recordBufferB);
 	void updateOutSolider(int outSolider);
 	int win();
