@@ -21,6 +21,17 @@ void GameManeger::paramMenager()
 	currFileMovesA = movesAFiles.files.begin();
 	currFileMovesB = movesBFiles.files.begin();
 
+	ifstream gameCounterIn("counter.txt");
+	if (gameCounterIn.good()) {
+		string number;
+		getline(gameCounterIn, number);
+		GameNumber = atoi(number.c_str());
+		gameCounterIn.close();
+	}
+	else {
+		GameNumber = 0;
+	}
+
 	if (ifMovesFile == true)
 	{
 		while (GameOver == false)
@@ -52,7 +63,9 @@ void GameManeger::paramMenager()
 		if (ifBoardFile == true)
 			endMessage();
 	}
-	
+	ofstream gameCounterOut("counter.txt");
+	gameCounterOut << GameNumber;
+	gameCounterOut.close();
 }
 
 void GameManeger::openFolder(char* tempPath)
@@ -180,17 +193,6 @@ void GameManeger::uploadFiles() //סידור לוח וחיילים
 		setBoard();
 		gamers[0].setSoldiersRandom(board);
 		gamers[1].setSoldiersRandom(board);
-/*
-		if (recordGame) {
-			gamers[0].isRecordOn = true;
-			gamers[1].isRecordOn = true;
-
-		}
-		else {
-			gamers[0].isRecordOn = false;
-			gamers[1].isRecordOn = false;
-		}
-*/
 	}
 	if (ifMovesFile == true)
 		updateFilePerGame();
@@ -301,11 +303,14 @@ void GameManeger::runFromKeyBordMoves()
 			}
 		
 	}
-	writeToMoveFiles(movesArecord, movesBrecord);
-	movesArecord.close();
-	movesBrecord.close();
-	recordBufferA.clear();
-	recordBufferB.clear();
+	if (recordGame) {
+		writeToMoveFiles(movesArecord, movesBrecord);
+		movesArecord.close();
+		movesBrecord.close();
+		recordBufferA.clear();
+		recordBufferB.clear();
+	}
+	
 }
 void GameManeger::runFromMovesFile()
 {

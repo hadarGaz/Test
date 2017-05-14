@@ -42,7 +42,7 @@ class GameManeger {
 	bool returnToMenu = true;
 	string recordBufferA;
 	string recordBufferB;
-	int GameNumber = 0;
+	int GameNumber;
 	void printLetters() const;
 	void printEndLine() const;
 	void printNumber(int num)const;
