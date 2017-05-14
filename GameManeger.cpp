@@ -182,17 +182,17 @@ void GameManeger::uploadFiles() //סידור לוח וחיילים
 		setBoard();
 		gamers[0].setSoldiersRandom(board);
 		gamers[1].setSoldiersRandom(board);
+/*
 		if (recordGame) {
 			gamers[0].isRecordOn = true;
 			gamers[1].isRecordOn = true;
-			recordBufferA.clear();
-			recordBufferB.clear();
 
 		}
 		else {
 			gamers[0].isRecordOn = false;
 			gamers[1].isRecordOn = false;
 		}
+*/
 	}
 	if (ifMovesFile == true)
 		updateFilePerGame();
@@ -207,10 +207,6 @@ void GameManeger::initialization() //אתחולים
 	wrongCharsSet.clear();
 	gamers[0].soldierDead = 0;
 	gamers[1].soldierDead = 0;
-
-	
-
-	
 
 	if(quietMode == false)
 		printing();
@@ -256,6 +252,12 @@ void GameManeger::runFromKeyBordMoves()
 	ofstream movesBrecord;
 	if (recordGame) {
 		recordToFiles(movesArecord, movesBrecord);
+		gamers[0].isRecordOn = true;
+		gamers[1].isRecordOn = true;
+	}
+	else {
+		gamers[0].isRecordOn = false;
+		gamers[1].isRecordOn = false;
 	}
 	while (!EXIT)
 	{
@@ -296,7 +298,8 @@ void GameManeger::runFromKeyBordMoves()
 	writeToMoveFiles(movesArecord, movesBrecord);
 	movesArecord.close();
 	movesBrecord.close();
-
+	recordBufferA.clear();
+	recordBufferB.clear();
 }
 void GameManeger::runFromMovesFile()
 {
@@ -617,12 +620,14 @@ void GameManeger::seconderyMenu()
 			uploadFiles();
 			initialization(); 
 			getout = true;
+			EXIT = 1;
 			break;
 		case '8': 
 			clearScreen();
 			stopTheGame();
 			menu();
 			getout = true;
+			EXIT = 1;
 			break;
 		case '9':
 			getout = true;
@@ -835,7 +840,7 @@ ofstream GameManeger::openfileForRecord(map<string, int>::iterator file, int num
 	string boardFileName;
 	boardFileName = file->first;
 	size_t sufix = boardFileName.find(".gboard");
-	boardFileName.erase(sufix,7);
+	boardFileName.erase(sufix,8);
 
 	string fullPath = path;
 	fullPath.append("\\");
@@ -846,8 +851,6 @@ ofstream GameManeger::openfileForRecord(map<string, int>::iterator file, int num
 	if (numOfGamer == 2) {
 		fullPath.append(".moves-b_full");
 	}
-	size_t indexstr1 = fullPath.find_last_of("\n"); //support \n and \r
-	fullPath[indexstr1] = '\0';
 	ofstream movesFile(fullPath);
 	bool ok = movesFile.is_open();
 	return movesFile;
@@ -915,14 +918,14 @@ void GameManeger::writeToMoveFiles(ofstream & movesA, ofstream & movesB)
 	char* token1 = strtok(&recordBufferB[0], ",");
 	while (token1 != NULL) {
 		int i = 0;
-		movesA << token1[i] << "," << token1[i + 1] << "," << token1[i + 2];
+		movesB << token1[i] << "," << token1[i + 1] << "," << token1[i + 2];
 		if (token1[i + 3] != '\0') {
-			movesA << token1[i + 3] << endl;
+			movesB << token1[i + 3] << endl;
 		}
 		else
-			movesA << endl;
+			movesB << endl;
+		token1 = strtok(NULL, ",");
 	}
-	token1 = strtok(NULL, ",");
 }
 
 void GameManeger::endMessage() const
