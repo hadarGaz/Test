@@ -39,6 +39,7 @@ class GameManeger {
 
 	bool opositeGame = false;
 	bool recordGame = false;
+	bool returnToMenu = true;
 	string recordBufferA;
 	string recordBufferB;
 	int GameNumber = 0;

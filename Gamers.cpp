@@ -52,7 +52,11 @@ void Gamers::setSoldiersFromFile(Cell board[(int)Sizes::size][(int)Sizes::size],
 void Gamers::drowSoldiers() const
 {
 	for (soldier sol : soldiers)
-		sol.draw();
+	{
+		if(sol.isAlive)
+			sol.draw();
+	}
+		
 }
 void Gamers::setkeys(const char* keys)
 {

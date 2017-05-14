@@ -38,13 +38,16 @@ void GameManeger::paramMenager()
 	}
 	else
 	{
-		menu();
-		while (GameOver == false)
+		while (returnToMenu)
 		{
-			uploadFiles(); //check and set the file
-			initialization();
-			run();
-			Sleep(50 * delay);
+			menu();
+			while (GameOver == false)
+			{
+				uploadFiles(); //check and set the file
+				initialization();
+				run();
+				Sleep(50 * delay);
+			}
 		}
 		if (ifBoardFile == true)
 			endMessage();
@@ -139,29 +142,24 @@ void GameManeger::menu()
 			gamers[1].setName();
 			break;
 		case '2':
-			uploadFiles();
-			initialization();
-			run();
+			GameOver = false;
 			getout = true;
 			break;
 		case '3':
 			opositeGame = !opositeGame;
-			initialization();
-			run();
 			getout = true;
 			break;
 		case '4':
 			resetScore();
-			//cout << "Score was reset";
 			break;
 		case '5':
 			recordGame = !recordGame;
-
 			break;
 		case '9':
 			getout = true;
 			EXIT = 1;
 			GameOver = true;
+			returnToMenu = false;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
@@ -219,7 +217,11 @@ void GameManeger::uploadBoardFromFile() //אתחולים
 	setBoardFromFile(fileNameforBoard);
 	isBoardOk = printAndCheckBoardFromFileErrors(currFileBoard->first);
 	if (isBoardOk == false)
+	{
 		GameOver = true;
+		returnToMenu = false;
+	}
+		
 }
 
 void GameManeger::printing() const
@@ -240,7 +242,11 @@ void GameManeger::run()
 	{
 		currFileBoard++;
 		if (currFileBoard == boardFile.files.end())
+		{
+			returnToMenu = false;
 			GameOver = true;
+		}
+			
 	}
 }
 void GameManeger::runFromKeyBordMoves()
@@ -617,15 +623,13 @@ void GameManeger::seconderyMenu()
 			}
 			break;
 		case '2':
-			uploadFiles();
-			initialization(); 
 			getout = true;
 			EXIT = 1;
 			break;
 		case '8': 
 			clearScreen();
 			stopTheGame();
-			menu();
+			GameOver = true;
 			getout = true;
 			EXIT = 1;
 			break;
@@ -633,6 +637,7 @@ void GameManeger::seconderyMenu()
 			getout = true;
 			EXIT = 1;
 			GameOver = true;
+			returnToMenu = false;
 			break;
 		default:
 			cout << "Unsupported option.." << endl;
@@ -678,6 +683,7 @@ char GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 		if (soliderOut == (int)Win::win) {
 			stopTheGame();
 			win = true;
+			EXIT = true;
 			if (opositeGame) {
 				swapScore(gamerTurn);
 			}
@@ -697,6 +703,7 @@ char GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			{
 				stopTheGame();
 				win = true;
+				EXIT = true;
 				if (opositeGame) {
 					gamerNum = gamers[0].win();
 				}
@@ -708,6 +715,7 @@ char GameManeger::updateSoldierOut(int gamerTurn,int soliderOut)
 			{
 				stopTheGame();
 				win = true;
+				EXIT = true;
 				if (opositeGame) {
 					gamerNum = gamers[1].win();
 				}
