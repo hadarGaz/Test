@@ -104,7 +104,7 @@ void Gamers::putScore(int _score)
 //returns 0 if there is no attack OR solider num of the solider who fall if attack occured
 int Gamers::move(Cell board[(int)Sizes::size][(int)Sizes::size],string& recordBufferA,string& recordBufferB)
 {
-	int movementResult;
+	int movementResult = 0;
 	if (currSoldier != -1) {
 		if (currSoldier <= (int)GamerA::soldier3) {
 			if (soldiers[currSoldier - 1].isAlive) {

@@ -46,6 +46,7 @@ void GameManeger::paramMenager()
 			
 		}
 		endMessage();
+		Sleep(50 * delay);
 	}
 	else
 	{
@@ -62,6 +63,7 @@ void GameManeger::paramMenager()
 		}
 		if (ifBoardFile == true)
 			endMessage();
+			Sleep(50 * delay);
 	}
 	ofstream gameCounterOut("counter.txt");
 	gameCounterOut << GameNumber;
@@ -856,6 +858,7 @@ ofstream GameManeger::openfileForRecord(map<string, int>::iterator file, int num
 	boardFileName.erase(sufix,8);
 
 	string fullPath = path;
+	fullPath.erase(path.length() - 1, 1);
 	fullPath.append("\\");
 	fullPath.append(boardFileName);
 	if (numOfGamer == 1) {
@@ -887,9 +890,12 @@ string GameManeger::RandomNameGenerator()
 	//generate name for the files
 	string randomName = "random_";
 	string fullPath = path;
+	int size = 0;
 	GameNumber++;
 	char numToAdd = GameNumber + '0';
 	randomName.append(1, numToAdd);
+	size = path.length();
+	fullPath.erase(size-1, 1);
 	fullPath.append("\\");
 	fullPath.append(randomName);
 	return fullPath;
