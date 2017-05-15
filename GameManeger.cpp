@@ -864,7 +864,9 @@ ofstream GameManeger::openfileForRecord(map<string, int>::iterator file, int num
 	boardFileName.erase(sufix,8);
 
 	string fullPath = path;
-	fullPath.erase(path.length() - 1, 1);
+	int size = fullPath.length();
+	if (fullPath[size - 1] == '\0')
+		fullPath.erase(size - 1, 1);
 	fullPath.append("\\");
 	fullPath.append(boardFileName);
 	if (numOfGamer == 1) {
@@ -894,6 +896,7 @@ ofstream GameManeger::openfileForRecord(int numOfGamer, string randomName)
 string GameManeger::RandomNameGenerator()
 {
 	//generate name for the files
+
 	string randomName = "random_";
 	string fullPath = path;
 	int size = 0;
@@ -901,7 +904,8 @@ string GameManeger::RandomNameGenerator()
 	char numToAdd = GameNumber + '0';
 	randomName.append(1, numToAdd);
 	size = path.length();
-	fullPath.erase(size-1, 1);
+	if(fullPath[size-1] == '\0')
+		fullPath.erase(size-1, 1);
 	fullPath.append("\\");
 	fullPath.append(randomName);
 	return fullPath;
