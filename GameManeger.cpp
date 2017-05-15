@@ -331,11 +331,14 @@ void GameManeger::runFromMovesFile()
 			if (fileNameforGamerA.good() == true)
 			{
 				fileNameforGamerA.getline(buff, sizeof(buff) - 1);
-				validRowFromLine = gamers[0].readFromMovesFile(buff); //and set direction
-				if (validRowFromLine == true)
+				if (strcmp(buff,"") != 0) //support empty line 
 				{
-					soliderOut = gamers[0].move(board, recordBufferA, recordBufferB);
-					winner = updateSoldierOut(0, soliderOut);
+					validRowFromLine = gamers[0].readFromMovesFile(buff); //and set direction
+					if (validRowFromLine == true)
+					{
+						soliderOut = gamers[0].move(board, recordBufferA, recordBufferB);
+						winner = updateSoldierOut(0, soliderOut);
+					}
 				}
 			}
 			else
@@ -351,11 +354,14 @@ void GameManeger::runFromMovesFile()
 			if (fileNameforGamerB.good() == true)
 			{
 				fileNameforGamerB.getline(buff, sizeof(buff) - 1);
-				validRowFromLine = gamers[1].readFromMovesFile(buff); //and set direction
-				if (validRowFromLine == true)
+				if (strcmp(buff, "") != 0) //support empty line 
 				{
-					soliderOut = gamers[1].move(board, recordBufferA, recordBufferB);
-					winner = updateSoldierOut(1, soliderOut);
+					validRowFromLine = gamers[1].readFromMovesFile(buff); //and set direction
+					if (validRowFromLine == true)
+					{
+						soliderOut = gamers[1].move(board, recordBufferA, recordBufferB);
+						winner = updateSoldierOut(1, soliderOut);
+					}
 				}
 
 			}
@@ -840,7 +846,7 @@ ifstream GameManeger::openfile(map<string, int>::iterator file, int numOfGamer)
 		string fullPath = tempPath;
 		fullPath.append("\\");
 		fullPath.append(file->first);
-		size_t indexstr1 = fullPath.find_last_of("\n"); //support \n and \r
+		size_t indexstr1 = fullPath.find_last_of("\n"); 
 		fullPath[indexstr1] = '\0';
 		ifstream movesFile(fullPath);
 		bool ok = movesFile.is_open();
