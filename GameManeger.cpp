@@ -44,6 +44,7 @@ void GameManeger::paramMenager()
 			uploadFiles(); //check and set the file
 			initialization();
 			run();
+			//menu();
 			Sleep(50 * delay);
 		}
 		if (ifBoardFile == true)
@@ -140,8 +141,13 @@ void GameManeger::menu()
 			break;
 		case '2':
 			uploadFiles();
-			initialization();
-			run();
+			if (!GameOver) {
+				initialization();
+				run();
+			}
+			else {
+				EXIT = 1;
+			}
 			getout = true;
 			break;
 		case '3':
@@ -152,7 +158,6 @@ void GameManeger::menu()
 			break;
 		case '4':
 			resetScore();
-			//cout << "Score was reset";
 			break;
 		case '5':
 			recordGame = !recordGame;
@@ -182,17 +187,6 @@ void GameManeger::uploadFiles() //סידור לוח וחיילים
 		setBoard();
 		gamers[0].setSoldiersRandom(board);
 		gamers[1].setSoldiersRandom(board);
-/*
-		if (recordGame) {
-			gamers[0].isRecordOn = true;
-			gamers[1].isRecordOn = true;
-
-		}
-		else {
-			gamers[0].isRecordOn = false;
-			gamers[1].isRecordOn = false;
-		}
-*/
 	}
 	if (ifMovesFile == true)
 		updateFilePerGame();
@@ -295,11 +289,14 @@ void GameManeger::runFromKeyBordMoves()
 			}
 		
 	}
-	writeToMoveFiles(movesArecord, movesBrecord);
-	movesArecord.close();
-	movesBrecord.close();
-	recordBufferA.clear();
-	recordBufferB.clear();
+	if (recordGame) {
+		writeToMoveFiles(movesArecord, movesBrecord);
+		movesArecord.close();
+		movesBrecord.close();
+		recordBufferA.clear();
+		recordBufferB.clear();
+	}
+	
 }
 void GameManeger::runFromMovesFile()
 {
@@ -624,8 +621,8 @@ void GameManeger::seconderyMenu()
 			break;
 		case '8': 
 			clearScreen();
-			stopTheGame();
-			menu();
+			//stopTheGame();
+			//menu();
 			getout = true;
 			EXIT = 1;
 			break;
