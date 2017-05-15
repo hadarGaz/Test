@@ -21,6 +21,17 @@ void GameManeger::paramMenager()
 	currFileMovesA = movesAFiles.files.begin();
 	currFileMovesB = movesBFiles.files.begin();
 
+	ifstream gameCounterIn("counter.txt");
+	if (gameCounterIn.good()) {
+		string number;
+		getline(gameCounterIn, number);
+		GameNumber = atoi(number.c_str());
+		gameCounterIn.close();
+	}
+	else {
+		GameNumber = 0;
+	}
+
 	if (ifMovesFile == true)
 	{
 		while (GameOver == false)
@@ -50,7 +61,9 @@ void GameManeger::paramMenager()
 		if (ifBoardFile == true)
 			endMessage();
 	}
-	
+	ofstream gameCounterOut("counter.txt");
+	gameCounterOut << GameNumber;
+	gameCounterOut.close();
 }
 
 void GameManeger::openFolder(char* tempPath)

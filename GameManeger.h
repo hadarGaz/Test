@@ -41,7 +41,7 @@ class GameManeger {
 	bool recordGame = false;
 	string recordBufferA;
 	string recordBufferB;
-	int GameNumber = 0;
+	int GameNumber;
 	void printLetters() const;
 	void printEndLine() const;
 	void printNumber(int num)const;
