@@ -91,5 +91,4 @@ public:
 	void writeToMoveFiles(ofstream& movesA, ofstream& movesB);
 	void endMessagePerGame(int GameCycle, int numOfMoves, char winner) const;
 
-
 };

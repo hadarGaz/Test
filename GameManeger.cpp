@@ -20,8 +20,13 @@ void GameManeger::paramMenager()
 	currFileBoard = boardFile.files.begin();
 	currFileMovesA = movesAFiles.files.begin();
 	currFileMovesB = movesBFiles.files.begin();
-
-	ifstream gameCounterIn("counter.txt");
+	//set the game number 
+	string countTemp = path;
+	if (countTemp[path.length() - 1] == '\0') {
+		countTemp.erase(countTemp.length() - 1, 1);
+	}
+	countTemp.append("\\counter.txt");
+	ifstream gameCounterIn(countTemp);
 	if (gameCounterIn.good()) {
 		string number;
 		getline(gameCounterIn, number);
@@ -65,9 +70,11 @@ void GameManeger::paramMenager()
 			endMessage();
 			Sleep(50 * delay);
 	}
-	ofstream gameCounterOut("counter.txt");
+
+	ofstream gameCounterOut(countTemp);
 	gameCounterOut << GameNumber;
 	gameCounterOut.close();
+
 }
 
 void GameManeger::openFolder(char* tempPath)
@@ -901,13 +908,15 @@ string GameManeger::RandomNameGenerator()
 	string fullPath = path;
 	int size = 0;
 	GameNumber++;
-	char numToAdd = GameNumber + '0';
-	randomName.append(1, numToAdd);
+	string numToAdd = to_string(GameNumber);
+	randomName.append(numToAdd);
 	size = path.length();
-	if(fullPath[size-1] == '\0')
-		fullPath.erase(size-1, 1);
+	if (fullPath[size - 1] == '\0') {
+		fullPath.erase(size - 1, 1);
+	}
 	fullPath.append("\\");
 	fullPath.append(randomName);
+	
 	return fullPath;
 }
 
